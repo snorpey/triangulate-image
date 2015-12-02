@@ -1,0 +1,8 @@
+{
+  "name": "node-image-triangulation",
+  "dependencies": {
+    "canvas": "^1.3.4",
+    "delaunay": "^0.4.0",
+    "node-canvas": "~1.3.4"
+  }
+}
