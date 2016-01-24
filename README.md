@@ -53,7 +53,7 @@ reference
 
 * [``triangulate()``](#triangulate)
 * input: [``fromImage()``](#fromimage), [``fromImageData()``](#fromimagedata), [``fromBuffer()``](#frombuffer)
-* output: [``toDataURL()``](#todataurl), [``toImageData()``](#toimagedata), [``toData()``](#todata), [``toSVG()``](#tosvg), [``toJPGStream()``](#jpgstream), [``toPNGStream()``](#pngstream), [``toSVGStream()``](#svgstream)
+* output: [``toDataURL()``](#todataurl), [``toImageData()``](#toimagedata), [``toData()``](#todata), [``toSVG()``](#tosvg), [``toJPGStream()``](#tojpgstream), [``toPNGStream()``](#topngstream), [``toSVGStream()``](#tosvgstream)
 
 triangulate()
 ---
