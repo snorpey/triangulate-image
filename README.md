@@ -16,9 +16,9 @@ installation
 
 what is it?
 ---
-a javaScript module that converts images to triangular polygons:
+a javascript module that converts images to triangular polygons:
 
-![photo of a. lincoln](example.jpg) ![triangulated image of a. lincoln](example.svg)
+![triangulated image of a. lincoln](example.png)
 
 how to use it
 ===
