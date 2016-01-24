@@ -3,9 +3,21 @@ language: node_js
 node_js:
   - "4.1"
 
+matrix:
+  allow_failures:
+    - node_js: "5"
 addons:
-    apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-4.8
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libcairo2-dev
+      - libjpeg8-dev
+      - libpango1.0-dev
+      - libgif-dev
+      - g++-4.8
+env:
+  - CXX=g++-4.8
+before_install:
+  - npm explore npm -g -- npm install node-gyp@latest
+sudo: false
