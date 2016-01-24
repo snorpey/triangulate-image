@@ -19,7 +19,7 @@
     "delete-tmp": "rm dist/triangulate-image.tmp.js",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
     "build": "npm run clean && npm run build-node && npm run build-browser",
-    "prepublish": "npm run build && npm run test",
+    "prepublish": "npm run build",
     "test": "npm run test-node && npm run test-browser",
     "test-node": "mocha -R spec ./test/test-node.js",
     "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors"
@@ -35,6 +35,7 @@
     "derequire": "^2.0.2",
     "envify": "^3.4.0",
     "expect.js": "^0.3.1",
+    "libxmljs": "^0.17.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.3.4",
     "mocha-phantomjs": "^4.0.2",

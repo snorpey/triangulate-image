@@ -2,6 +2,7 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
+var libxmljs = require('libxmljs');
 var Canvas = require('canvas-browserify');
 var Image = Canvas.Image;
 
@@ -258,7 +259,15 @@ describe( 'node tests for triangulate-image', function () {
 					assert.equal( typeof markup, 'string' );
 					assert.equal( markup.indexOf( '<?xml' ), 0 );
 					assert.notEqual( markup.indexOf( '<svg ' ), -1 );
-					assert.notEqual( markup.indexOf( '<polygon ' ), -1 );
+
+					try {
+						libxmljs.parseXml( markup );
+						isValid = true;
+					} catch ( e ) {
+						done( e );
+					}
+
+					assert.equal( isValid, true );
 					
 					done();
 				} );
