@@ -1,8 +1,39 @@
 {
   "name": "triangulate-image",
+  "version": "0.1.0",
+  "description": "Converts images in to triangular polygons.",
+  "author": "Georg Fischer <snorpey@gmail.com.com>",
+  "license": "MIT",
+  "repository": "https://github.com/snorpey/triangulate-image.git",
+  "main": "dist-node/index.js",
+  "jsnext:main": "src/index.js",
+  "jspm": {
+    "main": "dist/triangulate-image.js"
+  },
+  "scripts": {
+    "build-node": "babel src --out-dir dist-node",
+    "build-browser": "npm run browserify && npm run uglify && npm run beautify && npm run delete-tmp",
+    "browserify": "NODE_ENV=browser browserify -t envify -t [ uglifyify --mangle=0 ] --standalone triangulate dist-node | derequire > dist/triangulate-image.tmp.js",
+    "beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/triangulate-image.tmp.js > dist/triangulate-image.js",
+    "uglify": "uglifyjs -mc < dist/triangulate-image.tmp.js > dist/triangulate-image.min.js",
+    "delete-tmp": "rm dist/triangulate-image.tmp.js",
+    "clean": "rimraf dist dist-node && mkdirp dist dist-node",
+    "build": "npm run clean && npm run build-node && npm run build-browser",
+    "prepublish": "npm run build"
+  },
   "dependencies": {
-    "canvas": "^1.3.4",
-    "delaunay": "^0.4.0",
-    "node-canvas": "~1.3.4"
+    "canvas-browserify": "^1.1.3",
+    "delaunay-fast": "github:ironwallaby/delaunay#2d7110e",
+    "stackblur-canvas": "^1.2.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "browserify": "^11.2.0",
+    "derequire": "^2.0.2",
+    "envify": "^3.4.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.4.3",
+    "uglify-js": "^2.5.0",
+    "uglifyify": "^3.0.1"
   }
 }

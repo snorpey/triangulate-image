@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>image triangulation example</title>
+		<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font-family: sans-serif; color: #333; font-size: 14px; padding: 50px; }
+		h1 { font-weight: normal; font-size: 14px; margin-bottom: 10px; margin-top: 50px; }
+		textarea { width: 650px; height: 400px; }
+		</style>
+	</head>
+	<body>
+		<h1>toSVG</h1>
+		<div id="svg-container"></div>
+		<h1>toDataURL</h1>
+		<div id="img-container"></div>
+		<h1>toImageData</h1>
+		<div id="canvas-container"></div>
+		<h1>toData</h1>
+		<textarea id="data-container"></textarea>
+		<script src="../dist/triangulate-image.js"></script>
+		<script>
+			/*global triangulate, devicePixelRatio*/
+			var imagePath = 'img/lincoln.jpg';
+
+			var svgContainerEl = document.getElementById( 'svg-container' );
+			var imgContainerEl = document.getElementById( 'img-container' );
+			var canvasContainerEl = document.getElementById( 'canvas-container' );
+			var dataContainerEl = document.getElementById( 'data-container' );
+			
+			var params = {
+				blur: 110,
+				vertexCount: 700,
+				accuracy: 0.2,
+				fill: false,
+				stroke: true,
+				strokeWidth: 10,
+				lineJoin: 'round'
+			};
+
+			var dpr = devicePixelRatio || 1;
+
+			loadImage( imagePath, function ( img ) {
+				svgContainerEl.innerHTML = triangulate( params ).fromImage( img ).toSVG();
+
+				var img1 = new Image();
+				img1.src = triangulate( params ).fromImage( img ).toDataURL( { dpr: dpr } );
+				img1.style.width = img.naturalWidth + 'px';
+				imgContainerEl.appendChild( img1 );
+
+				var canvasEl = document.createElement( 'canvas' );
+				canvasEl.width = img.naturalWidth * dpr;
+				canvasEl.height = img.naturalHeight * dpr;
+				canvasEl.style.width = img.naturalWidth + 'px';
+				var ctx = canvasEl.getContext('2d');
+				ctx.putImageData( triangulate( params ).fromImage( img ).toImageData( { dpr: dpr } ), 0, 0 );
+				canvasContainerEl.appendChild( canvasEl );
+
+				dataContainerEl.value = JSON.stringify( triangulate( params ).fromImage( img ).toData(), null, '  ' );
+			} );
+
+			function loadImage ( src, callback ) {
+				var imageEl = new Image();
+
+				imageEl.onload = function () {
+					callback( imageEl );
+				};
+
+				imageEl.src = src;
+			}
+		</script>
+	</body>
+</html>
