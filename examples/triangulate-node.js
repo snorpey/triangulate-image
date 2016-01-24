@@ -12,17 +12,14 @@ var params = {
 	lineJoin: 'miter'
 };
 
-// fromBufferToSvg();
-// fromBufferToPng();
-// fromBufferToData();
-// fromBufferToSVGStream();
-// fromBufferToJPGStream();
-// fromBufferToPNGStream();
-// fromBufferToPdf();
-
-// triangulate().fromImageData().toSVG();
-
-// fromBufferToDataURL();
+fromBufferToSvg();
+fromBufferToPng();
+fromBufferToData();
+fromBufferToSVGStream();
+fromBufferToJPGStream();
+fromBufferToPNGStream();
+fromBufferToPdf();
+fromBufferToDataURL();
 
 fromBufferToJPGStream()
 
@@ -32,7 +29,7 @@ function fromBufferToDataURL () {
 			throw err;
 		}
 		
-		console.log( triangulate( params ).fromBuffer( buffer ).toDataURL() );
+		console.log( 'fromBufferToDataURL complete. Length of dataURL:', triangulate( params ).fromBuffer( buffer ).toDataURL().length );
 	} );
 }
 
@@ -44,11 +41,11 @@ function fromBufferToSvg () {
 		
 		var svgMarkup = triangulate( params ).fromBuffer( buffer ).toSVG();
 
-		fs.writeFile( 'node-output/fromBufferToSvg.svg', svgMarkup, function ( err ) {
+		fs.writeFile( __dirname + '/node-output/fromBufferToSvg.svg', svgMarkup, function ( err ) {
 			if ( err ) {
 				throw err;
 			} else {
-				console.log( 'fromBufferToSvg complete.' );
+				console.log( 'fromBufferToSvg complete. File save to', __dirname + '/node-output/fromBufferToSvg.svg' );
 			}
 		} );
 	} );
@@ -66,7 +63,7 @@ function fromBufferToPng () {
 			if ( err ) {
 				throw err;
 			} else {
-				console.log( 'fromBufferToPng complete.' );
+				console.log( 'fromBufferToPng complete. File saved to', __dirname + '/node-output/fromBufferToPng.png' );
 			}
 		} );
 	} );
@@ -84,7 +81,7 @@ function fromBufferToPdf () {
 			if ( err ) {
 				throw err;
 			} else {
-				console.log( 'fromBufferToPdf complete.' );
+				console.log( 'fromBufferToPdf complete. File saved to', __dirname + '/node-output/fromBufferToPdf.pdf' );
 			}
 		} );
 	} );
@@ -98,11 +95,11 @@ function fromBufferToData () {
 		
 		var data = JSON.stringify( triangulate( params ).fromBuffer( buffer ).toData(), null, '  ' );
 
-		fs.writeFile(  __dirname + '/node-output/fromBufferToData.json', data, function ( err ) {
+		fs.writeFile( __dirname + '/node-output/fromBufferToData.json', data, function ( err ) {
 			if ( err ) {
 				throw err;
 			} else {
-				console.log( 'fromBufferToData complete.' );
+				console.log( 'fromBufferToData complete. File saved to', __dirname + '/node-output/fromBufferToData.json' );
 			}
 		} );
 	} );
@@ -116,7 +113,10 @@ function fromBufferToSVGStream () {
 		
 		var svgStream = triangulate( params ).fromBuffer( buffer ).toSVGStream();
 
-		svgStream.pipe( process.stdout );
+		var totalLength = 0;
+		
+		svgStream.on( 'data', function ( chunk ) { totalLength += chunk.length; } );
+		svgStream.on( 'end', function () { console.log( 'fromBufferToSVGStream complete. Total length streamed', totalLength ); } );
 	} );
 }
 
@@ -128,11 +128,9 @@ function fromBufferToJPGStream () {
 
 		var fileStream = fs.createWriteStream( __dirname + '/node-output/fromBufferToJPGStream.jpg' );
 		var jpgStream = triangulate( params ).fromBuffer( buffer ).toJPGStream( { backgroundColor: 'red' } );
-
-		console.log( jpgStream );
-		
+				
 		jpgStream.on( 'data', function ( chunk ) { fileStream.write( chunk ); } );
-		jpgStream.on( 'end', function () { console.log( 'fromBufferToJPGStream complete.' ); } );
+		jpgStream.on( 'end', function () { console.log( 'fromBufferToJPGStream complete. File saved to', __dirname + '/node-output/fromBufferToJPGStream.jpg' ); } );
 	} );
 }
 
@@ -146,6 +144,6 @@ function fromBufferToPNGStream () {
 		var pngStream = triangulate( params ).fromBuffer( buffer ).toPNGStream( { backgroundColor: 'rgba(90, 70, 20, 0.1)' } );
 				
 		pngStream.on( 'data', function ( chunk ) { fileStream.write( chunk ); } );
-		pngStream.on( 'end', function () { console.log( 'fromBufferToPNGStream complete.' ); } );
+		pngStream.on( 'end', function () { console.log( 'fromBufferToPNGStream complete. File saved to', __dirname + '/node-output/fromBufferToPNGStream.jpg' ); } );
 	} );
 }
