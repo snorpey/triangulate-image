@@ -1,0 +1,258 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>triangulate-image browser tests</title>
+		<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+	</head>
+	<body>
+		<div id="mocha"></div>
+<!-- 		<canvas id="canvas-one" width="300" height="200"></canvas>
+		<canvas id="canvas-two" width="300" height="200"></canvas> -->
+		<script src="../dist/triangulate-image.js"></script>
+		<script src="../node_modules/mocha/mocha.js"></script>
+		<script src="../node_modules/expect.js/index.js"></script>
+		<script>
+/*global describe, it, expect, mocha, mochaPhantomJS, triangulate*/
+mocha.ui( 'bdd' ); 
+mocha.reporter( 'html' );
+
+var defaultParams = {
+	accuracy: 0.7,
+	blur: 40,
+	fill: true,
+	stroke: true,
+	strokeWidth: 0.5,
+	lineJoin: 'miter',
+	vertexCount: 700
+};
+
+var imagePath = '../examples/img/lincoln.jpg';
+
+describe( 'node tests for triangulate-image', function () {
+
+	it ( 'should add a global function named "triangulate"', function () {
+		expect( triangulate ).to.be.a( 'function' );
+	} );
+
+	it ( 'should return an object', function () {
+		expect( triangulate() ).to.be.an( 'object' );
+	} );
+
+	it ( 'should return all input methods available in the browser', function () {
+		var t = triangulate();
+		expect( t.fromImage ).to.be.a( 'function' );
+		expect( t.fromImageData ).to.be.a( 'function' );
+	} );
+
+	it ( 'should have a getParams method', function () {
+			expect( triangulate().getParams ).to.be.a( 'function' );
+	} );
+
+// getParams()
+
+	describe( '#getParams()', function () {
+		it ( 'should return an object with all parameters', function () {
+			var params = triangulate().getParams();
+			expect( params.accuracy ).to.be.a( 'number' );
+			expect( params.blur ).to.be.a( 'number' );
+			expect( typeof params.fill === 'string' || typeof params.fill === 'boolean' ).to.be( true );
+			expect( typeof params.stroke === 'string' || typeof params.stroke === 'boolean' ).to.be( true );
+			expect( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean' ).to.be( true );
+			expect( [ 'miter', 'round', 'bevel' ] ).to.contain( params.lineJoin );
+			expect( params.vertexCount ).to.be.a( 'number' );
+		} );
+		
+		it ( 'should set the default no parameters are submitted', function () {
+			var params = triangulate().getParams();
+
+			for ( var key in defaultParams ) {
+				expect( params[key] ).to.be( defaultParams[key] );
+			}
+		} );
+
+		it ( 'should add missing parameters', function () {
+			var params = triangulate( { accuracy: 0.3, blur: 39 } ).getParams();
+
+			for ( var key in defaultParams ) {
+				expect( params[key] ).not.to.be( 'undefined' );
+			}	
+		} );
+
+		it ( 'should clamp the accuracy parameter', function () {
+			var params = triangulate( { accuracy: 300 } ).getParams();
+			expect( params.accuracy ).to.be.within( 0, 1 );
+		} );
+	} );
+
+	it ( 'should not have a fromBuffer method', function () {
+		expect( triangulate().fromBuffer ).to.be.a( 'undefined' );
+	} );
+
+// fromImage
+
+	it ( 'should have a fromImage method', function () {
+		expect( triangulate().fromImage ).to.be.a( 'function' );
+	} );
+
+	describe( '#fromImage()', function () {
+		it ( 'should return all output methods available in the browser', function () {
+			var img = new Image();
+			var output = triangulate().fromImage( img );
+			expect( output.toDataURL ).to.be.a( 'function' );
+			expect( output.toImageData ).to.be.a( 'function' );
+			expect( output.toSVG ).to.be.a( 'function' );
+			expect( output.toData ).to.be.a( 'function' );
+		} );
+
+		it ( 'should accept a loaded image as parameter', function ( done ) {
+			loadImage( done, function ( img ) {
+				triangulate().fromImage( img ).toSVG();
+				expect( function () { triangulate().fromImage( img ).toSVG(); } ).not.to.throwError();
+				done();
+			} );
+		} );
+
+		it ( 'should throw an error if an image was not loaded', function () {
+			var img = new Image();
+			expect( function () { triangulate().fromImage( img ).toSVG(); } ).to.throwError();
+		} );
+	} );
+
+// fromImageData
+
+	it ( 'should have a fromImageData method', function () {
+		expect( triangulate().fromImageData ).to.be.a( 'function' );
+	} );
+	
+	describe( '#fromImageData()', function () {
+		it ( 'should be able to handle an imageData object', function ( done ) {
+			loadImage( done, function ( img ) {
+				var imageData = imageToImageData( img );			
+				expect( function () { triangulate().fromImageData( imageData ).toSVG(); } ).not.to.throwError();
+				done();
+			} );
+		} );
+
+		it ( 'should throw an error when provided with corrupt imageData object', function () {
+			expect( function () {
+				triangulate().fromImageData().toSVG();
+			} ).to.throwError();
+
+			expect( function () {
+				triangulate().fromImageData( { width: 0, data: 'LOL', height: 10 } ).toSVG();
+			} ).to.throwError();
+		} );
+	} );
+
+// toData
+
+	describe( '#toData()', function () {
+		it ( 'should return valid polygon data', function ( done ) {
+			loadImage( done, function ( img ) {
+				var data = triangulate().fromImage( img ).toData();
+
+				expect( Array.isArray( data ) ).to.be( true );
+				expect( data.length ).to.be.greaterThan( 0 );
+				
+				var firstPolygon = data[0];
+
+				expect( firstPolygon.a ).to.be.an( 'object' );
+				expect( firstPolygon.b ).to.be.an( 'object' );
+				expect( firstPolygon.c ).to.be.an( 'object' );
+
+				[ 'a', 'b', 'c' ].forEach( function ( key ) {
+					expect( firstPolygon[key].x).to.be.a( 'number' );
+					expect( firstPolygon[key].y).to.be.a( 'number' );
+				} );
+
+				done();
+			} );
+		} );
+	} );
+
+// toDataURL
+
+	describe( '#toDataURL()', function () {
+		it ( 'should return a dataURL', function ( done ) {
+			loadImage( done, function ( img ) {
+				var url = triangulate().fromImage( img ).toDataURL();
+
+				expect( url ).to.be.a( 'string' );
+				expect( url.length ).to.be.greaterThan( 21 );
+				expect( url.indexOf( 'data:image/png;base64' ) ).to.be( 0 );
+				done();
+			} );
+		} );
+	} );
+
+// toImageData
+
+	describe( '#toImageData()', function () {
+		it ( 'should return an imageData object', function ( done ) {
+			loadImage( done, function ( img ) {
+				var imageData = triangulate().fromImage( img ).toImageData();
+
+				expect( imageData ).to.be.an( 'object' );
+				expect( imageData.width ).to.be.a( 'number' );
+				expect( imageData.height ).to.be.a( 'number' );
+				expect( imageData.data ).not.to.be( 'undefined' );
+				expect(  imageData.data.length ).to.be.greaterThan( 0 );
+				
+				done();
+			} );
+		} );
+	} );
+
+// toSVG
+
+	describe( '#toSVG()', function () {
+		it ( 'should return valid SVG markup', function ( done ) {
+			loadImage( done, function ( img ) {
+				var markup = triangulate().fromImage( img ).toSVG();
+				
+				expect( markup ).to.be.a( 'string' );
+				expect( markup.indexOf( '<?xml' ) ).to.be( 0 );
+				expect( markup.indexOf( '<svg ' ) ).not.to.be( -1 );
+
+				var domEl = document.createElement( 'div' );
+				document.body.appendChild( domEl );
+				domEl.innerHTML = markup;
+				
+				expect( domEl.querySelectorAll( 'polygon' ).length ).to.be.greaterThan( 0 );
+				
+				done();
+			} );
+		} );
+	} );
+} );
+
+function loadImage ( err, callback ) {
+	var img = new Image();
+
+	img.onload = function () {
+		callback( img );
+	};
+
+	img.onerror = err;
+	img.src = imagePath;
+}
+
+function imageToImageData ( img ) {
+	var canvas = document.createElement( 'canvas' );
+	canvas.width = img.naturalWidth;
+	canvas.height = img.naturalHeight;
+			
+	var ctx = canvas.getContext( '2d' );
+	ctx.drawImage( img, 0, 0 );
+
+	return ctx.getImageData( 0, 0, img.naturalWidth, img.naturalHeight );
+}
+
+if ( window.mochaPhantomJS ) {
+	mochaPhantomJS.run();
+} else {
+	mocha.run();
+}
+		</script>
+	</body>
+</html>
