@@ -19,9 +19,9 @@
     "delete-tmp": "rm dist/triangulate-image.tmp.js",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
     "build": "npm run clean && npm run build-node && npm run build-browser",
-    "prepublish": "npm run build",
+    "prepublish": "npm run build && npm run test",
     "test": "npm run test-node && npm run test-browser",
-    "test-node": "mocha -R spec ./test/test-node.js",
+    "test-node": "mocha ./test/test-node.js",
     "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors"
   },
   "dependencies": {
