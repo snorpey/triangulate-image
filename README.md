@@ -1,5 +1,5 @@
 triangulate-image
-====
+===
 
 installation
 ---
@@ -389,7 +389,7 @@ dependencies:
 
 
 missing somehing?
------
+---
 
 found a bug? missing a feature? are you using this library in an interesting project? take a look at the [issues](./issues), open a pull request and let me know.
 
