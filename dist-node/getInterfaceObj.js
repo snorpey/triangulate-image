@@ -4,11 +4,12 @@ var clamp = require('./util/clamp.js');
 var defaultParams = require('./defaultParams.js');
 
 var fromImageToImageData = require('./input/fromImageToImageData.js');
-var fromBufferToImageData = require('./input/fromBufferToImageData.js');
 
 var polygonsToImageData = require('./output/polygonsToImageData.js');
 var polygonsToDataURL = require('./output/polygonsToDataURL.js');
 var polygonsToSVG = require('./output/polygonsToSVG.js');
+
+var fromBufferToImageData;
 
 var polygonsToBuffer;
 var polygonsToPNGStream;
@@ -16,6 +17,7 @@ var polygonsToJPGStream;
 var polygonsToSVGStream;
 
 if (process.env.NODE_ENV !== 'browser') {
+	fromBufferToImageData = require('./input/fromBufferToImageData.js');
 	polygonsToSVGStream = require('./output/polygonsToSVGStream.js');
 	polygonsToBuffer = require('./output/polygonsToBuffer.js');
 	polygonsToPNGStream = require('./output/polygonsToPNGStream.js');
