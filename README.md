@@ -4,8 +4,8 @@ triangulate-image
 installation
 ---
 
-* [triangulate-image.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.min.js) 16kb
-* [triangulate-image.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.js) 48kb
+* [triangulate-image.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.min.js) 17kb
+* [triangulate-image.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.js) 50kb
 * [triangulate-image-master.zip](https://github.com/snorpey/triangulate-image/archive/master.zip)
 
 ```npm install triangulate-image```
