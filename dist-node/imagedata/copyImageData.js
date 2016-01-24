@@ -3,12 +3,8 @@
 var Canvas = require('canvas-browserify');
 
 module.exports = function (imageData) {
-	// 	function copyImageData(ctx, src)
-	// {
-	//     var dst = ctx.createImageData(src.width, src.height);
-	//     dst.data.set(src.data);
-	//     return dst;
-	// }
+	// this is mainly required to run the browser tests.
+	// phantomjs < v2 doesn't understand Uint8ClampedArray
 	if (typeof Uint8ClampedArray === 'undefined') {
 		// http://stackoverflow.com/a/11918126/229189
 		var canvas = Canvas(imageData.width, imageData.height);

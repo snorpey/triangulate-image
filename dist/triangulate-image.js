@@ -368,10 +368,7 @@
                     var imageSize = {
                         width: imageData.width,
                         height: imageData.height
-                    }, tmpImageData = copyImageData(imageData), colorImageData = copyImageData(imageData);
-                    'undefined' != typeof Uint8ClampedArray ? (tmpImageData = copyImageData(imageData), 
-                    colorImageData = copyImageData(imageData)) : (tmpImageData = imageData, colorImageData = imageData);
-                    var blurredImageData = stackBlur.imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = greyscale(blurredImageData), edgesImageData = detectEdges(greyscaleImageData), edgePoints = getEdgePoints(edgesImageData, 50, params.accuracy), edgeVertices = getVerticesFromPoints(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = delaunay.triangulate(edgeVertices);
+                    }, tmpImageData = copyImageData(imageData), colorImageData = copyImageData(imageData), blurredImageData = stackBlur.imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = greyscale(blurredImageData), edgesImageData = detectEdges(greyscaleImageData), edgePoints = getEdgePoints(edgesImageData, 50, params.accuracy), edgeVertices = getVerticesFromPoints(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = delaunay.triangulate(edgeVertices);
                     return addColorToPolygons(polygons, colorImageData, params);
                 }
                 throw new Error('Can\'t work with the imageData provided. It seems to be corrupt');

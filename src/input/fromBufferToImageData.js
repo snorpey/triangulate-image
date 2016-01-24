@@ -3,13 +3,18 @@ var Canvas = require('canvas-browserify');
 var Image = Canvas.Image;
 
 module.exports = function ( buffer ) {
-	var image = new Image;
-	image.src = buffer;
+	if ( buffer instanceof Buffer ) {
+		var image = new Image;
+		image.src = buffer;
 
-	var canvas = new Canvas( image.width, image.height );
-	var ctx = canvas.getContext('2d');
+		var canvas = new Canvas( image.width, image.height );
+		var ctx = canvas.getContext('2d');
 
-	ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 
-	return ctx.getImageData( 0, 0, canvas.width, canvas.height );
+		return ctx.getImageData( 0, 0, canvas.width, canvas.height );
+	} else {
+		throw new Error( "Can't work with the buffer object provided." );
+		return;
+	}
 };

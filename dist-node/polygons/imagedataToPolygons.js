@@ -19,14 +19,6 @@ module.exports = function (imageData, params) {
 		var tmpImageData = copyImageData(imageData);
 		var colorImageData = copyImageData(imageData);
 
-		if (typeof Uint8ClampedArray !== 'undefined') {
-			tmpImageData = copyImageData(imageData);
-			colorImageData = copyImageData(imageData);
-		} else {
-			tmpImageData = imageData;
-			colorImageData = imageData;
-		}
-
 		var blurredImageData = stackBlur.imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur);
 		var greyscaleImageData = greyscale(blurredImageData);
 		var edgesImageData = detectEdges(greyscaleImageData);
