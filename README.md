@@ -307,6 +307,10 @@ fs.readFile( '.lincoln.jpg', function ( err, buffer ) {
 
 _please note_: this method is only available in node.
 
+toJPEGStream()
+---
+see [``toJPGStream()``](#tojpgstream).
+
 toPNGStream()
 ---
 ``toPNGStream()`` can take the following parameters:
