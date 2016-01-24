@@ -82,8 +82,7 @@ function getEdgeMatrix ( size ) {
 	var i, len = side * side;
 	var center = len * 0.5 | 0;
 
-	for ( i = 0; i < len; i++ )
-	{
+	for ( i = 0; i < len; i++ ) {
 		matrix[i] = i === center ? -len + 1 : 1;
 	}
 
