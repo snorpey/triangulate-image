@@ -1,5 +1,8 @@
 'use strict';
 
+var clamp = require('./util/clamp.js');
+var defaultParams = require('./defaultParams.js');
+
 var fromImageToImageData = require('./input/fromImageToImageData.js');
 var fromBufferToImageData = require('./input/fromBufferToImageData.js');
 
@@ -19,6 +22,46 @@ if (process.env.NODE_ENV !== 'browser') {
 	polygonsToJPGStream = require('./output/polygonsToJPGStream.js');
 }
 
+var allowedLineJoins = ['miter', 'round', 'bevel'];
+
+function checkParams(params) {
+	if (typeof params !== 'object') {
+		params = {};
+	}
+
+	if (typeof params.accuracy !== 'number' || isNaN(params.accuracy)) {
+		params.accuracy = defaultParams.accuracy;
+	} else {
+		params.accuracy = clamp(params.accuracy, 0, 1);
+	}
+
+	if (typeof params.blur !== 'number' || isNaN(params.blur)) {
+		params.blur = defaultParams.blur;
+	}
+
+	if (typeof params.fill !== 'string' && typeof params.fill !== 'boolean') {
+		params.fill = defaultParams.fill;
+	}
+
+	if (typeof params.stroke !== 'string' && typeof params.stroke !== 'boolean') {
+		params.stroke = defaultParams.stroke;
+	}
+
+	if (typeof params.strokeWidth !== 'number' || isNaN(params.strokeWidth)) {
+		params.strokeWidth = defaultParams.strokeWidth;
+	}
+
+	if (typeof params.lineJoin !== 'string' || allowedLineJoins.indexOf(params.lineJoin) === -1) {
+		params.lineJoin = defaultParams.lineJoin;
+	}
+
+	if (typeof params.vertexCount !== 'number' || isNaN(params.vertexCount)) {
+		params.vertexCount = defaultParams.vertexCount;
+	}
+
+	return params;
+}
+
 // constructing an object that allows for a chained interface.
 // for example stuff like:
 //
@@ -29,14 +72,16 @@ if (process.env.NODE_ENV !== 'browser') {
 // etc...
 
 module.exports = function (params, callback) {
-	var input = {};
-	var output = {};
+	params = checkParams(params);
+
+	var input = { getParams: getParams };
+	var output = { getParams: getParams };
 
 	var inputFn;
 	var outputFn;
 
-	input.fromImageData = function () {
-		inputFn = function (imageData) {
+	input.fromImageData = function (imageData) {
+		inputFn = function () {
 			return imageData;
 		};
 		return go(getOutput);
@@ -108,6 +153,14 @@ module.exports = function (params, callback) {
 
 			return go(getInput);
 		};
+
+		output.toJPEGStream = function (jpgParams) {
+			outputFn = function (polygons, size) {
+				return polygonsToJPGStream(polygons, size, jpgParams);
+			};
+
+			return go(getInput);
+		};
 	} else {
 		input.fromImage = function (imageEl) {
 			inputFn = function () {
@@ -127,6 +180,10 @@ module.exports = function (params, callback) {
 
 	function canStart() {
 		return inputFn && outputFn && params;
+	}
+
+	function getParams() {
+		return params;
 	}
 
 	function go(fn) {
