@@ -372,7 +372,9 @@ when used in node, this library has a dependency on the [node-canvas](https://gi
 development
 ===
 
-`npm run build` will build the node-ready and browser-ready versions, which are written to the `dist-node` and `dist` directories.
+`npm run build` will build the node-ready and browser-ready versions, which are saved to the `dist-node` and `dist` directories.
+
+`npm run test` will run the tests in both the browser and node.
 
 license
 ===
