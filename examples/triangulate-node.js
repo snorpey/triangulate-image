@@ -12,13 +12,29 @@ var params = {
 	lineJoin: 'miter'
 };
 
-fromBufferToSvg();
-fromBufferToPng();
-fromBufferToData();
-fromBufferToSVGStream();
-fromBufferToJPGStream();
-fromBufferToPNGStream();
-fromBufferToPdf();
+// fromBufferToSvg();
+// fromBufferToPng();
+// fromBufferToData();
+// fromBufferToSVGStream();
+// fromBufferToJPGStream();
+// fromBufferToPNGStream();
+// fromBufferToPdf();
+
+// triangulate().fromImageData().toSVG();
+
+// fromBufferToDataURL();
+
+fromBufferToJPGStream()
+
+function fromBufferToDataURL () {
+	fs.readFile( __dirname + '/' + imagePath, function ( err, buffer ) {
+		if ( err ) {
+			throw err;
+		}
+		
+		console.log( triangulate( params ).fromBuffer( buffer ).toDataURL() );
+	} );
+}
 
 function fromBufferToSvg () {
 	fs.readFile( __dirname + '/' + imagePath, function ( err, buffer ) {
@@ -112,6 +128,8 @@ function fromBufferToJPGStream () {
 
 		var fileStream = fs.createWriteStream( __dirname + '/node-output/fromBufferToJPGStream.jpg' );
 		var jpgStream = triangulate( params ).fromBuffer( buffer ).toJPGStream( { backgroundColor: 'red' } );
+
+		console.log( jpgStream );
 		
 		jpgStream.on( 'data', function ( chunk ) { fileStream.write( chunk ); } );
 		jpgStream.on( 'end', function () { console.log( 'fromBufferToJPGStream complete.' ); } );

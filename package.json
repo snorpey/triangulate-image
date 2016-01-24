@@ -19,7 +19,10 @@
     "delete-tmp": "rm dist/triangulate-image.tmp.js",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
     "build": "npm run clean && npm run build-node && npm run build-browser",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build && npm run test",
+    "test": "npm run test-node && npm run test-browser",
+    "test-node": "mocha -R spec ./test/test-node.js",
+    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors"
   },
   "dependencies": {
     "canvas-browserify": "^1.1.3",
@@ -31,7 +34,11 @@
     "browserify": "^11.2.0",
     "derequire": "^2.0.2",
     "envify": "^3.4.0",
+    "expect.js": "^0.3.1",
+    "libxmljs": "^0.17.0",
     "mkdirp": "^0.5.1",
+    "mocha": "^2.3.4",
+    "mocha-phantomjs": "^4.0.2",
     "rimraf": "^2.4.3",
     "uglify-js": "^2.5.0",
     "uglifyify": "^3.0.1"

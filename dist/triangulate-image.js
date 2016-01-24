@@ -56,7 +56,29 @@
     }({
         1: [ function(_dereq_, module, exports) {
             'use strict';
-            var fromImageToImageData = _dereq_('./input/fromImageToImageData.js'), fromBufferToImageData = _dereq_('./input/fromBufferToImageData.js'), polygonsToImageData = _dereq_('./output/polygonsToImageData.js'), polygonsToDataURL = _dereq_('./output/polygonsToDataURL.js'), polygonsToSVG = _dereq_('./output/polygonsToSVG.js'), polygonsToBuffer, polygonsToPNGStream, polygonsToJPGStream, polygonsToSVGStream;
+            module.exports = {
+                accuracy: .7,
+                blur: 40,
+                fill: !0,
+                stroke: !0,
+                strokeWidth: .5,
+                lineJoin: 'miter',
+                vertexCount: 700
+            };
+        }, {} ],
+        2: [ function(_dereq_, module, exports) {
+            'use strict';
+            function checkParams(params) {
+                return 'object' != typeof params && (params = {}), 'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = defaultParams.accuracy : params.accuracy = clamp(params.accuracy, 0, 1), 
+                ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = defaultParams.blur), 
+                'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = defaultParams.fill), 
+                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = defaultParams.stroke), 
+                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = defaultParams.strokeWidth), 
+                ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = defaultParams.lineJoin), 
+                ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = defaultParams.vertexCount), 
+                params;
+            }
+            var clamp = _dereq_('./util/clamp.js'), defaultParams = _dereq_('./defaultParams.js'), fromImageToImageData = _dereq_('./input/fromImageToImageData.js'), polygonsToImageData = _dereq_('./output/polygonsToImageData.js'), polygonsToDataURL = _dereq_('./output/polygonsToDataURL.js'), polygonsToSVG = _dereq_('./output/polygonsToSVG.js'), fromBufferToImageData, polygonsToBuffer, polygonsToPNGStream, polygonsToJPGStream, polygonsToSVGStream, allowedLineJoins = [ 'miter', 'round', 'bevel' ];
             module.exports = function(params, callback) {
                 function getInput() {
                     return input;
@@ -67,6 +89,9 @@
                 function canStart() {
                     return inputFn && outputFn && params;
                 }
+                function getParams() {
+                    return params;
+                }
                 function go(fn) {
                     return canStart() ? start() : fn();
                 }
@@ -74,9 +99,14 @@
                     var imageData = inputFn(), polygons = callback(imageData, params);
                     return outputFn(polygons, imageData);
                 }
-                var inputFn, outputFn, input = {}, output = {};
-                return input.fromImageData = function() {
-                    return inputFn = function(imageData) {
+                params = checkParams(params);
+                var inputFn, outputFn, input = {
+                    getParams: getParams
+                }, output = {
+                    getParams: getParams
+                };
+                return input.fromImageData = function(imageData) {
+                    return inputFn = function() {
                         return imageData;
                     }, go(getOutput);
                 }, output.toDataURL = function(dataUrlParams) {
@@ -100,23 +130,31 @@
                 }, getInput();
             };
         }, {
-            './input/fromBufferToImageData.js': 5,
+            './defaultParams.js': 1,
             './input/fromImageToImageData.js': 6,
             './output/polygonsToDataURL.js': 7,
             './output/polygonsToImageData.js': 8,
-            './output/polygonsToSVG.js': 9
+            './output/polygonsToSVG.js': 9,
+            './util/clamp.js': 14
         } ],
-        2: [ function(_dereq_, module, exports) {
+        3: [ function(_dereq_, module, exports) {
             'use strict';
+            var Canvas = _dereq_('canvas-browserify');
             module.exports = function(imageData) {
+                if ('undefined' == typeof Uint8ClampedArray) {
+                    var canvas = Canvas(imageData.width, imageData.height), ctx = canvas.getContext('2d');
+                    return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
+                }
                 return {
                     width: imageData.width,
                     height: imageData.height,
                     data: new Uint8ClampedArray(imageData.data)
                 };
             };
-        }, {} ],
-        3: [ function(_dereq_, module, exports) {
+        }, {
+            'canvas-browserify': 18
+        } ],
+        4: [ function(_dereq_, module, exports) {
             'use strict';
             function detectEdges(imageData, accuracy, edgeSize, divisor) {
                 var matrix = getEdgeMatrix(edgeSize).slice(), multiplier = parseInt(10 * (accuracy || .5), 10) || 1;
@@ -157,7 +195,7 @@
             }
             module.exports = detectEdges;
         }, {} ],
-        4: [ function(_dereq_, module, exports) {
+        5: [ function(_dereq_, module, exports) {
             'use strict';
             function greyscale(imageData) {
                 for (var len = imageData.data.length, data = imageData.data, brightness = void 0, i = 0; len > i; i += 4) {
@@ -168,27 +206,21 @@
             }
             module.exports = greyscale;
         }, {} ],
-        5: [ function(_dereq_, module, exports) {
-            'use strict';
-            var Canvas = _dereq_('canvas-browserify'), Image = Canvas.Image;
-            module.exports = function(buffer) {
-                var image = new Image();
-                image.src = buffer;
-                var canvas = new Canvas(image.width, image.height), ctx = canvas.getContext('2d');
-                return ctx.drawImage(image, 0, 0, canvas.width, canvas.height), ctx.getImageData(0, 0, canvas.width, canvas.height);
-            };
-        }, {
-            'canvas-browserify': 17
-        } ],
         6: [ function(_dereq_, module, exports) {
             'use strict';
-            var Canvas = _dereq_('canvas-browserify');
+            var Canvas = _dereq_('canvas-browserify'), Image = Canvas.Image;
             module.exports = function(image) {
-                var canvas = new Canvas(image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
-                return ctx.drawImage(image, 0, 0, canvas.width, canvas.height), ctx.getImageData(0, 0, canvas.width, canvas.height);
+                if (image instanceof HTMLImageElement) {
+                    if (0 === image.naturalWidth || 0 === image.naturalHeight || image.complete === !1) {
+                        throw new Error('This this image hasn\'t finished loading: ' + image.src);
+                    }
+                    var canvas = new Canvas(image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
+                    return ctx.drawImage(image, 0, 0, canvas.width, canvas.height), ctx.getImageData(0, 0, canvas.width, canvas.height);
+                }
+                throw new Error('This object does not seem to be an image.');
             };
         }, {
-            'canvas-browserify': 17
+            'canvas-browserify': 18
         } ],
         7: [ function(_dereq_, module, exports) {
             'use strict';
@@ -201,7 +233,7 @@
             };
         }, {
             '../util/drawPolygonsOnContext.js': 15,
-            'canvas-browserify': 17
+            'canvas-browserify': 18
         } ],
         8: [ function(_dereq_, module, exports) {
             'use strict';
@@ -214,7 +246,7 @@
             };
         }, {
             '../util/drawPolygonsOnContext.js': 15,
-            'canvas-browserify': 17
+            'canvas-browserify': 18
         } ],
         9: [ function(_dereq_, module, exports) {
             'use strict';
@@ -311,28 +343,27 @@
         } ],
         13: [ function(_dereq_, module, exports) {
             'use strict';
-            var stackBlur = _dereq_('stackblur-canvas'), delaunay = _dereq_('delaunay-fast'), clamp = _dereq_('../util/clamp.js'), copyImageData = _dereq_('../imagedata/copyImageData.js'), greyscale = _dereq_('../imagedata/greyscale'), detectEdges = _dereq_('../imagedata/detectEdges'), getEdgePoints = _dereq_('./getEdgePoints.js'), getVerticesFromPoints = _dereq_('./getVerticesFromPoints.js'), addColorToPolygons = _dereq_('./addColorToPolygons.js'), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
+            var stackBlur = _dereq_('stackblur-canvas'), delaunay = _dereq_('delaunay-fast'), isImageData = _dereq_('../util/isImageData.js'), copyImageData = _dereq_('../imagedata/copyImageData.js'), greyscale = _dereq_('../imagedata/greyscale'), detectEdges = _dereq_('../imagedata/detectEdges'), getEdgePoints = _dereq_('./getEdgePoints.js'), getVerticesFromPoints = _dereq_('./getVerticesFromPoints.js'), addColorToPolygons = _dereq_('./addColorToPolygons.js');
             module.exports = function(imageData, params) {
-                params.accuracy = clamp(params.accuracy || .7, 0, 1), params.blur = params.blur || 40, 
-                params.vertexCount = params.vertexCount || 700, params.fill = 'undefined' == typeof params.fill ? !0 : params.fill, 
-                params.stroke = 'undefined' == typeof params.stroke ? !0 : params.stroke, params.strokeWidth = 'number' == typeof params.stroke ? .5 : params.strokeWidth, 
-                params.lineJoin = -1 !== allowedLineJoins.indexOf(params.lineJoin) ? params.lineJoin : allowedLineJoins[0];
-                var imageSize = {
-                    width: imageData.width,
-                    height: imageData.height
-                }, tmpImageData = copyImageData(imageData), colorImageData = copyImageData(imageData), blurredImageData = stackBlur.imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = greyscale(blurredImageData), edgesImageData = detectEdges(greyscaleImageData), edgePoints = getEdgePoints(edgesImageData, 50, params.accuracy), edgeVertices = getVerticesFromPoints(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = delaunay.triangulate(edgeVertices);
-                return addColorToPolygons(polygons, colorImageData, params);
+                if (isImageData(imageData)) {
+                    var imageSize = {
+                        width: imageData.width,
+                        height: imageData.height
+                    }, tmpImageData = copyImageData(imageData), colorImageData = copyImageData(imageData), blurredImageData = stackBlur.imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = greyscale(blurredImageData), edgesImageData = detectEdges(greyscaleImageData), edgePoints = getEdgePoints(edgesImageData, 50, params.accuracy), edgeVertices = getVerticesFromPoints(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = delaunay.triangulate(edgeVertices);
+                    return addColorToPolygons(polygons, colorImageData, params);
+                }
+                throw new Error('Can\'t work with the imageData provided. It seems to be corrupt');
             };
         }, {
-            '../imagedata/copyImageData.js': 2,
-            '../imagedata/detectEdges': 3,
-            '../imagedata/greyscale': 4,
-            '../util/clamp.js': 14,
+            '../imagedata/copyImageData.js': 3,
+            '../imagedata/detectEdges': 4,
+            '../imagedata/greyscale': 5,
+            '../util/isImageData.js': 16,
             './addColorToPolygons.js': 10,
             './getEdgePoints.js': 11,
             './getVerticesFromPoints.js': 12,
-            'delaunay-fast': 18,
-            'stackblur-canvas': 19
+            'delaunay-fast': 19,
+            'stackblur-canvas': 20
         } ],
         14: [ function(_dereq_, module, exports) {
             'use strict';
@@ -355,6 +386,12 @@
         }, {} ],
         16: [ function(_dereq_, module, exports) {
             'use strict';
+            module.exports = function(imageData) {
+                return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length;
+            };
+        }, {} ],
+        17: [ function(_dereq_, module, exports) {
+            'use strict';
             function triangulate(params) {
                 return getInterfaceObj(params, imageDataToPolygons);
             }
@@ -364,10 +401,10 @@
             var getInterfaceObj = _dereq_('./getInterfaceObj'), imageDataToPolygons = _dereq_('./polygons/imageDataToPolygons.js');
             module.exports = exports['default'];
         }, {
-            './getInterfaceObj': 1,
+            './getInterfaceObj': 2,
             './polygons/imageDataToPolygons.js': 13
         } ],
-        17: [ function(_dereq_, module, exports) {
+        18: [ function(_dereq_, module, exports) {
             var Canvas = module.exports = function Canvas(w, h) {
                 var canvas = document.createElement('canvas');
                 canvas.width = w || 300;
@@ -379,7 +416,7 @@
                 return img;
             };
         }, {} ],
-        18: [ function(_dereq_, module, exports) {
+        19: [ function(_dereq_, module, exports) {
             function Triangle(a, b, c) {
                 this.a = a;
                 this.b = b;
@@ -499,7 +536,7 @@
                 };
             }
         }, {} ],
-        19: [ function(_dereq_, module, exports) {
+        20: [ function(_dereq_, module, exports) {
             var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
             var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
             function processImage(img, canvas, radius, blurAlphaChannel) {
@@ -910,5 +947,5 @@
                 imageDataRGB: processImageDataRGB
             };
         }, {} ]
-    }, {}, [ 16 ])(16);
+    }, {}, [ 17 ])(17);
 });
