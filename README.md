@@ -1,3 +1,5 @@
+[![build status](https://travis-ci.org/snorpey/triangulate-image.svg?branch=master)](https://travis-ci.org/snorpey/triangulate-image)
+
 triangulate-image
 ===
 
