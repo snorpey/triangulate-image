@@ -7,9 +7,9 @@
   "description": "Converts images in to triangular polygons.",
   "main": "dist/triangulate-image.js",
   "moduleType": [
-    "node",
     "amd",
-    "globals"
+    "globals",
+    "node"
   ],
   "license": "MIT",
   "homepage": "https://github.com/snorpey/triangulate-image",
@@ -19,5 +19,15 @@
     "bower_components",
     "test",
     "tests"
+  ],
+  "keywords": [
+    "canvas",
+    "svg",
+    "triangulation",
+    "effect",
+    "polygons",
+    "image",
+    "transform",
+    "imagedata"
   ]
 }
