@@ -27,7 +27,11 @@ for a live example, you can check out my [triangulation](http://snorpey.github.i
 how to use it
 ===
 
-this library can be used in web browsers as well as in node. a simple example:
+this library can be used in web browsers as well as in node.
+
+it supports loading as an AMD module, as a CommonJS module or just a as global var.
+
+a simple example:
 
 ```javascript
 var params = { blur: 110, vertexCount: 700 };
