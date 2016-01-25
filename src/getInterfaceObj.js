@@ -36,7 +36,11 @@ function checkParams ( params ) {
 	}
 
 	if ( typeof params.blur !== 'number' || isNaN( params.blur ) ) {
-		params.blur = defaultParams.blur;
+		params.blur = defaultParams.blur;	
+	}
+
+	if ( params.blur <= 0 ) {
+		params.blur = 1;
 	}
 
 	if ( typeof params.fill !== 'string' && typeof params.fill !== 'boolean' ) {
@@ -57,6 +61,11 @@ function checkParams ( params ) {
 
 	if ( typeof params.vertexCount !== 'number' || isNaN( params.vertexCount ) ) {
 		params.vertexCount = defaultParams.vertexCount;
+
+	}
+
+	if ( params.vertexCount <= 0 ) {
+		params.vertexCount = 1;
 	}
 
 	return params;

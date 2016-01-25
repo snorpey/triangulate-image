@@ -71,12 +71,12 @@
             function checkParams(params) {
                 return 'object' != typeof params && (params = {}), 'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = defaultParams.accuracy : params.accuracy = clamp(params.accuracy, 0, 1), 
                 ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = defaultParams.blur), 
-                'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = defaultParams.fill), 
+                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = defaultParams.fill), 
                 'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = defaultParams.stroke), 
                 ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = defaultParams.strokeWidth), 
                 ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = defaultParams.lineJoin), 
                 ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = defaultParams.vertexCount), 
-                params;
+                params.vertexCount <= 0 && (params.vertexCount = 1), params;
             }
             var clamp = _dereq_('./util/clamp.js'), defaultParams = _dereq_('./defaultParams.js'), fromImageToImageData = _dereq_('./input/fromImageToImageData.js'), polygonsToImageData = _dereq_('./output/polygonsToImageData.js'), polygonsToDataURL = _dereq_('./output/polygonsToDataURL.js'), polygonsToSVG = _dereq_('./output/polygonsToSVG.js'), fromBufferToImageData, polygonsToBuffer, polygonsToPNGStream, polygonsToJPGStream, polygonsToSVGStream, allowedLineJoins = [ 'miter', 'round', 'bevel' ];
             module.exports = function(params, callback) {

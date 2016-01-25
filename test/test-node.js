@@ -74,6 +74,16 @@ describe( 'node tests for triangulate-image', function () {
 				var params = triangulate( { accuracy: 300 } ).getParams();
 				assert.equal( params.accuracy >= 0 && params.accuracy <= 1, true );
 			} );
+
+			it ( 'should make sure blur is a positive integer', function () {
+				var params = triangulate( { blur: 0 } ).getParams();
+				assert.equal( params.blur > 0, true );
+			} )
+
+			it ( 'should make sure vertexCount is a positive integer', function () {
+				var params = triangulate( { vertexCount: 0 } ).getParams();
+				assert.equal( params.vertexCount > 0, true );
+			} )
 		} );
 
 		it ( 'should not have a fromImage method', function () {
