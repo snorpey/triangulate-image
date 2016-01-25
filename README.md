@@ -22,6 +22,8 @@ a javascript module that converts images to triangular polygons:
 
 ![triangulated image of a. lincoln](example.png)
 
+for a live example, you can check out my [triangulation](http://snorpey.github.io/triangulation/) editor online.
+
 how to use it
 ===
 
@@ -399,7 +401,7 @@ dependencies:
 missing somehing?
 ---
 
-found a bug? missing a feature? are you using this library in an interesting project? take a look at the [issues](./issues), open a pull request and let me know.
+found a bug? missing a feature? are you using this library in an interesting project? take a look at the [issues](../../issues), open a pull request and let me know.
 
 most importantly
 ---
