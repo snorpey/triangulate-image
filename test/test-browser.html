@@ -82,6 +82,16 @@ describe( 'node tests for triangulate-image', function () {
 			var params = triangulate( { accuracy: 300 } ).getParams();
 			expect( params.accuracy ).to.be.within( 0, 1 );
 		} );
+
+		it ( 'should make sure that blur is a positive integer', function () {
+			var params = triangulate( { blur: 0 } ).getParams();
+			expect( params.blur ).to.be.greaterThan( 0 );
+		} );
+
+		it ( 'should make sure that vertexCount is a positive integer', function () {
+			var params = triangulate( { vertexCount: 0 } ).getParams();
+			expect( params.vertexCount ).to.be.greaterThan( 0 );
+		} );
 	} );
 
 	it ( 'should not have a fromBuffer method', function () {
