@@ -1,4 +1,4 @@
-module.exports = function ( ctx, polygons, size, dpr ) {
+export default function ( ctx, polygons, size, dpr ) {
 	dpr = dpr || 1;
 
 	polygons.forEach( function ( polygon, index ) {

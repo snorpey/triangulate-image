@@ -1,4 +1,4 @@
-module.exports = function ( imageData ) {
+export default function ( imageData ) {
 	return (
 		imageData && 
 		typeof imageData.width === 'number' &&

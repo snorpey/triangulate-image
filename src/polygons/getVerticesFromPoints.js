@@ -1,4 +1,4 @@
-var clamp = require( '../util/clamp.js' );
+import clamp from '../util/clamp';
 
 function sortByArea ( a, b ) {
 	return ( a.x * a.y ) - ( b.y * b.x );
@@ -6,7 +6,7 @@ function sortByArea ( a, b ) {
 
 // most parts taken from akm2's script:
 // http://jsdo.it/akm2/xoYx (line 230++)
-function getVerticesFromPoints ( points, maxPointCount, accuracy, width, height ) {
+export default function ( points, maxPointCount, accuracy, width, height ) {
 	let result = [ ];
 	let sidePointCount = Math.ceil( width / ( 100 - accuracy ) ) * 2 + Math.ceil( height / ( 100 - accuracy ) ) * 2 + 2;
 	let pointCount = Math.max( points.length, maxPointCount );
@@ -44,5 +44,3 @@ function getVerticesFromPoints ( points, maxPointCount, accuracy, width, height 
 
 	return result;
 }
-
-module.exports = getVerticesFromPoints;

@@ -1,6 +1,6 @@
 // most parts taken from http://jsdo.it/akm2/xoYx
 // (starting line 293++)
-function getEdgePoints ( imageData, sensitivity, accuracy ) {
+export default function ( imageData, sensitivity, accuracy ) {
 	var multiplier = parseInt( ( accuracy || 0.1 ) * 10, 10 ) || 1;
 	var edgeDetectValue = sensitivity;
 	var width = imageData.width;
@@ -41,5 +41,3 @@ function getEdgePoints ( imageData, sensitivity, accuracy ) {
 
 	return points;
 }
-
-module.exports = getEdgePoints;

@@ -1,14 +1,15 @@
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
-var Canvas = require('canvas-browserify');
-var Image = Canvas.Image;
+import Canvas from 'canvas-browserify';
 
-module.exports = function ( buffer ) {
+let Image = Canvas.Image;
+
+export default function ( buffer ) {
 	if ( buffer instanceof Buffer ) {
-		var image = new Image;
+		let image = new Image;
 		image.src = buffer;
 
-		var canvas = new Canvas( image.width, image.height );
-		var ctx = canvas.getContext('2d');
+		let canvas = new Canvas( image.width, image.height );
+		let ctx = canvas.getContext('2d');
 
 		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 

@@ -1,4 +1,4 @@
-function greyscale ( imageData ) {
+export default function ( imageData ) {
 	let len = imageData.data.length;
 	let data = imageData.data;
 	let brightness;
@@ -15,5 +15,3 @@ function greyscale ( imageData ) {
 	
 	return imageData;
 }
-
-module.exports = greyscale;

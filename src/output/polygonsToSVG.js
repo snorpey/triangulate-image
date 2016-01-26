@@ -1,6 +1,6 @@
 // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon
-module.exports = function ( polygons, size ) {
+export default function ( polygons, size ) {
 	var svg = `<?xml version="1.0" standalone="yes"?>
 <svg width="${size.width}" height="${size.height}" xmlns="http://www.w3.org/2000/svg" version="1.1" >
 	`;

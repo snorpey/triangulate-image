@@ -1,8 +1,8 @@
-import getNodeInterface from './getNodeInterface';
+import getBrowserInterface from './getBrowserInterface';
 
 // // fyi: this file is where all the transformations happen
 import imageDataToPolygons from './polygons/imageDataToPolygons';
 
 export default function ( params ) {
-	return getNodeInterface( params, imageDataToPolygons );
+	return getBrowserInterface( params, imageDataToPolygons );
 }

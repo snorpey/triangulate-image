@@ -1,4 +1,4 @@
-function addColorToPolygons ( polygons, colorData, params ) {
+export default function ( polygons, colorData, params ) {
 	let pixelIndex = 0;
 	let polygonCenterX;
 	let polygonCenterY;
@@ -39,5 +39,3 @@ function addColorToPolygons ( polygons, colorData, params ) {
 
 	return polygons;
 }
-
-module.exports = addColorToPolygons;

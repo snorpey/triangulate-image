@@ -1,6 +1,6 @@
-var Canvas = require('canvas-browserify');
+import Canvas from 'canvas-browserify';
 
-module.exports = function ( imageData ) {
+export default function ( imageData ) {
 	// this is mainly required to run the browser tests.
 	// phantomjs < v2 doesn't understand Uint8ClampedArray 
 	if ( typeof Uint8ClampedArray === 'undefined' ) {

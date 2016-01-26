@@ -1,5 +1,3 @@
-function clamp ( value, min, max ) {
+export default function ( value, min, max ) {
 	return value < min ? min : value > max ? max : value;
 }
-
-module.exports = clamp;

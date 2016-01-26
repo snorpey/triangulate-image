@@ -11,12 +11,13 @@
     "main": "dist/triangulate-image.js"
   },
   "scripts": {
-    "build-node": "babel src --out-dir dist-node",
-    "build-browser": "npm run browserify && npm run uglify && npm run beautify && npm run delete-tmp",
-    "browserify": "NODE_ENV=browser browserify -t envify -t [ uglifyify --mangle=0 ] --standalone triangulate dist-node | derequire > dist/triangulate-image.tmp.js",
-    "beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/triangulate-image.tmp.js > dist/triangulate-image.js",
-    "uglify": "uglifyjs -mc < dist/triangulate-image.tmp.js > dist/triangulate-image.min.js",
-    "delete-tmp": "rm dist/triangulate-image.tmp.js",
+    "build-node": "babel src --presets es2015 --ignore browser --out-dir dist-node",
+    "build-browser": "npm run browser-es6 && npm run browserify && npm run uglify && npm run beautify && npm run delete-tmp",
+    "browser-es6": "mkdir dist/tmp && babel src --ignore node,index.js --presets es2015 --out-dir dist/tmp",
+    "browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser.js | derequire > dist/tmp/triangulate-image.tmp.js",
+    "beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.js",
+    "uglify": "uglifyjs -mc < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.min.js",
+    "delete-tmp": "rm -rf dist/tmp",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
     "build": "npm run clean && npm run build-node && npm run build-browser",
     "prepublish": "npm run build && npm run test",
@@ -27,13 +28,14 @@
   "dependencies": {
     "canvas-browserify": "^1.1.3",
     "delaunay-fast": "github:ironwallaby/delaunay#2d7110e",
-    "stackblur-canvas": "^1.2.0"
+    "stackblur-canvas": "^1.2.0",
+    "webworkify": "^1.1.0"
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "babel-preset-es2015": "^6.3.13",
     "browserify": "^11.2.0",
     "derequire": "^2.0.2",
-    "envify": "^3.4.0",
     "expect.js": "^0.3.1",
     "libxmljs": "^0.17.0",
     "mkdirp": "^0.5.1",

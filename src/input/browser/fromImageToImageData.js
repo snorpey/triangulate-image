@@ -1,7 +1,8 @@
-var Canvas = require('canvas-browserify');
-var Image = Canvas.Image;
+import Canvas from 'canvas-browserify';
 
-module.exports = function ( image ) {
+let Image = Canvas.Image;
+
+export default function ( image ) {
 	if ( image instanceof HTMLImageElement ) {
 		// http://stackoverflow.com/a/3016076/229189
 		if ( image.naturalWidth === 0 || image.naturalHeight === 0 || image.complete === false ) {
