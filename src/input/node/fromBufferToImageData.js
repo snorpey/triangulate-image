@@ -9,7 +9,7 @@ export default function ( buffer ) {
 		image.src = buffer;
 
 		let canvas = new Canvas( image.width, image.height );
-		let ctx = canvas.getContext('2d');
+		let ctx = canvas.getContext( '2d' );
 
 		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 
