@@ -13,7 +13,6 @@ import getVerticesFromPoints from './getVerticesFromPoints';
 import addColorToPolygons from './addColorToPolygons';
 
 export default function ( imageData, params ) {
-	
 	if ( isImageData( imageData ) ) {
 		let imageSize = { width: imageData.width, height: imageData.height };
 
@@ -29,7 +28,7 @@ export default function ( imageData, params ) {
 
 		return addColorToPolygons( polygons, colorImageData, params );
 	} else {
-		throw new Error( "Can't work with the imageData provided. It seems to be corrupt" );
+		throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
 		return;
 	}
 };
