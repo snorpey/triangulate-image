@@ -1,6 +1,10 @@
 'use strict';
 
-function addColorToPolygons(polygons, colorData, params) {
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+exports['default'] = function (polygons, colorData, params) {
 	var pixelIndex = 0;
 	var polygonCenterX = undefined;
 	var polygonCenterY = undefined;
@@ -40,6 +44,6 @@ function addColorToPolygons(polygons, colorData, params) {
 	});
 
 	return polygons;
-}
+};
 
-module.exports = addColorToPolygons;
+module.exports = exports['default'];

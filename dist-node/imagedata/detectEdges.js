@@ -3,7 +3,11 @@
  */
 "use strict";
 
-function detectEdges(imageData, accuracy, edgeSize, divisor) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (imageData, accuracy, edgeSize, divisor) {
 	var matrix = getEdgeMatrix(edgeSize).slice();
 	var multiplier = parseInt((accuracy || 0.5) * 10, 10) || 1;
 
@@ -73,7 +77,7 @@ function detectEdges(imageData, accuracy, edgeSize, divisor) {
 	}
 
 	return imageData;
-}
+};
 
 function getEdgeMatrix(size) {
 	var matrix = [];
@@ -88,5 +92,4 @@ function getEdgeMatrix(size) {
 
 	return matrix;
 }
-
-module.exports = detectEdges;
+module.exports = exports["default"];

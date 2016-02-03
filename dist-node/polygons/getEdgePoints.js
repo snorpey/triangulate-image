@@ -1,8 +1,11 @@
 // most parts taken from http://jsdo.it/akm2/xoYx
-// (starting line 293++)
 "use strict";
 
-function getEdgePoints(imageData, sensitivity, accuracy) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (imageData, sensitivity, accuracy) {
 	var multiplier = parseInt((accuracy || 0.1) * 10, 10) || 1;
 	var edgeDetectValue = sensitivity;
 	var width = imageData.width;
@@ -42,6 +45,7 @@ function getEdgePoints(imageData, sensitivity, accuracy) {
 	}
 
 	return points;
-}
+};
 
-module.exports = getEdgePoints;
+module.exports = exports["default"];
+// (starting line 293++)

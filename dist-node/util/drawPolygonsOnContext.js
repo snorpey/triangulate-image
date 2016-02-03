@@ -1,6 +1,10 @@
 "use strict";
 
-module.exports = function (ctx, polygons, size, dpr) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (ctx, polygons, size, dpr) {
 	dpr = dpr || 1;
 
 	polygons.forEach(function (polygon, index) {
@@ -27,3 +31,6 @@ module.exports = function (ctx, polygons, size, dpr) {
 
 	return ctx;
 };
+
+;
+module.exports = exports["default"];

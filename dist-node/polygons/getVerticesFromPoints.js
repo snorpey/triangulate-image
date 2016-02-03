@@ -1,6 +1,14 @@
 'use strict';
 
-var clamp = require('../util/clamp.js');
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilClamp = require('../util/clamp');
+
+var _utilClamp2 = _interopRequireDefault(_utilClamp);
 
 function sortByArea(a, b) {
 	return a.x * a.y - b.y * b.x;
@@ -8,11 +16,12 @@ function sortByArea(a, b) {
 
 // most parts taken from akm2's script:
 // http://jsdo.it/akm2/xoYx (line 230++)
-function getVerticesFromPoints(points, maxPointCount, accuracy, width, height) {
+
+exports['default'] = function (points, maxPointCount, accuracy, width, height) {
 	var result = [];
 	var sidePointCount = Math.ceil(width / (100 - accuracy)) * 2 + Math.ceil(height / (100 - accuracy)) * 2 + 2;
 	var pointCount = Math.max(points.length, maxPointCount);
-	var randomPointCount = clamp(pointCount - sidePointCount, 0, maxPointCount - sidePointCount);
+	var randomPointCount = (0, _utilClamp2['default'])(pointCount - sidePointCount, 0, maxPointCount - sidePointCount);
 	var increment = pointCount / randomPointCount;
 
 	var i = 0;
@@ -45,6 +54,6 @@ function getVerticesFromPoints(points, maxPointCount, accuracy, width, height) {
 	points = null;
 
 	return result;
-}
+};
 
-module.exports = getVerticesFromPoints;
+module.exports = exports['default'];
