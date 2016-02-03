@@ -18,7 +18,7 @@
 		<h1>toImageData</h1>
 		<div id="canvas-container"></div>
 		<h1>toData</h1>
-		<textarea id="data-container"></textarea>
+		<div id="data-container"></div>
 		<script src="../dist/triangulate-image.js"></script>
 		<script>
 			/*global triangulate, devicePixelRatio*/
@@ -41,11 +41,58 @@
 
 			var dpr = devicePixelRatio || 1;
 
+
 			loadImage( imagePath, function ( img ) {
-				svgContainerEl.innerHTML = triangulate( params ).fromImage( img ).toSVG();
+				// ASYNC
+
+				triangulate( params )
+					.fromImage( img )
+					.toSVG()
+					.then( function( svg ) {
+						var svgEl = document.createElement( 'div' );
+						svgEl.innerHTML = svg;
+						svgContainerEl.appendChild( svgEl );
+					} );
+
+				triangulate( params )
+					.fromImage( img )
+					.toDataURL( { dpr: dpr } )
+					.then( function( src ) {
+						var img1 = new Image();
+						img1.src = src;
+						img1.style.width = img.naturalWidth + 'px';
+						imgContainerEl.appendChild( img1 );
+					} );
+
+				triangulate( params )
+					.fromImage( img )
+					.toImageData( { dpr: dpr } )
+					.then( function( imageData ) {
+						var canvasEl = document.createElement( 'canvas' );
+						canvasEl.width = img.naturalWidth * dpr;
+						canvasEl.height = img.naturalHeight * dpr;
+						canvasEl.style.width = img.naturalWidth + 'px';
+						var ctx = canvasEl.getContext( '2d' );
+						canvasContainerEl.appendChild( canvasEl );
+						ctx.putImageData( imageData, 0, 0 );
+					} );
+
+				triangulate( params )
+					.fromImage( img )
+					.toData()
+					.then( function( data ) {
+						var dataEl = document.createElement( 'textarea' );
+						dataEl.value = JSON.stringify( data, null, '	' );
+						dataContainerEl.appendChild( dataEl );
+					} );
+
+				// SYNC
+				var svgEl = document.createElement( 'div' );
+				svgEl.innerHTML = triangulate( params ).fromImageSync( img ).toSVGSync();
+				svgContainerEl.appendChild( svgEl );
 
 				var img1 = new Image();
-				img1.src = triangulate( params ).fromImage( img ).toDataURL( { dpr: dpr } );
+				img1.src = triangulate( params ).fromImageSync( img ).toDataURLSync( { dpr: dpr } );
 				img1.style.width = img.naturalWidth + 'px';
 				imgContainerEl.appendChild( img1 );
 
@@ -53,11 +100,14 @@
 				canvasEl.width = img.naturalWidth * dpr;
 				canvasEl.height = img.naturalHeight * dpr;
 				canvasEl.style.width = img.naturalWidth + 'px';
-				var ctx = canvasEl.getContext('2d');
-				ctx.putImageData( triangulate( params ).fromImage( img ).toImageData( { dpr: dpr } ), 0, 0 );
+				var ctx = canvasEl.getContext( '2d' );
+				ctx.putImageData( triangulate( params ).fromImageSync( img ).toImageDataSync( { dpr: dpr } ), 0, 0 );
 				canvasContainerEl.appendChild( canvasEl );
 
-				dataContainerEl.value = JSON.stringify( triangulate( params ).fromImage( img ).toData(), null, '  ' );
+				var dataEl = document.createElement( 'textarea' );
+				var data = triangulate( params ).fromImageSync( img ).toDataSync();
+				dataEl.value = JSON.stringify( data, null, '	' );
+				dataContainerEl.appendChild( dataEl );
 			} );
 
 			function loadImage ( src, callback ) {
