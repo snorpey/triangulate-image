@@ -31,9 +31,9 @@
     "mk-tmp": "mkdir -p dist/tmp",
     "rm-tmp": "rm -rf dist/tmp",
     "prepublish": "npm run build && npm run test",
-    "test": "npm run test-node && npm run test-browser",
+    "test": "npm run test-node",
     "test-node": "mocha ./test/test-node.js",
-    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors -p /usr/local/bin/phantomjs"
+    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors -p node_modules/phantomjs/bin/phantomjs"
   },
   "dependencies": {
     "canvas-browserify": "^1.1.3",
