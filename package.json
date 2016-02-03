@@ -11,19 +11,29 @@
     "main": "dist/triangulate-image.js"
   },
   "scripts": {
-    "build-node": "babel src --presets es2015 --ignore browser --out-dir dist-node",
-    "build-browser": "npm run browser-es6 && npm run browserify && npm run uglify && npm run beautify && npm run delete-tmp",
-    "browser-es6": "mkdir dist/tmp && babel src --ignore node,index.js --presets es2015 --out-dir dist/tmp",
-    "browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser.js | derequire > dist/tmp/triangulate-image.tmp.js",
-    "beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.js",
-    "uglify": "uglifyjs -mc < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.min.js",
-    "delete-tmp": "rm -rf dist/tmp",
+    "build": "npm run clean && npm run build-node && npm run build-browsers",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
-    "build": "npm run clean && npm run build-node && npm run build-browser",
+    "build-node": "babel src --presets es2015 --ignore browser --out-dir dist-node",
+    "build-browsers": "npm run mk-tmp && npm run browsers-es6 && npm run standard-build && npm run sync-build && npm run async-build && npm run rm-tmp",
+    "browsers-es6": "babel src --ignore node,index.js --presets es2015 --plugins object-assign --out-dir dist/tmp",
+    "standard-build": "npm run standard-browserify && npm run standard-uglify && npm run standard-beautify",
+    "standard-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser.js | derequire > dist/tmp/triangulate-image.tmp.js",
+    "standard-uglify": "uglifyjs -mc < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.min.js",
+    "standard-beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.js",
+    "sync-build": "npm run sync-browserify && npm run sync-uglify && npm run sync-beautify",
+    "sync-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser-sync.js | derequire > dist/tmp/triangulate-image-sync.tmp.js",
+    "sync-uglify": "uglifyjs -mc < dist/tmp/triangulate-image-sync.tmp.js > dist/triangulate-image-sync.min.js",
+    "sync-beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/triangulate-image-sync.tmp.js > dist/triangulate-image-sync.js",
+    "async-build": "npm run async-browserify && npm run async-uglify && npm run async-beautify",
+    "async-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser-async.js | derequire > dist/tmp/triangulate-image-async.tmp.js",
+    "async-uglify": "uglifyjs -mc < dist/tmp/triangulate-image-async.tmp.js > dist/triangulate-image-async.min.js",
+    "async-beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/triangulate-image-async.tmp.js > dist/triangulate-image-async.js",
+    "mk-tmp": "mkdir -p dist/tmp",
+    "rm-tmp": "rm -rf dist/tmp",
     "prepublish": "npm run build && npm run test",
     "test": "npm run test-node && npm run test-browser",
     "test-node": "mocha ./test/test-node.js",
-    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors"
+    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors -p node_modules/phantomjs/bin/phantomjs"
   },
   "dependencies": {
     "canvas-browserify": "^1.1.3",
@@ -33,6 +43,8 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "babel-plugin-object-assign": "^1.2.1",
+    "babel-polyfill": "^6.3.14",
     "babel-preset-es2015": "^6.3.13",
     "browserify": "^11.2.0",
     "derequire": "^2.0.2",
@@ -42,7 +54,8 @@
     "mocha": "^2.3.4",
     "mocha-phantomjs": "^4.0.2",
     "rimraf": "^2.4.3",
-    "uglify-js": "^2.5.0",
-    "uglifyify": "^3.0.1"
+    "uglify-js": "^2.6.1",
+    "uglifyify": "^3.0.1",
+    "webworkify": "^1.1.0"
   }
 }
