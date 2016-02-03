@@ -55,7 +55,6 @@
     "mocha-phantomjs": "^4.0.2",
     "rimraf": "^2.4.3",
     "uglify-js": "^2.6.1",
-    "uglifyify": "^3.0.1",
-    "webworkify": "^1.1.0"
+    "uglifyify": "^3.0.1"
   }
 }
