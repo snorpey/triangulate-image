@@ -4,6 +4,8 @@ var assert = require('assert');
 var stream = require('stream');
 var libxmljs = require('libxmljs');
 var Canvas = require('canvas-browserify');
+var expect = require('expect.js');
+
 var Image = Canvas.Image;
 
 var triangulate = require('../dist-node/index.js');
@@ -22,202 +24,403 @@ var defaultParams = {
 
 describe( 'node tests for triangulate-image', function () {
 	describe( '#triangulate()', function () {
-		it ( 'should be a function', function () {
-			assert.equal( typeof triangulate, 'function' );
+		it ( 'should be a', function () {
+			expect( triangulate ).to.be.a( 'function' );
 		} );
 
 		it ( 'should return an object', function () {
-			assert.equal( typeof triangulate(), 'object' );
+			expect( triangulate() ).to.be.an( 'object' );
 		} );
 
-		it ( 'should return all input methods available in node', function () {
+		it ( 'should return all input methods available in the browser', function () {
 			var t = triangulate();
-			assert.equal( typeof t.fromImageData, 'function' );
-			assert.equal( typeof t.fromBuffer, 'function' );
+			expect( t.fromBuffer ).to.be.a( 'function' );
+			expect( t.fromBufferSync ).to.be.a( 'function' );
+			expect( t.fromImageData ).to.be.a( 'function' );
+			expect( t.fromImageDataSync ).to.be.a( 'function' );
+			expect( t.fromStream ).to.be.a( 'function' );
 		} );
+
+		it ( 'should have a getParams method', function () {
+			expect( triangulate().getParams ).to.be.a( 'function' );
+		} );
+	} );
 
 // getParams()
 
-		it ( 'should have a getParams method', function () {
-			assert.equal( typeof triangulate().getParams, 'function' );
+	describe( '#getParams()', function () {
+		it ( 'should return an object with all parameters', function () {
+			var params = triangulate().getParams();
+			expect( params.accuracy ).to.be.a( 'number' );
+			expect( params.blur ).to.be.a( 'number' );
+			expect( typeof params.fill === 'string' || typeof params.fill === 'boolean' ).to.be( true );
+			expect( typeof params.stroke === 'string' || typeof params.stroke === 'boolean' ).to.be( true );
+			expect( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean' ).to.be( true );
+			expect( [ 'miter', 'round', 'bevel' ] ).to.contain( params.lineJoin );
+			expect( params.vertexCount ).to.be.a( 'number' );
+		} );
+		
+		it ( 'should set the default no parameters are submitted', function () {
+			var params = triangulate().getParams();
+
+			for ( var key in defaultParams ) {
+				expect( params[key] ).to.be( defaultParams[key] );
+			}
 		} );
 
-		describe( '#getParams()', function () {
-			it ( 'should return an object with all parameters', function () {
-				var params = triangulate().getParams();
-				assert.equal( typeof params.accuracy, 'number' );
-				assert.equal( typeof params.blur, 'number' );
-				assert.equal( typeof params.fill === 'string' || typeof params.fill === 'boolean', true );
-				assert.equal( typeof params.stroke === 'string' || typeof params.stroke === 'boolean', true );
-				assert.equal( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean', true );
-				assert.equal( typeof params.lineJoin === 'string' && [ 'miter', 'round', 'bevel' ].indexOf( params.lineJoin ) > -1, true );
-				assert.equal( typeof params.vertexCount, 'number' );
-			} );
+		it ( 'should add missing parameters', function () {
+			var params = triangulate( { accuracy: 0.3, blur: 39 } ).getParams();
 
-			it ( 'should set the default no parameters are submitted', function () {
-				var params = triangulate().getParams();
-
-				for ( var key in defaultParams ) {
-					assert.equal( params[key], defaultParams[key] );
-				}
-			} );
-
-			it ( 'should add missing parameters', function () {
-				var params = triangulate( { accuracy: 0.3, blur: 39 } ).getParams();
-
-				for ( var key in defaultParams ) {
-					assert.notEqual( typeof params[key], 'undefined' );
-				}
-			} );
-
-			it ( 'should clamp the accuracy parameter', function () {
-				var params = triangulate( { accuracy: 300 } ).getParams();
-				assert.equal( params.accuracy >= 0 && params.accuracy <= 1, true );
-			} );
-
-			it ( 'should make sure blur is a positive integer', function () {
-				var params = triangulate( { blur: 0 } ).getParams();
-				assert.equal( params.blur > 0, true );
-			} )
-
-			it ( 'should make sure vertexCount is a positive integer', function () {
-				var params = triangulate( { vertexCount: 0 } ).getParams();
-				assert.equal( params.vertexCount > 0, true );
-			} )
+			for ( var key in defaultParams ) {
+				expect( params[key] ).not.to.be( 'undefined' );
+			}	
 		} );
 
-		it ( 'should not have a fromImage method', function () {
-			assert.notEqual( typeof triangulate().fromImage, 'function' );
+		it ( 'should clamp the accuracy parameter', function () {
+			var params = triangulate( { accuracy: 300 } ).getParams();
+			expect( params.accuracy ).to.be.within( 0, 1 );
 		} );
 
-// fromImageData()
-
-		it ( 'should have a fromImageData method', function () {
-			assert.equal( typeof triangulate().fromImageData, 'function' );
+		it ( 'should make sure that blur is a positive integer', function () {
+			var params = triangulate( { blur: 0 } ).getParams();
+			expect( params.blur ).to.be.greaterThan( 0 );
 		} );
 
-		describe( '#fromImageData()', function () {
-			it ( 'should return all output methods available in node', function ( done ) {
-				loadImageBuffer( done, function ( buffer ) {
-					var imageData = bufferToImageData( buffer );
-					var output = triangulate().fromImageData( imageData );
-					assert.equal( typeof output.toBuffer, 'function' );
-					assert.equal( typeof output.toDataURL, 'function' );
-					assert.equal( typeof output.toImageData, 'function' );
-					assert.equal( typeof output.toSVG, 'function' );
-					assert.equal( typeof output.toJPGStream, 'function' );
-					assert.equal( typeof output.toJPEGStream, 'function' );
-					assert.equal( typeof output.toPNGStream, 'function' );
-					assert.equal( typeof output.toSVGStream, 'function' );
-					done();
-				} );
-			} );
-			
-			it ( 'should be able to handle an imageData object', function ( done ) {
-				loadImageBuffer( done, function ( buffer ) {
-					var imageData = bufferToImageData( buffer );
-					triangulate().fromImageData( imageData ).toSVG();
-					done();
-				} );
-			} );
-
-			it ( 'should throw an error when provided with corrupt imageData object', function () {
-				assert.throws( function () {
-					triangulate().fromImageData().toSVG();
-				}, "Can't work with the imageData provided. It seems to be corrupt" );
-			} );
-
-			it ( 'should throw an error when provided with corrupt imageData object', function () {
-				assert.throws( function () {
-					triangulate().fromImageData( { width: 0, data: 'LOL', height: 10 } ).toSVG();
-				}, "Can't work with the imageData provided. It seems to be corrupt" );
-			} );
+		it ( 'should make sure that vertexCount is a positive integer', function () {
+			var params = triangulate( { vertexCount: 0 } ).getParams();
+			expect( params.vertexCount ).to.be.greaterThan( 0 );
 		} );
+	} );
 
-// fromBuffer
+	it ( 'should not have a fromImage method', function () {
+		expect( triangulate().fromImage ).to.be.a( 'undefined' );
+	} );
 
+	describe( 'Asynchronous Methods', function () {
 		it ( 'should have a fromBuffer method', function () {
-			assert.equal( typeof triangulate().fromBuffer, 'function' );
+			expect( triangulate().fromBuffer ).to.be.a( 'function' );
 		} );
 
 		describe( '#fromBuffer()', function () {
-			it ( 'should be able to handle a buffer object', function ( done ) {
+			it ( 'should accept a buffer as parameter', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					triangulate().fromBuffer( buffer );
-					done();
+					var failed = false;
+					
+					triangulate()
+						.fromBuffer( buffer )
+						.toSVG()
+						.then ( function ( res ) {
+							failed = false;
+							check();
+						}, function ( err ) {
+							failed = true;
+							check();
+						} );
+
+					function check () {
+						expect( failed ).to.be( false );
+						done();
+					}
 				} );
-			} );
-
-			it ( 'should return all output methods available in node', function ( done ) {
-				loadImageBuffer( done, function ( buffer ) {
-					var output = triangulate().fromBuffer( buffer );
-					assert.equal( typeof output.toBuffer, 'function' );
-					assert.equal( typeof output.toData, 'function' );
-					assert.equal( typeof output.toDataURL, 'function' );
-					assert.equal( typeof output.toImageData, 'function' );
-					assert.equal( typeof output.toSVG, 'function' );
-					assert.equal( typeof output.toJPGStream, 'function' );
-					assert.equal( typeof output.toPNGStream, 'function' );
-					assert.equal( typeof output.toSVGStream, 'function' );
-					done();
-				} );
-			} );
-
-			it ( 'should throw an error when provided with corrupt or no buffer object', function () {
-				assert.throws( function () {
-					triangulate().fromBuffer().toSVG();
-				}, "Can't work with the buffer object provided." );
-
-				assert.throws( function () {
-					triangulate().fromBuffer( 'test123' ).toSVG();
-				}, "Can't work with the buffer object provided." );
 			} );
 		} );
 
-// toBuffer
+		// fromImageData
 
-		describe( '#toBuffer()', function () {
-			it ( 'should return a buffer', function ( done ) {
+		it ( 'should have a fromImageData method', function () {
+			expect( triangulate().fromImageData ).to.be.a( 'function' );
+		} );
+		
+		describe( '#fromImageData()', function () {
+			it ( 'should be able to handle an imageData object', function ( done ) {
+				this.timeout( 10000 );
+				
 				loadImageBuffer( done, function ( buffer ) {
-					assert.equal( triangulate().fromBuffer( buffer ).toBuffer() instanceof Buffer, true );
-					done();
+					var imageData = bufferToImageData( buffer );
+
+					var failed = false;
+					triangulate()
+						.fromImageData( imageData )
+						.toSVG()
+						.then ( function ( res ) {
+							failed = false;
+							check();
+						}, function ( err ) {
+							failed = true;
+							check();
+						} );
+
+					function check () {
+						expect( failed ).to.be( false );
+						done();
+					}
 				} );
 			} );
 
-			it ( 'should accept svg as parameter', function ( done ) {
-				loadImageBuffer( done, function ( buffer ) {
-					assert.equal( triangulate().fromBuffer( buffer ).toBuffer( { format: 'svg' } ) instanceof Buffer, true );
-					done();
-				} );
+			it ( 'should throw an error when provided with corrupt imageData object', function ( done ) {
+				this.timeout( 10000 );
+
+				var failed = false;
+					triangulate()
+						.fromImageData( { width: 0, data: 'LOL', height: 10 } )
+						.toSVG()
+						.then ( function ( res ) {
+							failed = false;
+							check();
+						}, function ( err ) {
+							failed = true;
+							check();
+						} );
+
+					function check () {
+						expect( failed ).to.be( true );
+						done();
+					}
 			} );
 
-			it ( 'should accept pdf as parameter', function ( done ) {
-				loadImageBuffer( done, function ( buffer ) {
-					assert.equal( triangulate().fromBuffer( buffer ).toBuffer( { format: 'pdf' } ) instanceof Buffer, true );
-					done();
-				} );
-			} );
-		} );
+			it ( 'should throw an error when provided with no imageData object', function ( done ) {
+				this.timeout( 10000 );
 
-// toData
+				var failed = false;
+					triangulate()
+						.fromImageData()
+						.toSVG()
+						.then ( function ( res ) {
+							failed = false;
+							check();
+						}, function ( err ) {
+							failed = true;
+							check();
+						} );
+
+					function check () {
+						expect( failed ).to.be( true );
+						done();
+					}
+			} );
+		} );
+
+		// fromStream
+
+		it ( 'should have a fromStream method', function () {
+			expect( triangulate().fromStream ).to.be.a( 'function' );
+		} );
+
+		describe( '#fromStream()', function () {
+			it ( 'should accept a readStream as input', function ( done ) {
+				var readStream = fs.createReadStream( __dirname + '/' + imagePath );
+
+				triangulate()
+					.fromStream( readStream )
+					.toData()
+					.then( function ( data ) {
+						expect( Array.isArray( data ) ).to.be( true );
+						expect( data.length ).to.be.greaterThan( 0 );
+						
+						var firstPolygon = data[0];
+
+						expect( firstPolygon.a ).to.be.an( 'object' );
+						expect( firstPolygon.b ).to.be.an( 'object' );
+						expect( firstPolygon.c ).to.be.an( 'object' );
+
+						[ 'a', 'b', 'c' ].forEach( function ( key ) {
+							expect( firstPolygon[key].x).to.be.a( 'number' );
+							expect( firstPolygon[key].y).to.be.a( 'number' );
+						} );
+						done();
+					}, done )
+			} );
+		} );
+
+		// toData
+		
+		it ( 'should have a toData method', function () {
+			expect( triangulate().fromBuffer().toData ).to.be.a( 'function' );
+		} );
 
 		describe( '#toData()', function () {
 			it ( 'should return valid polygon data', function ( done ) {
+				this.timeout( 10000 );
+
 				loadImageBuffer( done, function ( buffer ) {
-					var data = triangulate().fromBuffer( buffer ).toData();
+					triangulate()
+						.fromBuffer( buffer )
+						.toData()
+						.then( function ( data ) {
+							expect( Array.isArray( data ) ).to.be( true );
+							expect( data.length ).to.be.greaterThan( 0 );
+							
+							var firstPolygon = data[0];
 
-					assert.equal( Array.isArray( data ), true );
-					assert.equal( data.length > 0, true );
+							expect( firstPolygon.a ).to.be.an( 'object' );
+							expect( firstPolygon.b ).to.be.an( 'object' );
+							expect( firstPolygon.c ).to.be.an( 'object' );
 
+							[ 'a', 'b', 'c' ].forEach( function ( key ) {
+								expect( firstPolygon[key].x).to.be.a( 'number' );
+								expect( firstPolygon[key].y).to.be.a( 'number' );
+							} );
+
+							done();
+						}, done );
+				} );
+			} );
+		} );
+
+		// toDataURL
+	
+		it ( 'should have a toDataURL method', function () {
+			expect( triangulate().fromBuffer().toDataURL ).to.be.a( 'function' );
+		} );
+
+		describe( '#toDataURL()', function () {
+			it ( 'should return a dataURL', function ( done ) {
+				this.timeout( 10000 );
+
+				loadImageBuffer( done, function ( buffer ) {
+					triangulate()
+						.fromBuffer( buffer )
+						.toDataURL()
+						.then( function ( url ) {
+							expect( url ).to.be.a( 'string' );
+							expect( url.length ).to.be.greaterThan( 21 );
+							expect( url.indexOf( 'data:image/png;base64' ) ).to.be( 0 );
+							done();
+						}, done );
+				} );
+			} );
+		} );
+
+		// toImageData
+		
+		it ( 'should have a toImageData method', function () {
+			expect( triangulate().fromBuffer().toImageData ).to.be.a( 'function' );
+		} );
+
+		describe( '#toImageData()', function () {
+			it ( 'should return an imageData object', function ( done ) {
+				this.timeout( 10000 );
+
+				loadImageBuffer( done, function ( buffer ) {
+					triangulate()
+					 	.fromBuffer( buffer )
+					 	.toImageData()
+					 	.then ( function ( imageData ) {
+							expect( imageData ).to.be.an( 'object' );
+							expect( imageData.width ).to.be.a( 'number' );
+							expect( imageData.height ).to.be.a( 'number' );
+							expect( imageData.data ).not.to.be( 'undefined' );
+							expect( imageData.data.length ).to.be.greaterThan( 0 );
+							
+							done();
+					 	}, done );
+				} );
+			} );
+		} );
+
+		// toSVG
+		
+		it ( 'should have a toSVG method', function () {
+			expect( triangulate().fromBuffer().toSVG ).to.be.a( 'function' );
+		} );
+
+		describe( '#toSVG()', function () {
+			it ( 'should return valid SVG markup', function ( done ) {
+				this.timeout( 10000 );
+
+				loadImageBuffer( done, function ( buffer ) {
+					triangulate()
+						.fromBuffer( buffer )
+						.toSVG()
+						.then( function ( markup ) {
+							expect( markup ).to.be.a( 'string' );
+							expect( markup.indexOf( '<?xml' ) ).to.be( 0 );
+							expect( markup.indexOf( '<svg ' ) ).not.to.be( -1 );
+
+							var isValid = false;
+
+							try {
+								libxmljs.parseXml( markup );
+								isValid = true;
+							} catch ( err ) {
+								done( err );
+							}
+
+							expect( isValid ).to.be( true );
+							
+							done();
+						}, done );
+				} );
+			} );
+		} );
+	} );
+
+	describe( 'Synchronous Methods', function () {
+
+	// fromImage
+
+		it ( 'should have a fromBufferSync method', function () {
+			expect( triangulate().fromBufferSync ).to.be.a( 'function' );
+		} );
+
+		describe( '#fromBufferSync()', function () {
+			it ( 'should accept a buffer as parameter', function ( done ) {
+				loadImageBuffer( done, function ( buffer ) {
+					expect( function () { triangulate().fromBufferSync( buffer ).toSVGSync(); } ).not.to.throwError();
+					done();
+				} );
+			} );
+		} );
+
+	// fromImageData
+
+		it ( 'should have a fromImageDataSync method', function () {
+			expect( triangulate().fromImageDataSync ).to.be.a( 'function' );
+		} );
+		
+		describe( '#fromImageDataSync()', function () {
+			it ( 'should be able to handle an imageData object', function ( done ) {
+				loadImageBuffer( done, function ( buffer ) {
+					var imageData = bufferToImageData( buffer );			
+					expect( function () { triangulate().fromImageDataSync( imageData ).toSVGSync(); } ).not.to.throwError();
+					done();
+				} );
+			} );
+
+			it ( 'should throw an error when provided with corrupt imageData object', function () {
+				expect( function () {
+					triangulate().fromImageDataSync().toSVGSync();
+				} ).to.throwError();
+
+				expect( function () {
+					triangulate().fromImageDataSync( { width: 0, data: 'LOL', height: 10 } ).toSVGSync();
+				} ).to.throwError();
+			} );
+		} );
+
+	// toData
+		
+		it ( 'should have a toDataSync method', function () {
+			expect( triangulate().fromBufferSync().toDataSync ).to.be.a( 'function' );
+		} );
+
+		describe( '#toDataSync()', function () {
+			it ( 'should return valid polygon data', function ( done ) {
+				loadImageBuffer( done, function ( buffer ) {
+					var data = triangulate().fromBufferSync( buffer ).toDataSync();
+
+					expect( Array.isArray( data ) ).to.be( true );
+					expect( data.length ).to.be.greaterThan( 0 );
+					
 					var firstPolygon = data[0];
 
-					assert.equal( typeof firstPolygon.a, 'object' );
-					assert.equal( typeof firstPolygon.b, 'object' );
-					assert.equal( typeof firstPolygon.c, 'object' );
+					expect( firstPolygon.a ).to.be.an( 'object' );
+					expect( firstPolygon.b ).to.be.an( 'object' );
+					expect( firstPolygon.c ).to.be.an( 'object' );
 
 					[ 'a', 'b', 'c' ].forEach( function ( key ) {
-						assert.equal( typeof firstPolygon[key].x, 'number' );
-						assert.equal( typeof firstPolygon[key].y, 'number' );
+						expect( firstPolygon[key].x).to.be.a( 'number' );
+						expect( firstPolygon[key].y).to.be.a( 'number' );
 					} );
 
 					done();
@@ -225,90 +428,106 @@ describe( 'node tests for triangulate-image', function () {
 			} );
 		} );
 
-// toDataURL
+	// toDataURL
+	
+		it ( 'should have a toDataURLSync method', function () {
+			expect( triangulate().fromBufferSync().toDataURLSync ).to.be.a( 'function' );
+		} );
 
-		describe( '#toDataURL()', function () {
+		describe( '#toDataURLSync()', function () {
 			it ( 'should return a dataURL', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var url = triangulate().fromBuffer( buffer ).toDataURL();
+					var url = triangulate().fromBufferSync( buffer ).toDataURLSync();
 
-					assert.equal( typeof url, 'string' );
-					assert.equal( url.length > 21, true );
-					assert.equal( url.indexOf( 'data:image/png;base64' ) === 0, true );
+					expect( url ).to.be.a( 'string' );
+					expect( url.length ).to.be.greaterThan( 21 );
+					expect( url.indexOf( 'data:image/png;base64' ) ).to.be( 0 );
 					done();
 				} );
 			} );
 		} );
 
-// toImageData
+	// toImageData
+		
+		it ( 'should have a toImageDataSync method', function () {
+			expect( triangulate().fromBufferSync().toImageDataSync ).to.be.a( 'function' );
+		} );
 
-		describe( '#toImageData()', function () {
+		describe( '#toImageDataSync()', function () {
 			it ( 'should return an imageData object', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var imageData = triangulate().fromBuffer( buffer ).toImageData();
+					var imageData = triangulate().fromBufferSync( buffer ).toImageDataSync();
 
-					assert.equal( typeof imageData, 'object' );
-					assert.equal( typeof imageData.width, 'number' );
-					assert.equal( typeof imageData.height, 'number' );
-					assert.notEqual( typeof imageData.data, 'undefined' );
-					assert.equal( imageData.data.length > 0, true );
+					expect( imageData ).to.be.an( 'object' );
+					expect( imageData.width ).to.be.a( 'number' );
+					expect( imageData.height ).to.be.a( 'number' );
+					expect( imageData.data ).not.to.be( 'undefined' );
+					expect( imageData.data.length ).to.be.greaterThan( 0 );
 					
 					done();
 				} );
 			} );
 		} );
 
-// toSVG
+	// toSVG
+		
+		it ( 'should have a toSVGSync method', function () {
+			expect( triangulate().fromBufferSync().toSVGSync ).to.be.a( 'function' );
+		} );
 
-		describe( '#toSVG()', function () {
+		describe( '#toSVGSync()', function () {
 			it ( 'should return valid SVG markup', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var markup = triangulate().fromBuffer( buffer ).toSVG();
-					var isValid = false;
+					var markup = triangulate().fromBufferSync( buffer ).toSVGSync();
+					
+					expect( markup ).to.be.a( 'string' );
+					expect( markup.indexOf( '<?xml' ) ).to.be( 0 );
+					expect( markup.indexOf( '<svg ' ) ).not.to.be( -1 );
 
-					assert.equal( typeof markup, 'string' );
-					assert.equal( markup.indexOf( '<?xml' ), 0 );
-					assert.notEqual( markup.indexOf( '<svg ' ), -1 );
+					var isValid = false;
 
 					try {
 						libxmljs.parseXml( markup );
 						isValid = true;
-					} catch ( e ) {
-						done( e );
+					} catch ( err ) {
+						done( err );
 					}
 
-					assert.equal( isValid, true );
+					expect( isValid ).to.be( true );
 					
 					done();
 				} );
 			} );
 		} );
 
-// toSVGStream
+		// toSVGStream
+
+		it ( 'should have a toSVGStream method', function () {
+			expect( triangulate().fromBufferSync().toSVGStream ).to.be.a( 'function' );
+		} );
 
 		describe( '#toSVGStream()', function () {
-			it ( 'should return valid SVGStream', function ( done ) {
+			it ( 'should return a readable stream', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var svgStream = triangulate().fromBuffer( buffer ).toSVGStream();
+					var svgStream = triangulate().fromBufferSync( buffer ).toSVGStream();
 					
-					assert.equal( svgStream instanceof stream.Readable, true );
+					expect( svgStream instanceof stream.Readable ).to.be( true );
 					done();
 				} );
 			} );
 
 			it ( 'should send data via SVGStream', function ( done ) {
-					loadImageBuffer( done, function ( buffer ) {
-					var svgStream = triangulate().fromBuffer( buffer ).toSVGStream();
-					var hasSentData = false;
+				loadImageBuffer( done, function ( buffer ) {
 
-					assert.equal( svgStream instanceof stream.Readable, true );
+					var svgStream = triangulate().fromBufferSync( buffer ).toSVGStream();
+					var hasSentData = false;
 
 					svgStream.on( 'data', function ( chunk ) {
 						hasSentData = !! chunk;
 					} );
 
 					svgStream.on( 'end', function () {
-						assert.equal( hasSentData, true );
+						expect( hasSentData ).to.be( true );
 						done();
 					} );
 
@@ -317,21 +536,26 @@ describe( 'node tests for triangulate-image', function () {
 			} );
 		} );
 
-// toJPGStream
+		// toJPGStream
+
+		it ( 'should have a toJPGStream method', function () {
+			expect( triangulate().fromBufferSync().toJPGStream ).to.be.a( 'function' );
+			expect( triangulate().fromBufferSync().toJPEGStream ).to.be.a( 'function' );
+		} );
 
 		describe( '#toJPGStream()', function () {
-			it ( 'should return valid JPGStream', function ( done ) {
+			it ( 'should return a JPGStream', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var svgStream = triangulate().fromBuffer( buffer ).toJPGStream();
+					var jpgStream = triangulate().fromBufferSync( buffer ).toJPGStream();
 					
-					assert.equal( svgStream instanceof Canvas.JPEGStream, true );
+					expect( jpgStream instanceof Canvas.JPEGStream ).to.be( true );
 					done();
 				} );
 			} );
 
 			it ( 'should send data via JPGStream', function ( done ) {
-					loadImageBuffer( done, function ( buffer ) {
-					var jpgStream = triangulate().fromBuffer( buffer ).toJPGStream();
+				loadImageBuffer( done, function ( buffer ) {
+					var jpgStream = triangulate().fromBufferSync( buffer ).toJPGStream();
 					var hasSentData = false;
 
 					jpgStream.on( 'data', function ( chunk ) {
@@ -339,7 +563,7 @@ describe( 'node tests for triangulate-image', function () {
 					} );
 
 					jpgStream.on( 'end', function () {
-						assert.equal( hasSentData, true );
+						expect( hasSentData ).to.be( true );
 						done();
 					} );
 
@@ -348,21 +572,21 @@ describe( 'node tests for triangulate-image', function () {
 			} );
 		} );
 
-// toPNGStream
+		// toPNGStream
 
 		describe( '#toPNGStream()', function () {
 			it ( 'should return valid PNGStream', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var svgStream = triangulate().fromBuffer( buffer ).toPNGStream();
+					var pngStream = triangulate().fromBufferSync( buffer ).toPNGStream();
 					
-					assert.equal( svgStream instanceof Canvas.PNGStream, true );
+					assert.equal( pngStream instanceof Canvas.PNGStream, true );
 					done();
 				} );
 			} );
 
 			it ( 'should send data via PNGStream', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
-					var pngStream = triangulate().fromBuffer( buffer ).toPNGStream();
+					var pngStream = triangulate().fromBufferSync( buffer ).toPNGStream();
 					var hasSentData = false;
 
 					pngStream.on( 'data', function ( chunk ) {
@@ -370,7 +594,7 @@ describe( 'node tests for triangulate-image', function () {
 					} );
 
 					pngStream.on( 'end', function () {
-						assert.equal( hasSentData, true );
+						expect( hasSentData ).to.be( true );
 						done();
 					} );
 
@@ -380,6 +604,107 @@ describe( 'node tests for triangulate-image', function () {
 		} );
 	} );
 } );
+
+
+
+
+	// toSVGStream
+
+			// describe( '#toSVGStream()', function () {
+			// 	it ( 'should return valid SVGStream', function ( done ) {
+			// 		loadImageBuffer( done, function ( buffer ) {
+			// 			var svgStream = triangulate().fromBuffer( buffer ).toSVGStream();
+						
+			// 			assert.equal( svgStream instanceof stream.Readable, true );
+			// 			done();
+			// 		} );
+			// 	} );
+
+			// 	it ( 'should send data via SVGStream', function ( done ) {
+			// 			loadImageBuffer( done, function ( buffer ) {
+			// 			var svgStream = triangulate().fromBuffer( buffer ).toSVGStream();
+			// 			var hasSentData = false;
+
+			// 			assert.equal( svgStream instanceof stream.Readable, true );
+
+			// 			svgStream.on( 'data', function ( chunk ) {
+			// 				hasSentData = !! chunk;
+			// 			} );
+
+			// 			svgStream.on( 'end', function () {
+			// 				assert.equal( hasSentData, true );
+			// 				done();
+			// 			} );
+
+			// 			svgStream.on( 'error', done );					
+			// 		} );
+			// 	} );
+			// } );
+
+	// toJPGStream
+
+			// describe( '#toJPGStream()', function () {
+			// 	it ( 'should return valid JPGStream', function ( done ) {
+			// 		loadImageBuffer( done, function ( buffer ) {
+			// 			var svgStream = triangulate().fromBuffer( buffer ).toJPGStream();
+						
+			// 			assert.equal( svgStream instanceof Canvas.JPEGStream, true );
+			// 			done();
+			// 		} );
+			// 	} );
+
+			// 	it ( 'should send data via JPGStream', function ( done ) {
+			// 			loadImageBuffer( done, function ( buffer ) {
+			// 			var jpgStream = triangulate().fromBuffer( buffer ).toJPGStream();
+			// 			var hasSentData = false;
+
+			// 			jpgStream.on( 'data', function ( chunk ) {
+			// 				hasSentData = !! chunk;
+			// 			} );
+
+			// 			jpgStream.on( 'end', function () {
+			// 				assert.equal( hasSentData, true );
+			// 				done();
+			// 			} );
+
+			// 			jpgStream.on( 'error', done );
+			// 		} );
+			// 	} );
+			// } );
+
+	// // toPNGStream
+
+	// 		describe( '#toPNGStream()', function () {
+	// 			it ( 'should return valid PNGStream', function ( done ) {
+	// 				loadImageBuffer( done, function ( buffer ) {
+	// 					var svgStream = triangulate().fromBuffer( buffer ).toPNGStream();
+						
+	// 					assert.equal( svgStream instanceof Canvas.PNGStream, true );
+	// 					done();
+	// 				} );
+	// 			} );
+
+	// 			it ( 'should send data via PNGStream', function ( done ) {
+	// 				loadImageBuffer( done, function ( buffer ) {
+	// 					var pngStream = triangulate().fromBuffer( buffer ).toPNGStream();
+	// 					var hasSentData = false;
+
+	// 					pngStream.on( 'data', function ( chunk ) {
+	// 						hasSentData = !! chunk;
+	// 					} );
+
+	// 					pngStream.on( 'end', function () {
+	// 						assert.equal( hasSentData, true );
+	// 						done();
+	// 					} );
+
+	// 					pngStream.on( 'error', done );
+	// 				} );
+	// 			} );
+	// 		} );
+// 		} );
+// 	} );
+// } );
 
 function loadImageBuffer ( err, callback ) {
 	fs.readFile( __dirname + '/' + imagePath, function ( err, buffer ) {
