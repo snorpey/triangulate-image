@@ -8,7 +8,9 @@ import greyscale from '../imagedata/greyscale';
 import detectEdges from '../imagedata/detectEdges';
 import getEdgePoints from './getEdgePoints';
 import getVerticesFromPoints from './getVerticesFromPoints';
+import addBoundingBoxesToPolygons from './addBoundingBoxesToPolygons';
 import addColorToPolygons from './addColorToPolygons';
+import addGradientsToPolygons from './addGradientsToPolygons';
 
 export default function ( imageData, params ) {
 	if ( isImageData( imageData ) ) {
@@ -23,8 +25,16 @@ export default function ( imageData, params ) {
 		let edgePoints = getEdgePoints( edgesImageData, 50, params.accuracy );
 		let edgeVertices = getVerticesFromPoints( edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height );
 		let polygons = delaunay.triangulate( edgeVertices );
+		
+		polygons = addBoundingBoxesToPolygons( polygons );
 
-		return addColorToPolygons( polygons, colorImageData, params );
+		if ( params.fill === true && params.gradients === true ) {
+			polygons = addGradientsToPolygons( polygons, colorImageData, params );
+		} else {
+			polygons = addColorToPolygons( polygons, colorImageData, params );
+		}
+
+		return polygons;
 	} else {
 		throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
 		return;

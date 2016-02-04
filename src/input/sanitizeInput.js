@@ -38,9 +38,24 @@ export default function ( params ) {
 		params.lineJoin = defaultParams.lineJoin;
 	}
 
+	if ( params.gradients && params.fill ) {
+		params.gradients = true;
+	} else {
+		params.gradients = false;
+	}
+
+	if ( params.gradients ) {
+		if ( typeof params.gradientStops !== 'number' ) {
+			params.gradientStops = 2;
+		}
+
+		if ( params.gradientStops < 2 ) {
+			params.gradientStops = 2;
+		}
+	}
+
 	if ( typeof params.vertexCount !== 'number' || isNaN( params.vertexCount ) ) {
 		params.vertexCount = defaultParams.vertexCount;
-
 	}
 
 	if ( params.vertexCount <= 0 ) {
