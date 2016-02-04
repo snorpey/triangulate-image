@@ -1,8 +1,18 @@
 'use strict';
 
-var readableStream = require('stream').Readable;
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
 
-module.exports = function (polygons, size) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _stream = require('stream');
+
+var _stream2 = _interopRequireDefault(_stream);
+
+var readableStream = _stream2['default'].Readable;
+
+exports['default'] = function (polygons, size) {
 	var rs = new readableStream();
 	var polygonStr;
 
@@ -37,3 +47,6 @@ module.exports = function (polygons, size) {
 
 	return rs;
 };
+
+;
+module.exports = exports['default'];

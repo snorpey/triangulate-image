@@ -21,4 +21,5 @@ env:
 before_install:
   - $CXX --version
   - npm explore npm -g -- npm install node-gyp@latest
+  - npm install -g phantomjs
 sudo: false

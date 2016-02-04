@@ -1,6 +1,8 @@
-var readableStream = require( 'stream' ).Readable;
+import stream from 'stream';
 
-module.exports = function ( polygons, size ) {
+let readableStream = stream.Readable
+
+export default function ( polygons, size ) {
 	var rs = new readableStream();
 	var polygonStr;
 

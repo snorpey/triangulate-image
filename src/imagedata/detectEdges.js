@@ -1,7 +1,7 @@
 /**
  * @see http://jsdo.it/akm2/iMsL
  */
-function detectEdges ( imageData, accuracy, edgeSize, divisor ) {
+export default function ( imageData, accuracy, edgeSize, divisor ) {
 	var matrix = getEdgeMatrix( edgeSize ).slice();
 	var multiplier = parseInt( ( accuracy || 0.5 ) * 10, 10 ) || 1;
 
@@ -88,5 +88,3 @@ function getEdgeMatrix ( size ) {
 
 	return matrix;
 }
-
-module.exports = detectEdges;

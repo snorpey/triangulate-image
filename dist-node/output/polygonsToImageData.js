@@ -1,12 +1,23 @@
 'use strict';
 
-var Canvas = require('canvas-browserify');
-var drawPolygonsOnContext = require('../util/drawPolygonsOnContext.js');
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
 
-module.exports = function (polygons, size, options) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _canvasBrowserify = require('canvas-browserify');
+
+var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+
+var _utilDrawPolygonsOnContext = require('../util/drawPolygonsOnContext');
+
+var _utilDrawPolygonsOnContext2 = _interopRequireDefault(_utilDrawPolygonsOnContext);
+
+exports['default'] = function (polygons, size, options) {
 	var dpr = options && options.dpr ? options.dpr : 1;
 	var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
-	var canvas = new Canvas(size.width * dpr, size.height * dpr);
+	var canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr);
 	var ctx = canvas.getContext('2d');
 
 	if (backgroundColor) {
@@ -15,7 +26,9 @@ module.exports = function (polygons, size, options) {
 		ctx.fillStyle = 'transparent';
 	}
 
-	drawPolygonsOnContext(ctx, polygons, size, dpr);
+	(0, _utilDrawPolygonsOnContext2['default'])(ctx, polygons, size, dpr);
 
 	return ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
 };
+
+module.exports = exports['default'];

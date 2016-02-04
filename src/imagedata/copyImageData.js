@@ -1,9 +1,15 @@
-var Canvas = require('canvas-browserify');
+import Canvas from 'canvas-browserify';
 
-module.exports = function ( imageData ) {
+export default function ( imageData ) {
 	// this is mainly required to run the browser tests.
 	// phantomjs < v2 doesn't understand Uint8ClampedArray 
 	if ( typeof Uint8ClampedArray === 'undefined' ) {
+		if ( typeof window === 'undefined' ) {
+			// 
+			throw new Error( "Can't copy imageData in Webworker without Uint8ClampedArray support." );
+			return imageData;
+		}
+		
 		// http://stackoverflow.com/a/11918126/229189
 		var canvas = Canvas( imageData.width, imageData.height );
 		var ctx = canvas.getContext( '2d' );

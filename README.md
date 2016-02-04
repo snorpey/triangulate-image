@@ -6,8 +6,10 @@ triangulate-image
 installation
 ---
 
-* [triangulate-image.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.min.js) 17kb
-* [triangulate-image.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.js) 50kb
+* [triangulate-image.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.min.js) 27kb, (9kb gzipped)
+* [triangulate-image.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.js) 78kb
+* [triangulate-image-with-polyfills.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-with-polyfills.min.js) 29kb, (9kb gzipped)
+* [triangulate-image-with-polyfills.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-with-polyfills.js) 86kb
 * [triangulate-image-master.zip](https://github.com/snorpey/triangulate-image/archive/master.zip)
 
 ```npm install triangulate-image```
@@ -22,14 +24,14 @@ a javascript module that converts images to triangular polygons:
 
 ![triangulated image of a. lincoln](example.png)
 
-for a live example, you can check out my [triangulation](http://snorpey.github.io/triangulation/) editor online.
+for a live example, you can check out my [triangulation](http://snorpey.github.io/triangulation/) editor online. there's also a list with [example images](examples/examples.md) included in this repository. 
 
 how to use it
 ===
 
 this library can be used in web browsers as well as in node.
 
-it supports loading as an AMD module, as a CommonJS module or just a as global var.
+it supports loading as an AMD module, as a CommonJS module or a global variable.
 
 a simple example:
 
@@ -38,7 +40,12 @@ var params = { blur: 110, vertexCount: 700 };
 var image = new Image();
 
 image.onload = function () {
-	document.body.innerHTML = triangulate(params).fromImage(image).toSVG();
+	triangulate(params)
+		.fromImage(image)
+		.toSVG()
+		.then( function( svgMarkup ) {
+			document.body.innerHTML = svgMarkup;
+		} );
 };
 
 image.src = 'lincoln.jpg'
@@ -52,7 +59,9 @@ as you can see, there are __three__ calls happening:
 
 when using the library, always follow these three steps: _triangulation_, _input_, _output_.
 
-for an exmplanation of all available functions and parameters, see the [reference section](#reference) below.
+for an explanation of all available methods and parameters, check out the [reference](#reference) section below.
+
+by default, all input and output methods are asynchronous and use promises for flow control. for most methods, there synchronous versions available as well. this library uses web workers for processing the image data where possible.
 
 you can find more examples for both node and brower in the [examples](examples) folder of this repository.
 
@@ -60,8 +69,8 @@ reference
 ===
 
 * [``triangulate()``](#triangulate)
-* input: [``fromImage()``](#fromimage), [``fromImageData()``](#fromimagedata), [``fromBuffer()``](#frombuffer)
-* output: [``toDataURL()``](#todataurl), [``toImageData()``](#toimagedata), [``toData()``](#todata), [``toSVG()``](#tosvg), [``toJPGStream()``](#tojpgstream), [``toPNGStream()``](#topngstream), [``toSVGStream()``](#tosvgstream)
+* input: [``fromImage()``](#fromimage), [``fromImage()``](#fromimagesync), [``fromImageData()``](#fromimagedata), [``fromImageDataSync()``](#fromimagedatasync), [``fromBuffer()``](#frombuffer), [``fromBufferSync()``](#frombuffersync), [``fromStream()``](#fromstream)
+* output: [``toDataURL()``](#todataurl), [``toDataURLSync()``](#todataurlsync), [``toImageData()``](#toimagedata), [``toImageDataSync()``](#toimagedatasync), [``toData()``](#todata), [``toDataSync()``](#todatasync), [``toSVG()``](#tosvg), [``toSVGSync()``](#tosvgsync), [``toJPGStream()``](#tojpgstream), [``toPNGStream()``](#topngstream), [``toSVGStream()``](#tosvgstream)
 
 triangulate()
 ---
@@ -78,6 +87,8 @@ var triangulationParams = {
 	fill: true,       // boolean or string with css color (e.g '#bada55', 'red')
 	stroke: true,     // boolean or string with css color (e.g '#bada55', 'red')
 	strokeWidth: 0.5, // positive float
+	gradients: true,  // boolean
+	gradientStops: 4, // positive integer >= 2
 	lineJoin: 'miter' // 'miter', 'round', or 'bevel'
 };
 
@@ -95,7 +106,31 @@ example:
 var image = new Image();
 
 image.onload = function () {
-	document.body.innerHTML = triangulate().fromImage( image ).toSVG();
+	triangulate()
+		.fromImage( image )
+		.toSVG()
+		.then ( function ( svgMarkup ) {
+			document.body.innerHTML = svgMarkup;
+		} );
+};
+
+image.src = 'lincoln.jpg'
+```
+
+_please note_: this method is not available in node.
+_important_: when using the library in a browser, make sure the image was loaded before triangulating it.
+
+fromImageSync()
+---
+``fromImageSync()`` expects an ``Image`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImage()``](#fromimage).
+
+example:
+
+```javascript
+var image = new Image();
+
+image.onload = function () {
+	document.body.innerHTML = triangulate().fromImageSync( image ).toSVG();
 };
 
 image.src = 'lincoln.jpg'
@@ -121,7 +156,32 @@ ctx.fillRect( 10, 20, 50, 60 );
 
 var imageData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
 
-document.body.innerHTML = triangulate().fromImageData( imageData ).toSVG();
+triangulate()
+	.fromImageData( imageData )
+	.toSVG()
+	.then( function ( svgMarkup ) {
+		document.body.innerHTML = svgMarkup;
+	} );
+```
+
+fromImageDataSync()
+---
+``fromImageDataSync()`` expects an ``ImageData`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImageData()``](#fromimagedata).
+
+example:
+
+```javascript
+var canvas = document.createElement( 'canvas' );
+var ctx = canvas.getContext( '2d' );
+
+ctx.fillStyle = 'red';
+ctx.fillRect( 30, 30, 90, 45 );
+ctx.fillStyle = 'green';
+ctx.fillRect( 10, 20, 50, 60 );
+
+var imageData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
+
+document.body.innerHTML = triangulate().fromImageDataSync( imageData ).toSVG();
 ```
 
 fromBuffer()
@@ -138,7 +198,35 @@ var fs = require('fs');
 fs.readFile( './lincoln.jpg', function ( err, buffer ) {
 	if ( err ) { throw err; }
 		
-	var svgMarkup = triangulate().fromBuffer( buffer ).toSVG();
+	triangulate()
+		.fromBuffer( buffer )
+		.toSVG()
+		.then( function ( svgMarkup ) {
+			fs.writeFile( './lincoln.svg', svgMarkup, function ( err ) {
+				if ( err ) { throw err; }
+				console.log( 'created an svg file.' );
+			} );
+		} );
+} );
+```
+
+_please note_: this method is only available in node.
+
+fromBufferSync()
+---
+``fromBufferSync()`` expects a ``Buffer`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromBuffer()``](#frombuffer).
+
+it uses [image#src=buffer](https://github.com/Automattic/node-canvas#imagesrcbuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
+
+example:
+
+```javascript
+var fs = require('fs');
+
+fs.readFile( './lincoln.jpg', function ( err, buffer ) {
+	if ( err ) { throw err; }
+		
+	var svgMarkup = triangulate().fromBufferSync( buffer ).toSVGSync();
 
 	fs.writeFile( './lincoln.svg', svgMarkup, function ( err ) {
 		if ( err ) { throw err; }
@@ -148,6 +236,31 @@ fs.readFile( './lincoln.jpg', function ( err, buffer ) {
 ```
 
 _please note_: this method is only available in node.
+
+fromStream()
+---
+``fromStream()`` expects a ``ReadableStream`` object as it's only parameter. it returns an object containing all _input methods_.
+
+it uses [image#src=buffer](https://github.com/Automattic/node-canvas#imagesrcbuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
+
+example:
+
+```javascript
+var fs = require('fs');
+
+var inputStream = fs.createReadStream( './lincoln.jpg' );
+var outputStream = fs.createWriteStream( './lincoln-triangulated.png' );
+
+triangulate( params )
+	.fromStream( inputStream )
+	.toPNGStream()
+	.then( function ( pngStream ) {
+		pngStream.on( 'data', function ( chunk ) { outputStream.write( chunk ); } );
+		pngStream.on( 'end', function () { console.log( 'png file saved.' ); } );
+	} );
+```
+
+_please note_: this method is only available in node. currently, theres no input sanitation for this method, so you'll want to make sure that the input stream is an image.
 
 toDataURL()
 ---
@@ -169,9 +282,42 @@ example:
 var image = new Image();
 
 image.onload = function () {
-	var dataURL = triangulate()
+	triangulate()
 		.fromImage( image )
-		.toDataURL();
+		.toDataURL()
+		.then( function ( dataURL ) {
+			document.body.style.background = 'url(' + dataURL + ')';
+		} );
+};
+
+image.src = 'lincoln.jpg'
+```
+
+toDataURLSync()
+---
+``toDataURLSync()`` can take the following parameters:
+
+```javascript
+var dataUrlParams = {
+	dpr: 1                   // positive number, short for devicePixelRatio,
+	backgroundColor: 'green' // background color of image. not set: transparent background
+};
+
+```
+
+it is the synchronous version of [``toDataUrl()``](#todataurl).
+
+it returns a ``String`` containing the base64-encoded image url.
+
+example:
+
+```javascript
+var image = new Image();
+
+image.onload = function () {
+	var dataURL = triangulate()
+		.fromImageSync( image )
+		.toDataURLSync();
 
 	document.body.style.background = 'url(' + dataURL + ')';
 };
@@ -199,9 +345,46 @@ example:
 var image = new Image();
 
 image.onload = function () {
-	var imageData = triangulate()
+	triangulate()
 		.fromImage( image )
-		.toImageData();
+		.toImageData()
+		.then( function ( imageData ) {
+			var canvas = document.createElement( 'canvas' );
+			var ctx = canvas.getContext( '2d' );
+			ctx.putImageData( imageData, 0, 0 );
+
+			document.body.appendChild( canvas );
+		} );
+};
+
+image.src = 'lincoln.jpg'
+```
+
+toImageDataSync()
+---
+``toImageDataSync()`` can take the following parameters:
+
+```javascript
+var imageDataParams = {
+	dpr: 1                   // positive number, short for devicePixelRatio,
+	backgroundColor: 'green' // background color of image. not set: transparent background
+};
+
+```
+
+it returns an ``ImageData`` object.
+
+it is the synchronous version of [``toImageData()``](#toimagedata).
+
+example:
+
+```javascript
+var image = new Image();
+
+image.onload = function () {
+	var imageData = triangulate()
+		.fromImageSync( image )
+		.toImageDataSync();
 	
 	var canvas = document.createElement( 'canvas' );
 	var ctx = canvas.getContext( '2d' );
@@ -224,7 +407,29 @@ var params = { blur: 110, vertexCount: 700 };
 var image = new Image();
 
 image.onload = function () {
-	document.body.innerHTML = triangulate( params ).fromImage( image ).toSVG();
+	triangulate( params )
+		.fromImage( image )
+		.toSVG()
+		.then( function ( svgMarkup ) {
+			document.body.innerHTML = svgMarkup;
+		} );
+};
+
+image.src = 'lincoln.jpg'
+```
+
+toSVGSync()
+---
+``toSVGSync()`` does not take any parameters. it returns a ``String`` with svg markup. it is the synchronous version of [``toSVG()``](#tosvg).
+
+example:
+
+```javascript
+var params = { blur: 110, vertexCount: 700 };
+var image = new Image();
+
+image.onload = function () {
+	document.body.innerHTML = triangulate( params ).fromImageSync( image ).toSVGSync();
 };
 
 image.src = 'lincoln.jpg'
@@ -240,7 +445,28 @@ example:
 var image = new Image();
 
 image.onload = function () {
-	console.log( triangulate().fromImage( image ).toData() );
+	triangulate()
+		.fromImage( image )
+		.toData()
+		.then( function ( polygonData ) {
+			console.log( polygonData );
+		} );
+};
+
+image.src = 'lincoln.jpg'
+```
+
+toDataSync()
+---
+``toDataSync()`` does not take any parameters. it returns an ``Array`` with the data for all polygons. it is the synchronous version of [``toData()``](#todata).
+
+example:
+
+```javascript
+var image = new Image();
+
+image.onload = function () {
+	console.log( triangulate().fromImageSync( image ).toDataSync() );
 };
 
 image.src = 'lincoln.jpg'
@@ -265,10 +491,48 @@ example:
 
 ```javascript
 var fs = require('fs');
+
 fs.readFile( './lincoln.jpg', function ( err, buffer ) {
 	if ( err ) { throw err; }
 		
-	var imageBuffer = triangulate().fromBuffer( buffer ).toBuffer( { format: 'pdf' } );
+	triangulate()
+		.fromBuffer( buffer )
+		.toBuffer( { format: 'pdf' } )
+		.then( function ( imageBuffer ) {
+			fs.writeFile( './lincoln.pdf', imageBuffer, function ( err ) {
+				if ( err ) { throw err; }
+				console.log( 'created a pdf file.' );
+			} );
+		} );
+} );
+```
+
+_please note_: this method is only available in node.
+
+toBufferSync()
+---
+``toBufferSync()`` can take the following parameters:
+
+```javascript
+var bufferParams = {
+	format: 'svg' // 'svg', 'pdf' or undefined
+};
+
+```
+
+it is the synchronous version of [``toBuffer()``](#tobuffer). it uses [canvas#tobuffer](https://github.com/Automattic/node-canvas#canvastobuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
+
+it returns a ``Buffer`` object.
+
+example:
+
+```javascript
+var fs = require('fs');
+
+fs.readFile( './lincoln.jpg', function ( err, buffer ) {
+	if ( err ) { throw err; }
+		
+	var imageBuffer = triangulate().fromBufferSync( buffer ).toBufferSync( { format: 'pdf' } );
 
 	fs.writeFile( './lincoln.pdf', imageBuffer, function ( err ) {
 		if ( err ) { throw err; }

@@ -1,12 +1,12 @@
-var Canvas = require( 'canvas-browserify');
-var drawPolygonsOnContext = require('../util/drawPolygonsOnContext.js');
+import Canvas from 'canvas-browserify';
+import drawPolygonsOnContext from '../../util/drawPolygonsOnContext';
 
 // https://github.com/Automattic/node-canvas#pdf-support
 let allowedFormats = [ 'svg', 'pdf' ];
 
-module.exports = function ( polygons, size, options ) {
-	var canvas;
-	var format = options && options.format ? options.format : false;
+export default function ( polygons, size, options ) {
+	let canvas;
+	let format = options && options.format ? options.format : false;
 	let dpr = options && options.dpr ? options.dpr : 1;
 	let backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
 

@@ -1,8 +1,8 @@
 // https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
-var Canvas = require( 'canvas-browserify');
-var drawPolygonsOnContext = require('../util/drawPolygonsOnContext.js');
+import Canvas from 'canvas-browserify';
+import drawPolygonsOnContext from '../../util/drawPolygonsOnContext';
 
-module.exports = function ( polygons, size, options ) {	
+export default function ( polygons, size, options ) {	
 	options = options || { };
 	
 	let dpr = options.dpr || 1;

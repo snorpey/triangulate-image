@@ -1,7 +1,11 @@
 "use strict";
 
-function clamp(value, min, max) {
-	return value < min ? min : value > max ? max : value;
-}
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-module.exports = clamp;
+exports["default"] = function (value, min, max) {
+	return value < min ? min : value > max ? max : value;
+};
+
+module.exports = exports["default"];

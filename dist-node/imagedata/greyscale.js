@@ -1,6 +1,10 @@
 "use strict";
 
-function greyscale(imageData) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (imageData) {
 	var len = imageData.data.length;
 	var data = imageData.data;
 	var brightness = undefined;
@@ -16,6 +20,6 @@ function greyscale(imageData) {
 	imageData.data = data;
 
 	return imageData;
-}
+};
 
-module.exports = greyscale;
+module.exports = exports["default"];

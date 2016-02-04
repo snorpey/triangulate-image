@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = {
+export default {
 	accuracy: 0.7,
 	blur: 40,
 	fill: true,
