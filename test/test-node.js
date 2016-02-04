@@ -86,6 +86,16 @@ describe( 'node tests for triangulate-image', function () {
 			expect( params.blur ).to.be.greaterThan( 0 );
 		} );
 
+		it ( 'should make sure that gradients is set', function () {
+			var params = triangulate().getParams();
+			expect( typeof params.gradients ).to.be( 'boolean' );
+		} );
+
+		it ( 'should make sure that gradientStops is >= 2', function () {
+			var params = triangulate( { gradients: true } ).getParams();
+			expect( params.gradientStops ).to.be.greaterThan( 1.99999 );
+		} );
+
 		it ( 'should make sure that vertexCount is a positive integer', function () {
 			var params = triangulate( { vertexCount: 0 } ).getParams();
 			expect( params.vertexCount ).to.be.greaterThan( 0 );
