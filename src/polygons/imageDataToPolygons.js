@@ -1,7 +1,5 @@
 'use strict';
 import stackBlur from 'stackblur-canvas';
-
-// var stackBlur = require('stackblur-canvas');
 import delaunay from 'delaunay-fast';
 
 import isImageData from '../util/isImageData';
