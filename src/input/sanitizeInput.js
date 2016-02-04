@@ -45,13 +45,15 @@ export default function ( params ) {
 	}
 
 	if ( params.gradients ) {
-		if ( typeof params.gradientStops !== 'number' ) {
+		if (
+			typeof params.gradientStops !== 'number' ||
+			isNaN( params.gradientStops ) ||
+			params.gradientStops < 2
+		) {
 			params.gradientStops = 2;
 		}
 
-		if ( params.gradientStops < 2 ) {
-			params.gradientStops = 2;
-		}
+		params.gradientStops = Math.round( params.gradientStops );
 	}
 
 	if ( typeof params.vertexCount !== 'number' || isNaN( params.vertexCount ) ) {
