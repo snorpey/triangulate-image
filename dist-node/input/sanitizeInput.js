@@ -51,6 +51,20 @@ exports['default'] = function (params) {
 		params.lineJoin = _defaultParams2['default'].lineJoin;
 	}
 
+	if (params.gradients && params.fill) {
+		params.gradients = true;
+	} else {
+		params.gradients = false;
+	}
+
+	if (params.gradients) {
+		if (typeof params.gradientStops !== 'number' || isNaN(params.gradientStops) || params.gradientStops < 2) {
+			params.gradientStops = 2;
+		}
+
+		params.gradientStops = Math.round(params.gradientStops);
+	}
+
 	if (typeof params.vertexCount !== 'number' || isNaN(params.vertexCount)) {
 		params.vertexCount = _defaultParams2['default'].vertexCount;
 	}

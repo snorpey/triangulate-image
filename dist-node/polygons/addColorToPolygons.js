@@ -4,6 +4,12 @@ Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilGetColorByPos = require('../util/getColorByPos');
+
+var _utilGetColorByPos2 = _interopRequireDefault(_utilGetColorByPos);
+
 exports['default'] = function (polygons, colorData, params) {
 	var pixelIndex = 0;
 	var polygonCenterX = undefined;
@@ -15,27 +21,24 @@ exports['default'] = function (polygons, colorData, params) {
 	var strokeColor = typeof stroke === 'string' ? params.stroke : false;
 	var strokeWidth = params.strokeWidth;
 	var lineJoin = params.lineJoin;
-	var r = undefined;
-	var g = undefined;
-	var b = undefined;
 
 	polygons.forEach(function (polygon, index) {
-		polygonCenterX = (polygon.a.x + polygon.b.x + polygon.c.x) * 0.33333;
-		polygonCenterY = (polygon.a.y + polygon.b.y + polygon.c.y) * 0.33333;
-		pixelIndex = (polygonCenterX | 0) + (polygonCenterY | 0) * colorData.width << 2;
-		r = colorData.data[pixelIndex];
-		g = colorData.data[pixelIndex + 1];
-		b = colorData.data[pixelIndex + 2];
+		var polygonCenter = {
+			x: (polygon.a.x + polygon.b.x + polygon.c.x) * 0.33333,
+			y: (polygon.a.y + polygon.b.y + polygon.c.y) * 0.33333
+		};
+
+		var color = (0, _utilGetColorByPos2['default'])(polygonCenter, colorData);
 
 		if (fill) {
-			polygon.fill = fillColor || 'rgb(' + r + ', ' + g + ', ' + b + ')';
+			polygon.fill = fillColor || 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')';
 		}
 
 		if (stroke) {
 			if (strokeColor) {
 				polygon.strokeColor = strokeColor;
 			} else {
-				polygon.strokeColor = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+				polygon.strokeColor = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')';
 			}
 
 			polygon.strokeWidth = strokeWidth;

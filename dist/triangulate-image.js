@@ -245,9 +245,9 @@
             './output/polygonsToDataURL': 8,
             './output/polygonsToImageData': 9,
             './output/polygonsToSVG': 10,
-            './polygons/imageDataToPolygons': 14,
-            './workers/triangulationWorker': 18,
-            webworkify: 22
+            './polygons/imageDataToPolygons': 16,
+            './workers/triangulationWorker': 24,
+            webworkify: 28
         } ],
         2: [ function(_dereq_, module, exports) {
             'use strict';
@@ -275,7 +275,7 @@
                 };
             }, module.exports = exports['default'];
         }, {
-            'canvas-browserify': 19
+            'canvas-browserify': 25
         } ],
         3: [ function(_dereq_, module, exports) {
             'use strict';
@@ -357,7 +357,7 @@
                 throw new Error('This object does not seem to be an image.');
             }, module.exports = exports['default'];
         }, {
-            'canvas-browserify': 19
+            'canvas-browserify': 25
         } ],
         6: [ function(_dereq_, module, exports) {
             'use strict';
@@ -391,11 +391,13 @@
                 'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2['default'].stroke), 
                 ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2['default'].strokeWidth), 
                 ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
-                ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
+                params.gradients && params.fill ? params.gradients = !0 : params.gradients = !1, 
+                params.gradients && (('number' != typeof params.gradientStops || isNaN(params.gradientStops) || params.gradientStops < 2) && (params.gradientStops = 2), 
+                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
                 params.vertexCount <= 0 && (params.vertexCount = 1), params;
             }, module.exports = exports['default'];
         }, {
-            '../util/clamp': 15,
+            '../util/clamp': 17,
             './defaultParams': 6
         } ],
         8: [ function(_dereq_, module, exports) {
@@ -416,8 +418,8 @@
                 canvas.toDataURL();
             }, module.exports = exports['default'];
         }, {
-            '../util/drawPolygonsOnContext': 16,
-            'canvas-browserify': 19
+            '../util/drawPolygonsOnContext': 19,
+            'canvas-browserify': 25
         } ],
         9: [ function(_dereq_, module, exports) {
             'use strict';
@@ -437,39 +439,141 @@
                 ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
             }, module.exports = exports['default'];
         }, {
-            '../util/drawPolygonsOnContext': 16,
-            'canvas-browserify': 19
+            '../util/drawPolygonsOnContext': 19,
+            'canvas-browserify': 25
         } ],
         10: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             }), exports['default'] = function(polygons, size) {
-                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n	';
-                return polygons.forEach(function(polygon, index) {
+                var defStr = '';
+                polygons.length && polygons[0].gradient && (defStr = '<defs>');
+                var polygonStr = '';
+                polygons.forEach(function(polygon, index) {
                     var a = polygon.a, b = polygon.b, c = polygon.c;
-                    svg += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"', 
-                    svg += polygon.fill ? ' fill="' + polygon.fill + '"' : ' fill="transparent"', polygon.strokeColor && (svg += ' stroke="' + polygon.strokeColor + '" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"'), 
-                    svg += '/>\n	';
-                }), svg += '\n</svg>';
+                    polygonStr += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"', 
+                    polygon.gradient ? !function() {
+                        var bb = polygon.boundingBox, x1 = ((polygon.gradient.x1 - bb.x) / bb.width * 100).toFixed(3), y1 = ((polygon.gradient.y1 - bb.y) / bb.height * 100).toFixed(3), x2 = ((polygon.gradient.x2 - bb.x) / bb.width * 100).toFixed(3), y2 = ((polygon.gradient.y2 - bb.y) / bb.height * 100).toFixed(3);
+                        defStr += '\n	<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
+                        var lastColorIndex = polygon.gradient.colors.length - 1;
+                        polygon.gradient.colors.forEach(function(color, index) {
+                            var rgb = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')', offset = (index / lastColorIndex * 100).toFixed(3);
+                            defStr += '\n					<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n				';
+                        }), defStr += '</linearGradient>', polygonStr += ' fill="url(#gradient-' + index + ')"', 
+                        polygon.strokeWidth > 0 && (polygonStr += ' stroke="url(#gradient-' + index + ')" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"');
+                    }() : (polygonStr += polygon.fill ? ' fill="' + polygon.fill + '"' : ' fill="transparent"', 
+                    polygon.strokeColor && (polygonStr += ' stroke="' + polygon.strokeColor + '" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"')), 
+                    polygonStr += '/>\n	';
+                }), defStr.length && (defStr += '\n		</defs>');
+                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n	' + defStr + '\n	' + polygonStr + '\n</svg>';
+                return svg;
             }, module.exports = exports['default'];
         }, {} ],
         11: [ function(_dereq_, module, exports) {
             'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
-                var pixelIndex = 0, polygonCenterX = void 0, polygonCenterY = void 0, fill = params.fill, fillColor = 'string' == typeof fill ? params.fill : !1, stroke = params.stroke, strokeColor = 'string' == typeof stroke ? params.stroke : !1, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, r = void 0, g = void 0, b = void 0;
+            });
+            var _utilGetBoundingBox = _dereq_('../util/getBoundingBox'), _utilGetBoundingBox2 = _interopRequireDefault(_utilGetBoundingBox);
+            exports['default'] = function(polygons, colorData, params) {
+                return polygons.forEach(function(polygon) {
+                    polygon.boundingBox = (0, _utilGetBoundingBox2['default'])([ polygon.a, polygon.b, polygon.c ]);
+                }), polygons.filter(function(polygon) {
+                    return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
+                });
+            }, module.exports = exports['default'];
+        }, {
+            '../util/getBoundingBox': 20
+        } ],
+        12: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            });
+            var _utilGetColorByPos = _dereq_('../util/getColorByPos'), _utilGetColorByPos2 = _interopRequireDefault(_utilGetColorByPos);
+            exports['default'] = function(polygons, colorData, params) {
+                var fill = params.fill, fillColor = 'string' == typeof fill ? params.fill : !1, stroke = params.stroke, strokeColor = 'string' == typeof stroke ? params.stroke : !1, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin;
                 return polygons.forEach(function(polygon, index) {
-                    polygonCenterX = .33333 * (polygon.a.x + polygon.b.x + polygon.c.x), polygonCenterY = .33333 * (polygon.a.y + polygon.b.y + polygon.c.y), 
-                    pixelIndex = (0 | polygonCenterX) + (0 | polygonCenterY) * colorData.width << 2, 
-                    r = colorData.data[pixelIndex], g = colorData.data[pixelIndex + 1], b = colorData.data[pixelIndex + 2], 
-                    fill && (polygon.fill = fillColor || 'rgb(' + r + ', ' + g + ', ' + b + ')'), stroke && (strokeColor ? polygon.strokeColor = strokeColor : polygon.strokeColor = 'rgb(' + r + ', ' + g + ', ' + b + ')', 
+                    var polygonCenter = {
+                        x: .33333 * (polygon.a.x + polygon.b.x + polygon.c.x),
+                        y: .33333 * (polygon.a.y + polygon.b.y + polygon.c.y)
+                    }, color = (0, _utilGetColorByPos2['default'])(polygonCenter, colorData);
+                    fill && (polygon.fill = fillColor || 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')'), 
+                    stroke && (strokeColor ? polygon.strokeColor = strokeColor : polygon.strokeColor = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')', 
                     polygon.strokeWidth = strokeWidth, polygon.lineJoin = lineJoin);
                 }), polygons;
             }, module.exports = exports['default'];
-        }, {} ],
-        12: [ function(_dereq_, module, exports) {
+        }, {
+            '../util/getColorByPos': 21
+        } ],
+        13: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            });
+            var _utilLuminance = _dereq_('../util/luminance'), _utilLuminance2 = _interopRequireDefault(_utilLuminance), _utilDistance = _dereq_('../util/distance'), _utilDistance2 = _interopRequireDefault(_utilDistance), _utilGetColorByPos = _dereq_('../util/getColorByPos'), _utilGetColorByPos2 = _interopRequireDefault(_utilGetColorByPos);
+            exports['default'] = function(polygons, colorData, params) {
+                return polygons.forEach(function(polygon, polygonIndex) {
+                    var data = {};
+                    'abc'.split('').forEach(function(key) {
+                        var color = (0, _utilGetColorByPos2['default'])(polygon[key], colorData);
+                        data[key] = {
+                            key: key,
+                            color: color,
+                            x: polygon[key].x,
+                            y: polygon[key].y
+                        }, data[key].luminance = (0, _utilLuminance2['default'])(data[key].color);
+                        var otherKeys = 'abc'.replace(key, '').split('');
+                        data[key].median = {
+                            x: (polygon[otherKeys[0]].x + polygon[otherKeys[1]].x) / 2,
+                            y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
+                        }, data[key].medianColor = (0, _utilGetColorByPos2['default'])(data[key].median, colorData), 
+                        data[key].medianLuminance = (0, _utilLuminance2['default'])(data[key].medianColor);
+                    });
+                    for (var pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort(function(u, v) {
+                        return Math.abs(u.luminance - u.medianLuminance) - Math.abs(v.luminance - v.medianLuminance);
+                    }), pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0], startPoint = pointsByDeltaInLuminance[0], endPoint = pointWithMostDeltaInLuminance.median, gradienStopPositions = [ startPoint ], startToEndDistance = (0, 
+                    _utilDistance2['default'])(startPoint, endPoint), i = 1, len = params.gradientStops - 2; len > i; i++) {
+                        var pointDistance = i * (startToEndDistance / params.gradientStops), pointPercent = pointDistance / startToEndDistance, point = {
+                            x: startPoint.x + pointPercent * (endPoint.x - startPoint.x),
+                            y: startPoint.y + pointPercent * (endPoint.y - startPoint.y)
+                        };
+                        gradienStopPositions.push(point);
+                    }
+                    gradienStopPositions.push(endPoint), polygon.gradient = {
+                        x1: pointWithMostDeltaInLuminance.x,
+                        y1: pointWithMostDeltaInLuminance.y,
+                        x2: pointWithMostDeltaInLuminance.median.x,
+                        y2: pointWithMostDeltaInLuminance.median.y,
+                        colors: gradienStopPositions.map(function(pos) {
+                            return (0, _utilGetColorByPos2['default'])(pos, colorData);
+                        })
+                    }, params.stroke && (polygon.strokeWidth = params.strokeWidth, polygon.lineJoin = params.lineJoin), 
+                    data = null;
+                }), polygons;
+            }, module.exports = exports['default'];
+        }, {
+            '../util/distance': 18,
+            '../util/getColorByPos': 21,
+            '../util/luminance': 23
+        } ],
+        14: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -493,7 +597,7 @@
                 return points;
             }, module.exports = exports['default'];
         }, {} ],
-        13: [ function(_dereq_, module, exports) {
+        15: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -543,9 +647,9 @@
                 }), points = null, result;
             }, module.exports = exports['default'];
         }, {
-            '../util/clamp': 15
+            '../util/clamp': 17
         } ],
-        14: [ function(_dereq_, module, exports) {
+        16: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -555,7 +659,7 @@
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
-            var _stackblurCanvas = _dereq_('stackblur-canvas'), _stackblurCanvas2 = _interopRequireDefault(_stackblurCanvas), _delaunayFast = _dereq_('delaunay-fast'), _delaunayFast2 = _interopRequireDefault(_delaunayFast), _utilIsImageData = _dereq_('../util/isImageData'), _utilIsImageData2 = _interopRequireDefault(_utilIsImageData), _imagedataCopyImageData = _dereq_('../imagedata/copyImageData'), _imagedataCopyImageData2 = _interopRequireDefault(_imagedataCopyImageData), _imagedataGreyscale = _dereq_('../imagedata/greyscale'), _imagedataGreyscale2 = _interopRequireDefault(_imagedataGreyscale), _imagedataDetectEdges = _dereq_('../imagedata/detectEdges'), _imagedataDetectEdges2 = _interopRequireDefault(_imagedataDetectEdges), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons);
+            var _stackblurCanvas = _dereq_('stackblur-canvas'), _stackblurCanvas2 = _interopRequireDefault(_stackblurCanvas), _delaunayFast = _dereq_('delaunay-fast'), _delaunayFast2 = _interopRequireDefault(_delaunayFast), _utilIsImageData = _dereq_('../util/isImageData'), _utilIsImageData2 = _interopRequireDefault(_utilIsImageData), _imagedataCopyImageData = _dereq_('../imagedata/copyImageData'), _imagedataCopyImageData2 = _interopRequireDefault(_imagedataCopyImageData), _imagedataGreyscale = _dereq_('../imagedata/greyscale'), _imagedataGreyscale2 = _interopRequireDefault(_imagedataGreyscale), _imagedataDetectEdges = _dereq_('../imagedata/detectEdges'), _imagedataDetectEdges2 = _interopRequireDefault(_imagedataDetectEdges), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
             exports['default'] = function(imageData, params) {
                 if ((0, _utilIsImageData2['default'])(imageData)) {
                     var imageSize = {
@@ -566,7 +670,8 @@
                     _imagedataGreyscale2['default'])(blurredImageData), edgesImageData = (0, _imagedataDetectEdges2['default'])(greyscaleImageData), edgePoints = (0, 
                     _getEdgePoints2['default'])(edgesImageData, 50, params.accuracy), edgeVertices = (0, 
                     _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = _delaunayFast2['default'].triangulate(edgeVertices);
-                    return (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
+                    return polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
+                    _addGradientsToPolygons2['default'])(polygons, colorImageData, params) : (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
                 }
                 throw new Error('Can\'t work with the imageData provided. It seems to be corrupt.');
             }, module.exports = exports['default'];
@@ -574,14 +679,16 @@
             '../imagedata/copyImageData': 2,
             '../imagedata/detectEdges': 3,
             '../imagedata/greyscale': 4,
-            '../util/isImageData': 17,
-            './addColorToPolygons': 11,
-            './getEdgePoints': 12,
-            './getVerticesFromPoints': 13,
-            'delaunay-fast': 20,
-            'stackblur-canvas': 21
+            '../util/isImageData': 22,
+            './addBoundingBoxesToPolygons': 11,
+            './addColorToPolygons': 12,
+            './addGradientsToPolygons': 13,
+            './getEdgePoints': 14,
+            './getVerticesFromPoints': 15,
+            'delaunay-fast': 26,
+            'stackblur-canvas': 27
         } ],
-        15: [ function(_dereq_, module, exports) {
+        17: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -589,7 +696,16 @@
                 return min > value ? min : value > max ? max : value;
             }, module.exports = exports['default'];
         }, {} ],
-        16: [ function(_dereq_, module, exports) {
+        18: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = function(a, b) {
+                var dx = b.x - a.x, dy = b.y - a.y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }, module.exports = exports['default'];
+        }, {} ],
+        19: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -597,13 +713,60 @@
                 return dpr = dpr || 1, polygons.forEach(function(polygon, index) {
                     ctx.beginPath(), ctx.moveTo(polygon.a.x * dpr, polygon.a.y * dpr), ctx.lineTo(polygon.b.x * dpr, polygon.b.y * dpr), 
                     ctx.lineTo(polygon.c.x * dpr, polygon.c.y * dpr), ctx.lineTo(polygon.a.x * dpr, polygon.a.y * dpr), 
-                    polygon.fill && (ctx.fillStyle = polygon.fill, ctx.fill()), polygon.strokeColor && (ctx.strokeStyle = polygon.strokeColor, 
-                    ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke()), 
+                    polygon.gradient ? !function() {
+                        var gradient = ctx.createLinearGradient(polygon.gradient.x1 * dpr, polygon.gradient.y1 * dpr, polygon.gradient.x2 * dpr, polygon.gradient.y2 * dpr), lastColorIndex = polygon.gradient.colors.length - 1;
+                        polygon.gradient.colors.forEach(function(color, index) {
+                            var rgb = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')';
+                            gradient.addColorStop(index / lastColorIndex, rgb);
+                        }), ctx.fillStyle = gradient, ctx.fill(), polygon.strokeWidth > 0 && (ctx.strokeStyle = gradient, 
+                        ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke());
+                    }() : (polygon.fill && (ctx.fillStyle = polygon.fill, ctx.fill()), polygon.strokeColor && (ctx.strokeStyle = polygon.strokeColor, 
+                    ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke())), 
                     ctx.closePath();
                 }), ctx;
             }, module.exports = exports['default'];
         }, {} ],
-        17: [ function(_dereq_, module, exports) {
+        20: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = function(points) {
+                var xMin = 1 / 0, xMax = -(1 / 0), yMin = 1 / 0, yMax = -(1 / 0);
+                return points.forEach(function(p) {
+                    p.x < xMin && (xMin = p.x), p.y < yMin && (yMin = p.y), p.x > xMax && (xMax = p.x), 
+                    p.y > yMax && (yMax = p.y);
+                }), {
+                    x: xMin,
+                    y: yMin,
+                    width: xMax - xMin,
+                    height: yMax - yMin
+                };
+            }, module.exports = exports['default'];
+        }, {} ],
+        21: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
+            function getColorByPos(pos, colorData) {
+                var x = (0, _clamp2['default'])(pos.x, 1, colorData.width - 2), y = (0, _clamp2['default'])(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
+                return index >= colorData.data.length && (index = colorData.data.length - 5), {
+                    r: colorData.data[index],
+                    g: colorData.data[index + 1],
+                    b: colorData.data[index + 2]
+                };
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = getColorByPos;
+            var _clamp = _dereq_('./clamp'), _clamp2 = _interopRequireDefault(_clamp);
+            module.exports = exports['default'];
+        }, {
+            './clamp': 17
+        } ],
+        22: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -611,7 +774,18 @@
                 return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length;
             }, module.exports = exports['default'];
         }, {} ],
-        18: [ function(_dereq_, module, exports) {
+        23: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = function(color) {
+                var a = [ color.r, color.g, color.b ].map(function(v) {
+                    return v /= 255, .03928 >= v ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+                });
+                return .2126 * a[0] + .7152 * a[1] + .0722 * a[2];
+            }, module.exports = exports['default'];
+        }, {} ],
+        24: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -650,9 +824,9 @@
             var _polygonsImageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
             module.exports = exports['default'];
         }, {
-            '../polygons/imageDataToPolygons': 14
+            '../polygons/imageDataToPolygons': 16
         } ],
-        19: [ function(_dereq_, module, exports) {
+        25: [ function(_dereq_, module, exports) {
             var Canvas = module.exports = function Canvas(w, h) {
                 var canvas = document.createElement('canvas');
                 canvas.width = w || 300;
@@ -664,7 +838,7 @@
                 return img;
             };
         }, {} ],
-        20: [ function(_dereq_, module, exports) {
+        26: [ function(_dereq_, module, exports) {
             function Triangle(a, b, c) {
                 this.a = a;
                 this.b = b;
@@ -784,7 +958,7 @@
                 };
             }
         }, {} ],
-        21: [ function(_dereq_, module, exports) {
+        27: [ function(_dereq_, module, exports) {
             var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
             var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
             function processImage(img, canvas, radius, blurAlphaChannel) {
@@ -1195,7 +1369,7 @@
                 imageDataRGB: processImageDataRGB
             };
         }, {} ],
-        22: [ function(_dereq_, module, exports) {
+        28: [ function(_dereq_, module, exports) {
             var bundleFn = arguments[3];
             var sources = arguments[4];
             var cache = arguments[5];

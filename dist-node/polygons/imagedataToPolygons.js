@@ -9,8 +9,6 @@ var _stackblurCanvas = require('stackblur-canvas');
 
 var _stackblurCanvas2 = _interopRequireDefault(_stackblurCanvas);
 
-// var stackBlur = require('stackblur-canvas');
-
 var _delaunayFast = require('delaunay-fast');
 
 var _delaunayFast2 = _interopRequireDefault(_delaunayFast);
@@ -39,12 +37,19 @@ var _getVerticesFromPoints = require('./getVerticesFromPoints');
 
 var _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints);
 
+var _addBoundingBoxesToPolygons = require('./addBoundingBoxesToPolygons');
+
+var _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons);
+
 var _addColorToPolygons = require('./addColorToPolygons');
 
 var _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons);
 
-exports['default'] = function (imageData, params) {
+var _addGradientsToPolygons = require('./addGradientsToPolygons');
 
+var _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
+
+exports['default'] = function (imageData, params) {
 	if ((0, _utilIsImageData2['default'])(imageData)) {
 		var imageSize = { width: imageData.width, height: imageData.height };
 
@@ -58,9 +63,17 @@ exports['default'] = function (imageData, params) {
 		var edgeVertices = (0, _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height);
 		var polygons = _delaunayFast2['default'].triangulate(edgeVertices);
 
-		return (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
+		polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons);
+
+		if (params.fill === true && params.gradients === true) {
+			polygons = (0, _addGradientsToPolygons2['default'])(polygons, colorImageData, params);
+		} else {
+			polygons = (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
+		}
+
+		return polygons;
 	} else {
-		throw new Error("Can't work with the imageData provided. It seems to be corrupt");
+		throw new Error("Can't work with the imageData provided. It seems to be corrupt.");
 		return;
 	}
 };
