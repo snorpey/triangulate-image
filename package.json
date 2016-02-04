@@ -11,10 +11,10 @@
     "main": "dist/triangulate-image.js"
   },
   "scripts": {
-    "build": "npm run clean && npm run build-node && npm run build-browsers",
+    "build": "npm run clean && npm run build-node && npm run build-browsers && npm run rm-tmp",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
     "build-node": "babel src --presets es2015 --ignore browser --out-dir dist-node",
-    "build-browsers": "npm run mk-tmp && npm run browsers-es6 && npm run standard-build && npm run polyfill-build && npm run rm-tmp",
+    "build-browsers": "npm run mk-tmp && npm run browsers-es6 && npm run standard-build && npm run polyfill-build",
     "browsers-es6": "babel src --ignore node,index.js --presets es2015 --plugins object-assign --out-dir dist/tmp",
     "standard-build": "npm run standard-browserify && npm run standard-uglify && npm run standard-beautify",
     "standard-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser.js | derequire > dist/tmp/triangulate-image.tmp.js",
