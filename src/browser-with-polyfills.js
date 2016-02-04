@@ -1,3 +1,5 @@
+import Promise from 'promise-polyfill';
+
 import sanitizeInput from './input/sanitizeInput';
 import fromImageToImageData from './input/browser/fromImageToImageData';
 import polygonsToImageData from './output/polygonsToImageData';

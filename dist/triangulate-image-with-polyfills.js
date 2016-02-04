@@ -72,7 +72,7 @@
                     }
                 }
                 return target;
-            }, _inputSanitizeInput = _dereq_('./input/sanitizeInput'), _inputSanitizeInput2 = _interopRequireDefault(_inputSanitizeInput), _inputBrowserFromImageToImageData = _dereq_('./input/browser/fromImageToImageData'), _inputBrowserFromImageToImageData2 = _interopRequireDefault(_inputBrowserFromImageToImageData), _outputPolygonsToImageData = _dereq_('./output/polygonsToImageData'), _outputPolygonsToImageData2 = _interopRequireDefault(_outputPolygonsToImageData), _outputPolygonsToDataURL = _dereq_('./output/polygonsToDataURL'), _outputPolygonsToDataURL2 = _interopRequireDefault(_outputPolygonsToDataURL), _outputPolygonsToSVG = _dereq_('./output/polygonsToSVG'), _outputPolygonsToSVG2 = _interopRequireDefault(_outputPolygonsToSVG), _polygonsImageDataToPolygons = _dereq_('./polygons/imageDataToPolygons'), _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
+            }, _promisePolyfill = _dereq_('promise-polyfill'), _promisePolyfill2 = _interopRequireDefault(_promisePolyfill), _inputSanitizeInput = _dereq_('./input/sanitizeInput'), _inputSanitizeInput2 = _interopRequireDefault(_inputSanitizeInput), _inputBrowserFromImageToImageData = _dereq_('./input/browser/fromImageToImageData'), _inputBrowserFromImageToImageData2 = _interopRequireDefault(_inputBrowserFromImageToImageData), _outputPolygonsToImageData = _dereq_('./output/polygonsToImageData'), _outputPolygonsToImageData2 = _interopRequireDefault(_outputPolygonsToImageData), _outputPolygonsToDataURL = _dereq_('./output/polygonsToDataURL'), _outputPolygonsToDataURL2 = _interopRequireDefault(_outputPolygonsToDataURL), _outputPolygonsToSVG = _dereq_('./output/polygonsToSVG'), _outputPolygonsToSVG2 = _interopRequireDefault(_outputPolygonsToSVG), _polygonsImageDataToPolygons = _dereq_('./polygons/imageDataToPolygons'), _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons), _webworkify = _dereq_('webworkify'), _webworkify2 = _interopRequireDefault(_webworkify), _workersTriangulationWorker = _dereq_('./workers/triangulationWorker'), _workersTriangulationWorker2 = _interopRequireDefault(_workersTriangulationWorker);
             exports['default'] = function(params) {
                 function getParams() {
                     return params;
@@ -85,57 +85,156 @@
                     var result = _extends({}, api);
                     return outputFn || _extends(result, outputMethods), result;
                 }
-                function fromImageSync(inputParams) {
+                function fromImage(inputParams) {
                     return setInput(_inputBrowserFromImageToImageData2['default'], inputParams);
                 }
-                function fromImageDataSync(inputParams) {
+                function fromImageSync(inputParams) {
+                    return setInput(_inputBrowserFromImageToImageData2['default'], inputParams, !0);
+                }
+                function fromImageData(inputParams) {
                     return setInput(function(id) {
                         return id;
                     }, inputParams);
                 }
-                function toDataSync(outputParams) {
+                function fromImageDataSync(inputParams) {
+                    return setInput(function(id) {
+                        return id;
+                    }, inputParams, !0);
+                }
+                function toData(outputParams) {
                     return setOutput(function(p) {
                         return p;
                     }, outputParams);
                 }
-                function toDataURLSync(outputParams) {
+                function toDataSync(outputParams) {
+                    return setOutput(function(p) {
+                        return p;
+                    }, outputParams, !0);
+                }
+                function toDataURL(outputParams) {
                     return setOutput(_outputPolygonsToDataURL2['default'], outputParams);
                 }
-                function toImageDataSync(outputParams) {
+                function toDataURLSync(outputParams) {
+                    return setOutput(_outputPolygonsToDataURL2['default'], outputParams, !0);
+                }
+                function toImageData(outputParams) {
                     return setOutput(_outputPolygonsToImageData2['default'], outputParams);
                 }
-                function toSVGSync(outputParams) {
+                function toImageDataSync(outputParams) {
+                    return setOutput(_outputPolygonsToImageData2['default'], outputParams, !0);
+                }
+                function toSVG(outputParams) {
                     return setOutput(_outputPolygonsToSVG2['default'], outputParams);
                 }
-                function setInput(fn, inputParams) {
-                    return inputFn = function() {
-                        return fn(inputParams);
+                function toSVGSync(outputParams) {
+                    return setOutput(_outputPolygonsToSVG2['default'], outputParams, !0);
+                }
+                function setInput(fn, inputParams, isSync) {
+                    return isInputSync = !!isSync, inputFn = function() {
+                        return isInputSync ? fn(inputParams) : new _promisePolyfill2['default'](function(resolve, reject) {
+                            try {
+                                var imageData = fn(inputParams);
+                                resolve(imageData);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        });
                     }, isReady() ? getResult() : getOutput();
                 }
-                function setOutput(fn, outputpParams) {
-                    return outputFn = function(polygons, size) {
-                        return fn(polygons, size, outputpParams);
+                function setOutput(fn, outputpParams, isSync) {
+                    return isOutputSync = !!isSync, outputFn = function(polygons, size) {
+                        return isOutputSync ? fn(polygons, size, outputpParams) : new _promisePolyfill2['default'](function(resolve, reject) {
+                            try {
+                                var outputData = fn(polygons, size, outputpParams);
+                                resolve(outputData);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        });
                     }, isReady() ? getResult() : getInput();
                 }
                 function isReady() {
                     return inputFn && outputFn;
                 }
                 function getResult() {
-                    var imageData = inputFn(params), polygonData = (0, _polygonsImageDataToPolygons2['default'])(imageData, params), outputData = outputFn(polygonData, imageData);
-                    return outputData;
+                    if (isInputSync && isOutputSync) {
+                        var imageData = inputFn(params), polygonData = (0, _polygonsImageDataToPolygons2['default'])(imageData, params), outputData = outputFn(polygonData, imageData);
+                        return outputData;
+                    }
+                    return new _promisePolyfill2['default'](function(resolve, reject) {
+                        var imageData;
+                        makeInput().then(function(imgData) {
+                            return imageData = imgData, makePolygonsInWorker(imageData, params);
+                        }, reject).then(function(polygonData) {
+                            return makeOutput(polygonData, imageData);
+                        }, reject).then(function(outputData) {
+                            resolve(outputData);
+                        }, reject);
+                    });
+                }
+                function makeInput(inputParams) {
+                    return new _promisePolyfill2['default'](function(resolve, reject) {
+                        if (isInputSync) {
+                            try {
+                                var imageData = inputFn(inputParams);
+                                resolve(imageData);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        } else {
+                            inputFn(inputParams).then(resolve, reject);
+                        }
+                    });
+                }
+                function makePolygonsInWorker(imageData, params) {
+                    return new _promisePolyfill2['default'](function(resolve, reject) {
+                        worker.addEventListener('message', function(event) {
+                            if (event.data && event.data.polygonJSONStr) {
+                                var polygonData = JSON.parse(event.data.polygonJSONStr);
+                                resolve(polygonData);
+                            } else {
+                                reject(event.data && event.data.err ? event.data.err : event);
+                            }
+                        }), worker.postMessage({
+                            params: params,
+                            imageData: imageData,
+                            imageDataWidth: imageData.width,
+                            imageDataHeight: imageData.height
+                        });
+                    });
+                }
+                function makeOutput(polygonData, imageData) {
+                    return new _promisePolyfill2['default'](function(resolve, reject) {
+                        if (isOutputSync) {
+                            try {
+                                var outputData = outputFn(polygonData, imageData);
+                                resolve(outputData);
+                            } catch (e) {
+                                reject(e);
+                            }
+                        } else {
+                            outputFn(polygonData, imageData).then(resolve, reject);
+                        }
+                    });
                 }
                 params = (0, _inputSanitizeInput2['default'])(params);
-                var inputFn = void 0, outputFn = void 0, api = {
+                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2['default'])(_workersTriangulationWorker2['default']), inputFn = void 0, outputFn = void 0, api = {
                     getParams: getParams,
                     getInput: getInput,
                     getOutput: getOutput
                 }, inputMethods = {
+                    fromImage: fromImage,
                     fromImageSync: fromImageSync,
+                    fromImageData: fromImageData,
                     fromImageDataSync: fromImageDataSync
                 }, outputMethods = {
+                    toData: toData,
                     toDataSync: toDataSync,
+                    toDataURL: toDataURL,
                     toDataURLSync: toDataURLSync,
+                    toImageData: toImageData,
                     toImageDataSync: toImageDataSync,
+                    toSVG: toSVG,
                     toSVGSync: toSVGSync
                 };
                 return getInput();
@@ -146,7 +245,10 @@
             './output/polygonsToDataURL': 8,
             './output/polygonsToImageData': 9,
             './output/polygonsToSVG': 10,
-            './polygons/imageDataToPolygons': 14
+            './polygons/imageDataToPolygons': 14,
+            './workers/triangulationWorker': 18,
+            'promise-polyfill': 21,
+            webworkify: 23
         } ],
         2: [ function(_dereq_, module, exports) {
             'use strict';
@@ -174,7 +276,7 @@
                 };
             }, module.exports = exports['default'];
         }, {
-            'canvas-browserify': 18
+            'canvas-browserify': 19
         } ],
         3: [ function(_dereq_, module, exports) {
             'use strict';
@@ -256,7 +358,7 @@
                 throw new Error('This object does not seem to be an image.');
             }, module.exports = exports['default'];
         }, {
-            'canvas-browserify': 18
+            'canvas-browserify': 19
         } ],
         6: [ function(_dereq_, module, exports) {
             'use strict';
@@ -316,7 +418,7 @@
             }, module.exports = exports['default'];
         }, {
             '../util/drawPolygonsOnContext': 16,
-            'canvas-browserify': 18
+            'canvas-browserify': 19
         } ],
         9: [ function(_dereq_, module, exports) {
             'use strict';
@@ -337,7 +439,7 @@
             }, module.exports = exports['default'];
         }, {
             '../util/drawPolygonsOnContext': 16,
-            'canvas-browserify': 18
+            'canvas-browserify': 19
         } ],
         10: [ function(_dereq_, module, exports) {
             'use strict';
@@ -467,7 +569,7 @@
                     _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = _delaunayFast2['default'].triangulate(edgeVertices);
                     return (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
                 }
-                throw new Error('Can\'t work with the imageData provided. It seems to be corrupt: ' + imageData.width + '#' + imageData.height + '#' + imageData.data.length);
+                throw new Error('Can\'t work with the imageData provided. It seems to be corrupt.');
             }, module.exports = exports['default'];
         }, {
             '../imagedata/copyImageData': 2,
@@ -477,8 +579,8 @@
             './addColorToPolygons': 11,
             './getEdgePoints': 12,
             './getVerticesFromPoints': 13,
-            'delaunay-fast': 19,
-            'stackblur-canvas': 20
+            'delaunay-fast': 20,
+            'stackblur-canvas': 22
         } ],
         15: [ function(_dereq_, module, exports) {
             'use strict';
@@ -511,6 +613,47 @@
             }, module.exports = exports['default'];
         }, {} ],
         18: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
+            function worker(self) {
+                self.addEventListener('message', function(msg) {
+                    if (msg.data.imageData && msg.data.params) {
+                        try {
+                            var imageData = msg.data.imageData;
+                            'undefined' == typeof imageData.width && 'number' == typeof msg.data.imageDataWidth && (imageData.width = msg.data.imageDataWidth), 
+                            'undefined' == typeof imageData.height && 'number' == typeof msg.data.imageDataHeight && (imageData.height = msg.data.imageDataHeight);
+                            var polygons = (0, _polygonsImageDataToPolygons2['default'])(msg.data.imageData, msg.data.params);
+                            self.postMessage({
+                                polygonJSONStr: JSON.stringify(polygons)
+                            });
+                        } catch (err) {
+                            self.postMessage({
+                                err: err.message || err
+                            });
+                        }
+                    } else {
+                        msg.data.imageData ? self.postMessage({
+                            err: 'Parameters are missing.'
+                        }) : self.postMessage({
+                            err: 'ImageData is missing.'
+                        });
+                    }
+                    self.close();
+                });
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = worker;
+            var _polygonsImageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
+            module.exports = exports['default'];
+        }, {
+            '../polygons/imageDataToPolygons': 14
+        } ],
+        19: [ function(_dereq_, module, exports) {
             var Canvas = module.exports = function Canvas(w, h) {
                 var canvas = document.createElement('canvas');
                 canvas.width = w || 300;
@@ -522,7 +665,7 @@
                 return img;
             };
         }, {} ],
-        19: [ function(_dereq_, module, exports) {
+        20: [ function(_dereq_, module, exports) {
             function Triangle(a, b, c) {
                 this.a = a;
                 this.b = b;
@@ -642,7 +785,187 @@
                 };
             }
         }, {} ],
-        20: [ function(_dereq_, module, exports) {
+        21: [ function(_dereq_, module, exports) {
+            (function(root) {
+                var setTimeoutFunc = setTimeout;
+                var asap = typeof setImmediate === 'function' && setImmediate || function(fn) {
+                    setTimeoutFunc(fn, 1);
+                };
+                function bind(fn, thisArg) {
+                    return function() {
+                        fn.apply(thisArg, arguments);
+                    };
+                }
+                var isArray = Array.isArray || function(value) {
+                    return Object.prototype.toString.call(value) === '[object Array]';
+                };
+                function Promise(fn) {
+                    if (typeof this !== 'object') {
+                        throw new TypeError('Promises must be constructed via new');
+                    }
+                    if (typeof fn !== 'function') {
+                        throw new TypeError('not a function');
+                    }
+                    this._state = null;
+                    this._value = null;
+                    this._deferreds = [];
+                    doResolve(fn, bind(resolve, this), bind(reject, this));
+                }
+                function handle(deferred) {
+                    var me = this;
+                    if (this._state === null) {
+                        this._deferreds.push(deferred);
+                        return;
+                    }
+                    asap(function() {
+                        var cb = me._state ? deferred.onFulfilled : deferred.onRejected;
+                        if (cb === null) {
+                            (me._state ? deferred.resolve : deferred.reject)(me._value);
+                            return;
+                        }
+                        var ret;
+                        try {
+                            ret = cb(me._value);
+                        } catch (e) {
+                            deferred.reject(e);
+                            return;
+                        }
+                        deferred.resolve(ret);
+                    });
+                }
+                function resolve(newValue) {
+                    try {
+                        if (newValue === this) {
+                            throw new TypeError('A promise cannot be resolved with itself.');
+                        }
+                        if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+                            var then = newValue.then;
+                            if (typeof then === 'function') {
+                                doResolve(bind(then, newValue), bind(resolve, this), bind(reject, this));
+                                return;
+                            }
+                        }
+                        this._state = true;
+                        this._value = newValue;
+                        finale.call(this);
+                    } catch (e) {
+                        reject.call(this, e);
+                    }
+                }
+                function reject(newValue) {
+                    this._state = false;
+                    this._value = newValue;
+                    finale.call(this);
+                }
+                function finale() {
+                    for (var i = 0, len = this._deferreds.length; i < len; i++) {
+                        handle.call(this, this._deferreds[i]);
+                    }
+                    this._deferreds = null;
+                }
+                function Handler(onFulfilled, onRejected, resolve, reject) {
+                    this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+                    this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+                    this.resolve = resolve;
+                    this.reject = reject;
+                }
+                function doResolve(fn, onFulfilled, onRejected) {
+                    var done = false;
+                    try {
+                        fn(function(value) {
+                            if (done) {
+                                return;
+                            }
+                            done = true;
+                            onFulfilled(value);
+                        }, function(reason) {
+                            if (done) {
+                                return;
+                            }
+                            done = true;
+                            onRejected(reason);
+                        });
+                    } catch (ex) {
+                        if (done) {
+                            return;
+                        }
+                        done = true;
+                        onRejected(ex);
+                    }
+                }
+                Promise.prototype['catch'] = function(onRejected) {
+                    return this.then(null, onRejected);
+                };
+                Promise.prototype.then = function(onFulfilled, onRejected) {
+                    var me = this;
+                    return new Promise(function(resolve, reject) {
+                        handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
+                    });
+                };
+                Promise.all = function() {
+                    var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
+                    return new Promise(function(resolve, reject) {
+                        if (args.length === 0) {
+                            return resolve([]);
+                        }
+                        var remaining = args.length;
+                        function res(i, val) {
+                            try {
+                                if (val && (typeof val === 'object' || typeof val === 'function')) {
+                                    var then = val.then;
+                                    if (typeof then === 'function') {
+                                        then.call(val, function(val) {
+                                            res(i, val);
+                                        }, reject);
+                                        return;
+                                    }
+                                }
+                                args[i] = val;
+                                if (--remaining === 0) {
+                                    resolve(args);
+                                }
+                            } catch (ex) {
+                                reject(ex);
+                            }
+                        }
+                        for (var i = 0; i < args.length; i++) {
+                            res(i, args[i]);
+                        }
+                    });
+                };
+                Promise.resolve = function(value) {
+                    if (value && typeof value === 'object' && value.constructor === Promise) {
+                        return value;
+                    }
+                    return new Promise(function(resolve) {
+                        resolve(value);
+                    });
+                };
+                Promise.reject = function(value) {
+                    return new Promise(function(resolve, reject) {
+                        reject(value);
+                    });
+                };
+                Promise.race = function(values) {
+                    return new Promise(function(resolve, reject) {
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            values[i].then(resolve, reject);
+                        }
+                    });
+                };
+                Promise._setImmediateFn = function _setImmediateFn(fn) {
+                    asap = fn;
+                };
+                if (typeof module !== 'undefined' && module.exports) {
+                    module.exports = Promise;
+                } else {
+                    if (!root.Promise) {
+                        root.Promise = Promise;
+                    }
+                }
+            })(this);
+        }, {} ],
+        22: [ function(_dereq_, module, exports) {
             var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
             var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
             function processImage(img, canvas, radius, blurAlphaChannel) {
@@ -1051,6 +1374,45 @@
                 canvasRGB: processCanvasRGB,
                 imageDataRGBA: processImageDataRGBA,
                 imageDataRGB: processImageDataRGB
+            };
+        }, {} ],
+        23: [ function(_dereq_, module, exports) {
+            var bundleFn = arguments[3];
+            var sources = arguments[4];
+            var cache = arguments[5];
+            var stringify = JSON.stringify;
+            module.exports = function(fn) {
+                var keys = [];
+                var wkey;
+                var cacheKeys = Object.keys(cache);
+                for (var i = 0, l = cacheKeys.length; i < l; i++) {
+                    var key = cacheKeys[i];
+                    var exp = cache[key].exports;
+                    if (exp === fn || exp.default === fn) {
+                        wkey = key;
+                        break;
+                    }
+                }
+                if (!wkey) {
+                    wkey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
+                    var wcache = {};
+                    for (var i = 0, l = cacheKeys.length; i < l; i++) {
+                        var key = cacheKeys[i];
+                        wcache[key] = key;
+                    }
+                    sources[wkey] = [ Function([ 'require', 'module', 'exports' ], '(' + fn + ')(self)'), wcache ];
+                }
+                var skey = Math.floor(Math.pow(16, 8) * Math.random()).toString(16);
+                var scache = {};
+                scache[wkey] = wkey;
+                sources[skey] = [ Function([ 'require' ], 'var f = require(' + stringify(wkey) + ');' + '(f.default ? f.default : f)(self);'), scache ];
+                var src = '(' + bundleFn + ')({' + Object.keys(sources).map(function(key) {
+                    return stringify(key) + ':[' + sources[key][0] + ',' + stringify(sources[key][1]) + ']';
+                }).join(',') + '},{},[' + stringify(skey) + '])';
+                var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+                return new Worker(URL.createObjectURL(new Blob([ src ], {
+                    type: 'text/javascript'
+                })));
             };
         }, {} ]
     }, {}, [ 1 ])(1);
