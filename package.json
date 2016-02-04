@@ -31,9 +31,9 @@
     "mk-tmp": "mkdir -p dist/tmp",
     "rm-tmp": "rm -rf dist/tmp",
     "prepublish": "npm run build && npm run test",
-    "test": "npm run test-node",
+    "test": "npm run test-node && npm run test-browser",
     "test-node": "mocha ./test/test-node.js",
-    "test-browser": "mocha-phantomjs ./test/test-browser.html --ignore-resource-errors -p node_modules/phantomjs/bin/phantomjs"
+    "test-browser": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.html"
   },
   "dependencies": {
     "canvas-browserify": "^1.1.3",
@@ -52,7 +52,7 @@
     "libxmljs": "^0.17.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.3.4",
-    "mocha-phantomjs": "^4.0.2",
+    "mocha-phantomjs-core": "^1.3.0",
     "rimraf": "^2.4.3",
     "uglify-js": "^2.6.1",
     "uglifyify": "^3.0.1"
