@@ -83,6 +83,7 @@ triangulate()
 var triangulationParams = {
 	accuracy: 0.7,    // float beteween 0 and 1
 	blur: 40,         // positive integer
+	threshold: 50     // integer between 1 and 100
 	vertexCount: 700, // positive integer
 	fill: true,       // boolean or string with css color (e.g '#bada55', 'red')
 	stroke: true,     // boolean or string with css color (e.g '#bada55', 'red')
@@ -98,7 +99,7 @@ it returns an object containing all __input methods__.
 
 fromImage()
 ---
-``fromImage()`` expects an ``Image`` object as it's only parameter. it returns an object containing all _input methods_.
+``fromImage()`` expects an ``Image`` object as its only parameter. it returns an object containing all _input methods_.
 
 example:
 
@@ -122,7 +123,7 @@ _important_: when using the library in a browser, make sure the image was loaded
 
 fromImageSync()
 ---
-``fromImageSync()`` expects an ``Image`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImage()``](#fromimage).
+``fromImageSync()`` expects an ``Image`` object as its only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImage()``](#fromimage).
 
 example:
 
@@ -141,7 +142,7 @@ _important_: when using the library in a browser, make sure the image was loaded
 
 fromImageData()
 ---
-``fromImageData()`` expects an ``ImageData`` object as it's only parameter. it returns an object containing all _input methods_.
+``fromImageData()`` expects an ``ImageData`` object as its only parameter. it returns an object containing all _input methods_.
 
 example:
 
@@ -166,7 +167,7 @@ triangulate()
 
 fromImageDataSync()
 ---
-``fromImageDataSync()`` expects an ``ImageData`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImageData()``](#fromimagedata).
+``fromImageDataSync()`` expects an ``ImageData`` object as its only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromImageData()``](#fromimagedata).
 
 example:
 
@@ -186,7 +187,7 @@ document.body.innerHTML = triangulate().fromImageDataSync( imageData ).toSVG();
 
 fromBuffer()
 ---
-``fromBuffer()`` expects a ``Buffer`` object as it's only parameter. it returns an object containing all _input methods_.
+``fromBuffer()`` expects a ``Buffer`` object as its only parameter. it returns an object containing all _input methods_.
 
 it uses [image#src=buffer](https://github.com/Automattic/node-canvas#imagesrcbuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
 
@@ -214,7 +215,7 @@ _please note_: this method is only available in node.
 
 fromBufferSync()
 ---
-``fromBufferSync()`` expects a ``Buffer`` object as it's only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromBuffer()``](#frombuffer).
+``fromBufferSync()`` expects a ``Buffer`` object as its only parameter. it returns an object containing all _input methods_. it is the synchronous version of [``fromBuffer()``](#frombuffer).
 
 it uses [image#src=buffer](https://github.com/Automattic/node-canvas#imagesrcbuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
 
@@ -239,7 +240,7 @@ _please note_: this method is only available in node.
 
 fromStream()
 ---
-``fromStream()`` expects a ``ReadableStream`` object as it's only parameter. it returns an object containing all _input methods_.
+``fromStream()`` expects a ``ReadableStream`` object as its only parameter. it returns an object containing all _input methods_.
 
 it uses [image#src=buffer](https://github.com/Automattic/node-canvas#imagesrcbuffer) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
 
