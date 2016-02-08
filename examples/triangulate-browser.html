@@ -30,13 +30,16 @@
 			var dataContainerEl = document.getElementById( 'data-container' );
 			
 			var params = {
-				blur: 110,
-				vertexCount: 700,
-				accuracy: 0.2,
-				fill: false,
+				accuracy: 0.7,
+				blur: 4,
+				fill: true,
 				stroke: true,
-				strokeWidth: 10,
-				lineJoin: 'round'
+				strokeWidth: 0.5,
+				lineJoin: 'miter',
+				vertexCount: 700,
+				threshold: 50,
+				gradients: true,
+				gradientStops: 2
 			};
 
 			var dpr = devicePixelRatio || 1;

@@ -21,12 +21,13 @@ mocha.reporter( 'html' );
 
 var defaultParams = {
 	accuracy: 0.7,
-	blur: 40,
+	blur: 4,
 	fill: true,
 	stroke: true,
 	strokeWidth: 0.5,
 	lineJoin: 'miter',
-	vertexCount: 700
+	vertexCount: 700,
+	threshold: 50
 };
 
 var imagePath = '../examples/img/lincoln.jpg';
@@ -57,6 +58,7 @@ describe( 'browser tests for triangulate-image', function () {
 			var params = triangulate().getParams();
 			expect( params.accuracy ).to.be.a( 'number' );
 			expect( params.blur ).to.be.a( 'number' );
+			expect( params.threshold ).to.be.a( 'number' );
 			expect( typeof params.fill === 'string' || typeof params.fill === 'boolean' ).to.be( true );
 			expect( typeof params.stroke === 'string' || typeof params.stroke === 'boolean' ).to.be( true );
 			expect( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean' ).to.be( true );
@@ -90,6 +92,11 @@ describe( 'browser tests for triangulate-image', function () {
 			expect( params.blur ).to.be.greaterThan( 0 );
 		} );
 
+		it ( 'should clamp the threshold parameter', function () {
+			var params = triangulate( { threshold: 300 } ).getParams();
+			expect( params.threshold ).to.be.within( 1, 100 );
+		} );
+
 		it ( 'should make sure that gradients is set', function () {
 			var params = triangulate().getParams();
 			expect( typeof params.gradients ).to.be( 'boolean' );
@@ -117,6 +124,8 @@ describe( 'browser tests for triangulate-image', function () {
 
 		describe( '#fromImage()', function () {
 			it ( 'should accept a loaded image as parameter', function ( done ) {
+				this.timeout( 20000 );
+
 				loadImage( done, function ( img ) {
 					var failed = false;
 					
@@ -127,7 +136,6 @@ describe( 'browser tests for triangulate-image', function () {
 							failed = false;
 							check();
 						}, function ( err ) {
-							console.log( 'ERROR YO', err );
 							failed = true;
 							check();
 						} );
@@ -168,12 +176,13 @@ describe( 'browser tests for triangulate-image', function () {
 		
 		describe( '#fromImageData()', function () {
 			it ( 'should be able to handle an imageData object', function ( done ) {
-				this.timeout( 10000 );
-				
+				this.timeout( 20000 );
+
 				loadImage( done, function ( img ) {
 					var imageData = imageToImageData( img );
 
 					var failed = false;
+
 					triangulate()
 						.fromImageData( imageData )
 						.toSVG()
@@ -182,12 +191,12 @@ describe( 'browser tests for triangulate-image', function () {
 							check();
 						}, function ( err ) {
 							failed = true;
-							check();
+							check( err );
 						} );
 
-					function check () {
+					function check ( err ) {
 						expect( failed ).to.be( false );
-						done();
+						done( err );
 					}
 				} );
 			} );
