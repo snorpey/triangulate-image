@@ -1,9 +1,13 @@
 import clamp from '../util/clamp';
+import clone from '../util/clone';
 import defaultParams from './defaultParams';
 
 let allowedLineJoins = [ 'miter', 'round', 'bevel' ];
 
 export default function ( params ) {
+	
+	params = clone( params );
+
 	if ( typeof params !== 'object' ) {
 		params = { };
 	}
@@ -32,6 +36,12 @@ export default function ( params ) {
 
 	if ( typeof params.strokeWidth !== 'number' || isNaN( params.strokeWidth ) ) {
 		params.strokeWidth = defaultParams.strokeWidth;
+	}
+
+	if ( typeof params.threshold !== 'number' || isNaN( params.threshold ) ) {
+		params.threshold = defaultParams.threshold;
+	} else {
+		params.threshold = clamp( params.threshold, 1, 100 );
 	}
 
 	if ( typeof params.lineJoin !== 'string' || allowedLineJoins.indexOf( params.lineJoin ) === -1 ) {
