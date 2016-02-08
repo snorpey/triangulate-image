@@ -165,7 +165,7 @@ function fromBufferToPdfSync () {
 			throw err;
 		}
 		
-		var imageBuffer = triangulate( params ).fromBuffer( buffer ).toBuffer( { format: 'pdf' } );
+		var imageBuffer = triangulate( params ).fromBufferSync( buffer ).toBufferSync( { format: 'pdf' } );
 
 		fs.writeFile( __dirname + '/node-output/fromBufferToPdfSync.pdf', imageBuffer, function ( err ) {
 			if ( err ) {
