@@ -1,6 +1,6 @@
-import es6Promise from 'es6-promise';
+import { polyfill as promisePolyfill } from 'es6-promise';
 import browser from './browser';
 
-es6Promise.polyfill();
+promisePolyfill();
 
 export default browser;
