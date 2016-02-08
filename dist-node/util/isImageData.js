@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 exports['default'] = function (imageData) {
-	return imageData && typeof imageData.width === 'number' && typeof imageData.height === 'number' && imageData.data && typeof imageData.data.length === 'number';
+	return imageData && typeof imageData.width === 'number' && typeof imageData.height === 'number' && imageData.data && typeof imageData.data.length === 'number' && typeof imageData.data === 'object';
 };
 
 ;

@@ -240,14 +240,14 @@
                 return getInput();
             }, module.exports = exports['default'];
         }, {
-            './input/browser/fromImageToImageData': 5,
-            './input/sanitizeInput': 7,
-            './output/polygonsToDataURL': 8,
-            './output/polygonsToImageData': 9,
-            './output/polygonsToSVG': 10,
-            './polygons/imageDataToPolygons': 16,
+            './input/browser/fromImageToImageData': 4,
+            './input/sanitizeInput': 6,
+            './output/polygonsToDataURL': 7,
+            './output/polygonsToImageData': 8,
+            './output/polygonsToSVG': 9,
+            './polygons/imageDataToPolygons': 15,
             './workers/triangulationWorker': 24,
-            webworkify: 28
+            webworkify: 29
         } ],
         2: [ function(_dereq_, module, exports) {
             'use strict';
@@ -256,82 +256,60 @@
                     'default': obj
                 };
             }
+            function copyImageDataWithCanvas(imageData) {
+                var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height), ctx = canvas.getContext('2d');
+                return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
+            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
-            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), _utilIsImageData = _dereq_('../util/isImageData'), _utilIsImageData2 = _interopRequireDefault(_utilIsImageData);
             exports['default'] = function(imageData) {
-                if ('undefined' == typeof Uint8ClampedArray) {
-                    if ('undefined' == typeof window) {
-                        throw new Error('Can\'t copy imageData in Webworker without Uint8ClampedArray support.');
+                if ((0, _utilIsImageData2['default'])(imageData)) {
+                    if ('undefined' == typeof Uint8ClampedArray) {
+                        if ('undefined' == typeof window) {
+                            throw new Error('Can\'t copy imageData in webworker without Uint8ClampedArray support.');
+                        }
+                        return copyImageDataWithCanvas(imageData);
                     }
-                    var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height), ctx = canvas.getContext('2d');
-                    return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
+                    var clampedArray = new Uint8ClampedArray(imageData.data);
+                    if ('undefined' == typeof ImageData) {
+                        return {
+                            width: imageData.width,
+                            height: imageData.height,
+                            data: clampedArray
+                        };
+                    }
+                    var result = void 0;
+                    try {
+                        result = new ImageData(clampedArray, imageData.width, imageData.height);
+                    } catch (err) {
+                        if ('undefined' == typeof window) {
+                            throw new Error('Can\'t copy imageData in webworker without proper ImageData() support.');
+                        }
+                        result = copyImageDataWithCanvas(imageData);
+                    }
+                    return result;
                 }
-                return {
-                    width: imageData.width,
-                    height: imageData.height,
-                    data: new Uint8ClampedArray(imageData.data)
-                };
+                throw new Error('Given imageData object is not useable.');
             }, module.exports = exports['default'];
         }, {
+            '../util/isImageData': 22,
             'canvas-browserify': 25
         } ],
         3: [ function(_dereq_, module, exports) {
             'use strict';
-            function getEdgeMatrix(size) {
-                var i, matrix = [], side = 2 * size + 1, len = side * side, center = .5 * len | 0;
-                for (i = 0; len > i; i++) {
-                    matrix[i] = i === center ? -len + 1 : 1;
-                }
-                return matrix;
-            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, accuracy, edgeSize, divisor) {
-                var matrix = getEdgeMatrix(edgeSize).slice(), multiplier = parseInt(10 * (accuracy || .5), 10) || 1;
-                divisor = divisor || 1;
-                var k, len, divscalar = divisor ? 1 / divisor : 0;
-                if (1 !== divscalar) {
-                    for (k = 0, len = matrix.length; k < matrix.length; k++) {
-                        matrix[k] *= divscalar;
-                    }
-                }
-                var data = imageData.data;
-                len = data.length >> 2;
-                var copy = new Uint8Array(len);
-                for (i = 0; len > i; i++) {
-                    copy[i] = data[i << 2];
-                }
-                var x, y, r, g, b, v, col, row, sx, sy, i, istep, jstep, kstep, width = 0 | imageData.width, height = 0 | imageData.height, size = Math.sqrt(matrix.length), range = .5 * size | 0;
-                for (y = 0; height > y; y += multiplier) {
-                    for (istep = y * width, x = 0; width > x; x += multiplier) {
-                        for (r = g = b = 0, row = -range; range >= row; row++) {
-                            if (sy = y + row, jstep = sy * width, kstep = (row + range) * size, sy >= 0 && height > sy) {
-                                for (col = -range; range >= col; col++) {
-                                    sx = x + col, sx >= 0 && width > sx && (v = matrix[col + range + kstep]) && (r += copy[sx + jstep] * v);
-                                }
-                            }
-                        }
-                        0 > r ? r = 0 : r > 255 && (r = 255), data[x + istep << 2] = 255 & r;
-                    }
+            }), exports['default'] = function(imageData) {
+                for (var len = imageData.data.length, brightness = void 0, i = 0; len > i; i += 4) {
+                    brightness = .34 * imageData.data[i] + .5 * imageData.data[i + 1] + .16 * imageData.data[i + 2], 
+                    imageData.data[i] = brightness, imageData.data[i + 1] = brightness, imageData.data[i + 2] = brightness;
                 }
                 return imageData;
             }, module.exports = exports['default'];
         }, {} ],
         4: [ function(_dereq_, module, exports) {
-            'use strict';
-            Object.defineProperty(exports, '__esModule', {
-                value: !0
-            }), exports['default'] = function(imageData) {
-                for (var len = imageData.data.length, data = imageData.data, brightness = void 0, i = 0; len > i; i += 4) {
-                    brightness = .34 * data[i] + .5 * data[i + 1] + .16 * data[i + 2], data[i] = brightness, 
-                    data[i + 1] = brightness, data[i + 2] = brightness;
-                }
-                return imageData.data = data, imageData;
-            }, module.exports = exports['default'];
-        }, {} ],
-        5: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -359,21 +337,22 @@
         }, {
             'canvas-browserify': 25
         } ],
-        6: [ function(_dereq_, module, exports) {
+        5: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             }), exports['default'] = {
                 accuracy: .7,
-                blur: 40,
+                blur: 4,
                 fill: !0,
                 stroke: !0,
                 strokeWidth: .5,
                 lineJoin: 'miter',
-                vertexCount: 700
+                vertexCount: 700,
+                threshold: 50
             }, module.exports = exports['default'];
         }, {} ],
-        7: [ function(_dereq_, module, exports) {
+        6: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -383,24 +362,27 @@
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
-            var _utilClamp = _dereq_('../util/clamp'), _utilClamp2 = _interopRequireDefault(_utilClamp), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
+            var _utilClamp = _dereq_('../util/clamp'), _utilClamp2 = _interopRequireDefault(_utilClamp), _utilClone = _dereq_('../util/clone'), _utilClone2 = _interopRequireDefault(_utilClone), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
             exports['default'] = function(params) {
-                return 'object' != typeof params && (params = {}), 'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2['default'].accuracy : params.accuracy = (0, 
+                return params = (0, _utilClone2['default'])(params), 'object' != typeof params && (params = {}), 
+                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2['default'].accuracy : params.accuracy = (0, 
                 _utilClamp2['default'])(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2['default'].blur), 
                 params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2['default'].fill), 
                 'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2['default'].stroke), 
                 ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2['default'].strokeWidth), 
-                ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
+                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2['default'].threshold : params.threshold = (0, 
+                _utilClamp2['default'])(params.threshold, 1, 100), ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
                 params.gradients && params.fill ? params.gradients = !0 : params.gradients = !1, 
                 params.gradients && (('number' != typeof params.gradientStops || isNaN(params.gradientStops) || params.gradientStops < 2) && (params.gradientStops = 2), 
                 params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
                 params.vertexCount <= 0 && (params.vertexCount = 1), params;
             }, module.exports = exports['default'];
         }, {
-            '../util/clamp': 17,
-            './defaultParams': 6
+            '../util/clamp': 16,
+            '../util/clone': 17,
+            './defaultParams': 5
         } ],
-        8: [ function(_dereq_, module, exports) {
+        7: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -421,7 +403,7 @@
             '../util/drawPolygonsOnContext': 19,
             'canvas-browserify': 25
         } ],
-        9: [ function(_dereq_, module, exports) {
+        8: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -442,7 +424,7 @@
             '../util/drawPolygonsOnContext': 19,
             'canvas-browserify': 25
         } ],
-        10: [ function(_dereq_, module, exports) {
+        9: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -470,7 +452,7 @@
                 return svg;
             }, module.exports = exports['default'];
         }, {} ],
-        11: [ function(_dereq_, module, exports) {
+        10: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -491,7 +473,7 @@
         }, {
             '../util/getBoundingBox': 20
         } ],
-        12: [ function(_dereq_, module, exports) {
+        11: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -517,7 +499,7 @@
         }, {
             '../util/getColorByPos': 21
         } ],
-        13: [ function(_dereq_, module, exports) {
+        12: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
@@ -573,12 +555,12 @@
             '../util/getColorByPos': 21,
             '../util/luminance': 23
         } ],
-        14: [ function(_dereq_, module, exports) {
+        13: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, sensitivity, accuracy) {
-                var x, y, row, col, sx, sy, step, sum, total, multiplier = parseInt(10 * (accuracy || .1), 10) || 1, edgeDetectValue = sensitivity, width = imageData.width, height = imageData.height, data = imageData.data, points = [];
+            }), exports['default'] = function(imageData, threshold) {
+                var x, y, row, col, sx, sy, step, sum, total, multiplier = 2, width = imageData.width, height = imageData.height, data = imageData.data, points = [];
                 for (y = 0; height > y; y += multiplier) {
                     for (x = 0; width > x; x += multiplier) {
                         for (sum = total = 0, row = -1; 1 >= row; row++) {
@@ -588,7 +570,7 @@
                                 }
                             }
                         }
-                        total && (sum /= total), sum > edgeDetectValue && points.push({
+                        total && (sum /= total), sum > threshold && points.push({
                             x: x,
                             y: y
                         });
@@ -597,6 +579,47 @@
                 return points;
             }, module.exports = exports['default'];
         }, {} ],
+        14: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    'default': obj
+                };
+            }
+            function addVertex(x, y, hash) {
+                var resultKey = x + '|' + y;
+                hash[resultKey] || (hash[resultKey] = {
+                    x: x,
+                    y: y
+                }), resultKey = null;
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            });
+            var _utilClamp = _dereq_('../util/clamp'), _utilClamp2 = _interopRequireDefault(_utilClamp);
+            exports['default'] = function(points, maxPointCount, accuracy, width, height) {
+                var resultHash = {}, gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5), gridColumns = Math.round(Math.sqrt(gridPointCount)), gridRows = Math.round(Math.ceil(gridPointCount / gridColumns)), xIncrement = ~~(width / gridColumns), yIncrement = ~~(height / gridRows), rowIndex = 0, startX = 0, x = 0, y = 0;
+                for (y = 0; height > y; y += yIncrement) {
+                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; width > x; x += xIncrement) {
+                        width > x && height > y && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
+                    }
+                }
+                addVertex(0, 0, resultHash), addVertex(width - 1, 0, resultHash), addVertex(width - 1, height - 1, resultHash), 
+                addVertex(0, height - 1, resultHash);
+                var remainingPointCount = maxPointCount - Object.keys(resultHash).length, edgePointCount = points.length, increment = ~~(edgePointCount / remainingPointCount);
+                if (maxPointCount > 0 && increment > 0) {
+                    var i = 0;
+                    for (i = 0; edgePointCount > i; i += increment) {
+                        addVertex(points[i].x, points[i].y, resultHash);
+                    }
+                }
+                return points = null, Object.keys(resultHash).map(function(key) {
+                    return resultHash[key];
+                });
+            }, module.exports = exports['default'];
+        }, {
+            '../util/clamp': 16
+        } ],
         15: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
@@ -604,62 +627,10 @@
                     'default': obj
                 };
             }
-            function sortByArea(a, b) {
-                return a.x * a.y - b.y * b.x;
-            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
-            var _utilClamp = _dereq_('../util/clamp'), _utilClamp2 = _interopRequireDefault(_utilClamp);
-            exports['default'] = function(points, maxPointCount, accuracy, width, height) {
-                var result = [], sidePointCount = 2 * Math.ceil(width / (100 - accuracy)) + 2 * Math.ceil(height / (100 - accuracy)) + 2, pointCount = Math.max(points.length, maxPointCount), randomPointCount = (0, 
-                _utilClamp2['default'])(pointCount - sidePointCount, 0, maxPointCount - sidePointCount), increment = pointCount / randomPointCount, i = 0, x = 0, y = 0, len = 0;
-                for (points.sort(sortByArea), i = 0, len = pointCount; len > i; i += increment) {
-                    result.push({
-                        x: points[~~i].x,
-                        y: points[~~i].y
-                    });
-                }
-                for (x = 0; width > x; x += 100 - accuracy) {
-                    result.push({
-                        x: ~~x,
-                        y: 0
-                    }), result.push({
-                        x: ~~x,
-                        y: height
-                    });
-                }
-                for (y = 0; height > y; y += 100 - accuracy) {
-                    result.push({
-                        x: 0,
-                        y: ~~y
-                    }), result.push({
-                        x: width,
-                        y: ~~y
-                    });
-                }
-                return result.push({
-                    x: 0,
-                    y: height
-                }), result.push({
-                    x: width,
-                    y: height
-                }), points = null, result;
-            }, module.exports = exports['default'];
-        }, {
-            '../util/clamp': 17
-        } ],
-        16: [ function(_dereq_, module, exports) {
-            'use strict';
-            function _interopRequireDefault(obj) {
-                return obj && obj.__esModule ? obj : {
-                    'default': obj
-                };
-            }
-            Object.defineProperty(exports, '__esModule', {
-                value: !0
-            });
-            var _stackblurCanvas = _dereq_('stackblur-canvas'), _stackblurCanvas2 = _interopRequireDefault(_stackblurCanvas), _delaunayFast = _dereq_('delaunay-fast'), _delaunayFast2 = _interopRequireDefault(_delaunayFast), _utilIsImageData = _dereq_('../util/isImageData'), _utilIsImageData2 = _interopRequireDefault(_utilIsImageData), _imagedataCopyImageData = _dereq_('../imagedata/copyImageData'), _imagedataCopyImageData2 = _interopRequireDefault(_imagedataCopyImageData), _imagedataGreyscale = _dereq_('../imagedata/greyscale'), _imagedataGreyscale2 = _interopRequireDefault(_imagedataGreyscale), _imagedataDetectEdges = _dereq_('../imagedata/detectEdges'), _imagedataDetectEdges2 = _interopRequireDefault(_imagedataDetectEdges), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
+            var _stackblurCanvas = _dereq_('stackblur-canvas'), _stackblurCanvas2 = _interopRequireDefault(_stackblurCanvas), _delaunayFast = _dereq_('delaunay-fast'), _delaunayFast2 = _interopRequireDefault(_delaunayFast), _sobel = _dereq_('sobel'), _sobel2 = _interopRequireDefault(_sobel), _utilIsImageData = _dereq_('../util/isImageData'), _utilIsImageData2 = _interopRequireDefault(_utilIsImageData), _imagedataCopyImageData = _dereq_('../imagedata/copyImageData'), _imagedataCopyImageData2 = _interopRequireDefault(_imagedataCopyImageData), _imagedataGreyscale = _dereq_('../imagedata/greyscale'), _imagedataGreyscale2 = _interopRequireDefault(_imagedataGreyscale), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
             exports['default'] = function(imageData, params) {
                 if ((0, _utilIsImageData2['default'])(imageData)) {
                     var imageSize = {
@@ -667,8 +638,8 @@
                         height: imageData.height
                     }, tmpImageData = (0, _imagedataCopyImageData2['default'])(imageData), colorImageData = (0, 
                     _imagedataCopyImageData2['default'])(imageData), blurredImageData = _stackblurCanvas2['default'].imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
-                    _imagedataGreyscale2['default'])(blurredImageData), edgesImageData = (0, _imagedataDetectEdges2['default'])(greyscaleImageData), edgePoints = (0, 
-                    _getEdgePoints2['default'])(edgesImageData, 50, params.accuracy), edgeVertices = (0, 
+                    _imagedataGreyscale2['default'])(blurredImageData), edgesImageData = (0, _sobel2['default'])(greyscaleImageData).toImageData(), edgePoints = (0, 
+                    _getEdgePoints2['default'])(edgesImageData, params.threshold), edgeVertices = (0, 
                     _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = _delaunayFast2['default'].triangulate(edgeVertices);
                     return polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
                     _addGradientsToPolygons2['default'])(polygons, colorImageData, params) : (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
@@ -677,23 +648,37 @@
             }, module.exports = exports['default'];
         }, {
             '../imagedata/copyImageData': 2,
-            '../imagedata/detectEdges': 3,
-            '../imagedata/greyscale': 4,
+            '../imagedata/greyscale': 3,
             '../util/isImageData': 22,
-            './addBoundingBoxesToPolygons': 11,
-            './addColorToPolygons': 12,
-            './addGradientsToPolygons': 13,
-            './getEdgePoints': 14,
-            './getVerticesFromPoints': 15,
+            './addBoundingBoxesToPolygons': 10,
+            './addColorToPolygons': 11,
+            './addGradientsToPolygons': 12,
+            './getEdgePoints': 13,
+            './getVerticesFromPoints': 14,
             'delaunay-fast': 26,
-            'stackblur-canvas': 27
+            sobel: 27,
+            'stackblur-canvas': 28
         } ],
-        17: [ function(_dereq_, module, exports) {
+        16: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             }), exports['default'] = function(value, min, max) {
                 return min > value ? min : value > max ? max : value;
+            }, module.exports = exports['default'];
+        }, {} ],
+        17: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports['default'] = function(obj) {
+                var result = !1;
+                if ('undefined' != typeof obj) {
+                    try {
+                        result = JSON.parse(JSON.stringify(obj));
+                    } catch (e) {}
+                }
+                return result;
             }, module.exports = exports['default'];
         }, {} ],
         18: [ function(_dereq_, module, exports) {
@@ -764,14 +749,14 @@
             var _clamp = _dereq_('./clamp'), _clamp2 = _interopRequireDefault(_clamp);
             module.exports = exports['default'];
         }, {
-            './clamp': 17
+            './clamp': 16
         } ],
         22: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             }), exports['default'] = function(imageData) {
-                return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length;
+                return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length && 'object' == typeof imageData.data;
             }, module.exports = exports['default'];
         }, {} ],
         23: [ function(_dereq_, module, exports) {
@@ -824,7 +809,7 @@
             var _polygonsImageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
             module.exports = exports['default'];
         }, {
-            '../polygons/imageDataToPolygons': 16
+            '../polygons/imageDataToPolygons': 15
         } ],
         25: [ function(_dereq_, module, exports) {
             var Canvas = module.exports = function Canvas(w, h) {
@@ -959,6 +944,97 @@
             }
         }, {} ],
         27: [ function(_dereq_, module, exports) {
+            (function(root) {
+                'use strict';
+                function Sobel(imageData) {
+                    if (!(this instanceof Sobel)) {
+                        return new Sobel(imageData);
+                    }
+                    var width = imageData.width;
+                    var height = imageData.height;
+                    var kernelX = [ [ -1, 0, 1 ], [ -2, 0, 2 ], [ -1, 0, 1 ] ];
+                    var kernelY = [ [ -1, -2, -1 ], [ 0, 0, 0 ], [ 1, 2, 1 ] ];
+                    var sobelData = [];
+                    var grayscaleData = [];
+                    function bindPixelAt(data) {
+                        return function(x, y, i) {
+                            i = i || 0;
+                            return data[(width * y + x) * 4 + i];
+                        };
+                    }
+                    var data = imageData.data;
+                    var pixelAt = bindPixelAt(data);
+                    var x, y;
+                    for (y = 0; y < height; y++) {
+                        for (x = 0; x < width; x++) {
+                            var r = pixelAt(x, y, 0);
+                            var g = pixelAt(x, y, 1);
+                            var b = pixelAt(x, y, 2);
+                            var avg = (r + g + b) / 3;
+                            grayscaleData.push(avg, avg, avg, 255);
+                        }
+                    }
+                    pixelAt = bindPixelAt(grayscaleData);
+                    for (y = 0; y < height; y++) {
+                        for (x = 0; x < width; x++) {
+                            var pixelX = kernelX[0][0] * pixelAt(x - 1, y - 1) + kernelX[0][1] * pixelAt(x, y - 1) + kernelX[0][2] * pixelAt(x + 1, y - 1) + kernelX[1][0] * pixelAt(x - 1, y) + kernelX[1][1] * pixelAt(x, y) + kernelX[1][2] * pixelAt(x + 1, y) + kernelX[2][0] * pixelAt(x - 1, y + 1) + kernelX[2][1] * pixelAt(x, y + 1) + kernelX[2][2] * pixelAt(x + 1, y + 1);
+                            var pixelY = kernelY[0][0] * pixelAt(x - 1, y - 1) + kernelY[0][1] * pixelAt(x, y - 1) + kernelY[0][2] * pixelAt(x + 1, y - 1) + kernelY[1][0] * pixelAt(x - 1, y) + kernelY[1][1] * pixelAt(x, y) + kernelY[1][2] * pixelAt(x + 1, y) + kernelY[2][0] * pixelAt(x - 1, y + 1) + kernelY[2][1] * pixelAt(x, y + 1) + kernelY[2][2] * pixelAt(x + 1, y + 1);
+                            var magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY) >>> 0;
+                            sobelData.push(magnitude, magnitude, magnitude, 255);
+                        }
+                    }
+                    var clampedArray = sobelData;
+                    if (typeof Uint8ClampedArray === 'function') {
+                        clampedArray = new Uint8ClampedArray(sobelData);
+                    }
+                    clampedArray.toImageData = function() {
+                        return Sobel.toImageData(clampedArray, width, height);
+                    };
+                    return clampedArray;
+                }
+                Sobel.toImageData = function toImageData(data, width, height) {
+                    if (typeof ImageData === 'function' && Object.prototype.toString.call(data) === '[object Uint16Array]') {
+                        return new ImageData(data, width, height);
+                    } else {
+                        if (typeof window === 'object' && typeof window.document === 'object') {
+                            var canvas = document.createElement('canvas');
+                            if (typeof canvas.getContext === 'function') {
+                                var context = canvas.getContext('2d');
+                                var imageData = context.createImageData(width, height);
+                                imageData.data.set(data);
+                                return imageData;
+                            } else {
+                                return new FakeImageData(data, width, height);
+                            }
+                        } else {
+                            return new FakeImageData(data, width, height);
+                        }
+                    }
+                };
+                function FakeImageData(data, width, height) {
+                    return {
+                        width: width,
+                        height: height,
+                        data: data
+                    };
+                }
+                if (typeof exports !== 'undefined') {
+                    if (typeof module !== 'undefined' && module.exports) {
+                        exports = module.exports = Sobel;
+                    }
+                    exports.Sobel = Sobel;
+                } else {
+                    if (typeof define === 'function' && define.amd) {
+                        define([], function() {
+                            return Sobel;
+                        });
+                    } else {
+                        root.Sobel = Sobel;
+                    }
+                }
+            })(this);
+        }, {} ],
+        28: [ function(_dereq_, module, exports) {
             var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
             var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
             function processImage(img, canvas, radius, blurAlphaChannel) {
@@ -1008,17 +1084,10 @@
                     try {
                         imageData = context.getImageData(top_x, top_y, width, height);
                     } catch (e) {
-                        try {
-                            netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserRead');
-                            imageData = context.getImageData(top_x, top_y, width, height);
-                        } catch (e) {
-                            alert('Cannot access local image');
-                            throw new Error('unable to access local image data: ' + e);
-                            return;
-                        }
+                        throw new Error('unable to access local image data: ' + e);
+                        return;
                     }
                 } catch (e) {
-                    alert('Cannot access image');
                     throw new Error('unable to access image data: ' + e);
                 }
                 return imageData;
@@ -1369,7 +1438,7 @@
                 imageDataRGB: processImageDataRGB
             };
         }, {} ],
-        28: [ function(_dereq_, module, exports) {
+        29: [ function(_dereq_, module, exports) {
             var bundleFn = arguments[3];
             var sources = arguments[4];
             var cache = arguments[5];

@@ -10,6 +10,10 @@ var _utilClamp = require('../util/clamp');
 
 var _utilClamp2 = _interopRequireDefault(_utilClamp);
 
+var _utilClone = require('../util/clone');
+
+var _utilClone2 = _interopRequireDefault(_utilClone);
+
 var _defaultParams = require('./defaultParams');
 
 var _defaultParams2 = _interopRequireDefault(_defaultParams);
@@ -17,6 +21,9 @@ var _defaultParams2 = _interopRequireDefault(_defaultParams);
 var allowedLineJoins = ['miter', 'round', 'bevel'];
 
 exports['default'] = function (params) {
+
+	params = (0, _utilClone2['default'])(params);
+
 	if (typeof params !== 'object') {
 		params = {};
 	}
@@ -45,6 +52,12 @@ exports['default'] = function (params) {
 
 	if (typeof params.strokeWidth !== 'number' || isNaN(params.strokeWidth)) {
 		params.strokeWidth = _defaultParams2['default'].strokeWidth;
+	}
+
+	if (typeof params.threshold !== 'number' || isNaN(params.threshold)) {
+		params.threshold = _defaultParams2['default'].threshold;
+	} else {
+		params.threshold = (0, _utilClamp2['default'])(params.threshold, 1, 100);
 	}
 
 	if (typeof params.lineJoin !== 'string' || allowedLineJoins.indexOf(params.lineJoin) === -1) {

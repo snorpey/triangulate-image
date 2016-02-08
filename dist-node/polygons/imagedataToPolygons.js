@@ -1,4 +1,5 @@
 'use strict';
+
 Object.defineProperty(exports, '__esModule', {
 	value: true
 });
@@ -13,6 +14,10 @@ var _delaunayFast = require('delaunay-fast');
 
 var _delaunayFast2 = _interopRequireDefault(_delaunayFast);
 
+var _sobel = require('sobel');
+
+var _sobel2 = _interopRequireDefault(_sobel);
+
 var _utilIsImageData = require('../util/isImageData');
 
 var _utilIsImageData2 = _interopRequireDefault(_utilIsImageData);
@@ -24,10 +29,6 @@ var _imagedataCopyImageData2 = _interopRequireDefault(_imagedataCopyImageData);
 var _imagedataGreyscale = require('../imagedata/greyscale');
 
 var _imagedataGreyscale2 = _interopRequireDefault(_imagedataGreyscale);
-
-var _imagedataDetectEdges = require('../imagedata/detectEdges');
-
-var _imagedataDetectEdges2 = _interopRequireDefault(_imagedataDetectEdges);
 
 var _getEdgePoints = require('./getEdgePoints');
 
@@ -52,14 +53,12 @@ var _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
 exports['default'] = function (imageData, params) {
 	if ((0, _utilIsImageData2['default'])(imageData)) {
 		var imageSize = { width: imageData.width, height: imageData.height };
-
 		var tmpImageData = (0, _imagedataCopyImageData2['default'])(imageData);
 		var colorImageData = (0, _imagedataCopyImageData2['default'])(imageData);
-
 		var blurredImageData = _stackblurCanvas2['default'].imageDataRGBA(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur);
 		var greyscaleImageData = (0, _imagedataGreyscale2['default'])(blurredImageData);
-		var edgesImageData = (0, _imagedataDetectEdges2['default'])(greyscaleImageData);
-		var edgePoints = (0, _getEdgePoints2['default'])(edgesImageData, 50, params.accuracy);
+		var edgesImageData = (0, _sobel2['default'])(greyscaleImageData).toImageData();
+		var edgePoints = (0, _getEdgePoints2['default'])(edgesImageData, params.threshold);
 		var edgeVertices = (0, _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height);
 		var polygons = _delaunayFast2['default'].triangulate(edgeVertices);
 
