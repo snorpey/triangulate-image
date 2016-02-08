@@ -1,46 +1,76 @@
 import clamp from '../util/clamp';
 
-function sortByArea ( a, b ) {
-	return ( a.x * a.y ) - ( b.y * b.x );
+function addVertex ( x, y, hash ) {
+	let resultKey = x + '|' + y;
+
+	if ( ! hash[resultKey] ) {
+		hash[resultKey] = { x, y };
+	}
+
+	resultKey = null;
 }
 
-// most parts taken from akm2's script:
-// http://jsdo.it/akm2/xoYx (line 230++)
 export default function ( points, maxPointCount, accuracy, width, height ) {
-	let result = [ ];
-	let sidePointCount = Math.ceil( width / ( 100 - accuracy ) ) * 2 + Math.ceil( height / ( 100 - accuracy ) ) * 2 + 2;
-	let pointCount = Math.max( points.length, maxPointCount );
-	let randomPointCount = clamp( pointCount - sidePointCount, 0, maxPointCount - sidePointCount )
-	let increment = ( pointCount / randomPointCount );
+	// using hash for all points to make sure we have a set of unique vertices.
+	let resultHash = { };
+
+	// use 25% of max point count to create a background grid.
+	// this avoids having too many "big" triangles in areas of the image with low contrast 
+	// next to very small ones in areas with high contrast
+	// for every other row, start the x value at > 0, so the grid doesn't look too regular
+	let gridPointCount = Math.max( ~~( maxPointCount * ( 1 - accuracy ) ), 5 );
+
+	// http://stackoverflow.com/a/4107092/229189
+	let gridColumns = Math.round( Math.sqrt( gridPointCount ) );
+	let gridRows = Math.round( Math.ceil( gridPointCount / gridColumns ) );
 	
-	let i = 0;
+	let xIncrement = ~~( width / gridColumns );
+	let yIncrement = ~~( height / gridRows );
+
+	let rowIndex = 0;
+	let startX = 0;
+
 	let x = 0;
 	let y = 0;
-	let len = 0;
 
-	// sort the points array so that it looks like randomly shuffled
-	// (it's not really random, because we want to be able to test the resulting images)
-	points.sort( sortByArea );
+	for ( y = 0; y < height; y+= yIncrement ) {
+		rowIndex++;
 
-	for ( i = 0, len = pointCount; i < len; i += increment ) {
-		result.push( { x: points[~~i].x, y: points[~~i].y } );
+		startX = rowIndex % 2 === 0 ? ~~( xIncrement / 2 ) : 0; 
+
+		for ( x = startX; x < width; x += xIncrement ) {
+			if ( x < width && y < height ) {
+				// "distorting" the grid a little bit so that the
+				// background vertices don't appear to be on a straight line (which looks boring)
+				addVertex(
+					~~( x + ( Math.cos( y ) * ( yIncrement ) ) ),
+					~~( y + ( Math.sin( x ) * ( xIncrement ) ) ),
+					resultHash
+				);
+			}
+		}
 	}
+	
+	// add points in the corners
+	addVertex( 0, 0, resultHash );
+	addVertex( width - 1, 0, resultHash );
+	addVertex( width - 1, height - 1, resultHash );
+	addVertex( 0, height - 1, resultHash );
 
-	// add more points along the edges so we always use the full canvas,
-	for ( x = 0; x < width; x += ( 100 - accuracy ) ) {
-		result.push( { x: ~~x, y: 0 } );
-		result.push( { x: ~~x, y: height } );
+	// add points from all edge points
+	let remainingPointCount = maxPointCount - Object.keys( resultHash ).length;
+	let edgePointCount = points.length;
+	let increment = ~~( edgePointCount / remainingPointCount );
+
+	if ( maxPointCount > 0 && increment > 0 ) {
+		let i = 0;
+
+		for ( i = 0; i < edgePointCount; i += increment ) {
+			addVertex( points[i].x, points[i].y, resultHash );
+		}
 	}
-
-	for ( y = 0; y < height; y += ( 100 - accuracy ) ) {
-		result.push( { x: 0, y: ~~y } );
-		result.push( { x: width, y: ~~y } );
-	}
-
-	result.push( { x: 0, y: height } );
-	result.push( { x: width, y: height } );
 
 	points = null;
 
-	return result;
+	return Object.keys( resultHash ).map( function ( key ) { return resultHash[key] } );
 }
