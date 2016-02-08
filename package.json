@@ -13,9 +13,9 @@
   "scripts": {
     "build": "npm run clean && npm run build-node && npm run build-browsers && npm run rm-tmp",
     "clean": "rimraf dist dist-node && mkdirp dist dist-node",
-    "build-node": "babel src --presets es2015 --ignore browser --out-dir dist-node",
+    "build-node": "babel src --presets es2015 --plugins add-module-exports,transform-object-assign --ignore browser --out-dir dist-node",
     "build-browsers": "npm run mk-tmp && npm run browsers-es6 && npm run standard-build && npm run polyfill-build",
-    "browsers-es6": "babel src --ignore node,index.js --presets es2015 --plugins object-assign --out-dir dist/tmp",
+    "browsers-es6": "babel src --ignore node,index.js --presets es2015 --plugins add-module-exports,transform-object-assign --out-dir dist/tmp",
     "standard-build": "npm run standard-browserify && npm run standard-uglify && npm run standard-beautify",
     "standard-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone triangulate dist/tmp/browser.js | derequire > dist/tmp/triangulate-image.tmp.js",
     "standard-uglify": "uglifyjs -mc < dist/tmp/triangulate-image.tmp.js > dist/triangulate-image.min.js",
@@ -40,9 +40,10 @@
     "webworkify": "^1.1.0"
   },
   "devDependencies": {
-    "babel": "^5.8.23",
-    "babel-plugin-object-assign": "^1.2.1",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-cli": "^6.5.1",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-transform-object-assign": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
     "browserify": "^11.2.0",
     "derequire": "^2.0.2",
     "expect.js": "^0.3.1",
