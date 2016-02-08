@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports["default"] = function (imageData, sensitivity, accuracy) {
-	var multiplier = parseInt((accuracy || 0.1) * 10, 10) || 1;
-	var edgeDetectValue = sensitivity;
+exports["default"] = function (imageData, threshold) {
+	// only check every 2nd pixel in imageData to save some time.
+	var multiplier = 2;
 	var width = imageData.width;
 	var height = imageData.height;
 	var data = imageData.data;
@@ -38,7 +38,7 @@ exports["default"] = function (imageData, sensitivity, accuracy) {
 				sum /= total;
 			}
 
-			if (sum > edgeDetectValue) {
+			if (sum > threshold) {
 				points.push({ x: x, y: y });
 			}
 		}
