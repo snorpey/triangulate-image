@@ -14,12 +14,13 @@ var imagePath = '../examples/img/lincoln.jpg';
 
 var defaultParams = {
 	accuracy: 0.7,
-	blur: 40,
+	blur: 4,
 	fill: true,
 	stroke: true,
 	strokeWidth: 0.5,
 	lineJoin: 'miter',
-	vertexCount: 700
+	vertexCount: 700,
+	threshold: 50
 };
 
 describe( 'node tests for triangulate-image', function () {
@@ -53,6 +54,7 @@ describe( 'node tests for triangulate-image', function () {
 			var params = triangulate().getParams();
 			expect( params.accuracy ).to.be.a( 'number' );
 			expect( params.blur ).to.be.a( 'number' );
+			expect( params.threshold ).to.be.a( 'number' );
 			expect( typeof params.fill === 'string' || typeof params.fill === 'boolean' ).to.be( true );
 			expect( typeof params.stroke === 'string' || typeof params.stroke === 'boolean' ).to.be( true );
 			expect( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean' ).to.be( true );
@@ -86,6 +88,11 @@ describe( 'node tests for triangulate-image', function () {
 			expect( params.blur ).to.be.greaterThan( 0 );
 		} );
 
+		it ( 'should clamp the threshold parameter', function () {
+			var params = triangulate( { threshold: 300 } ).getParams();
+			expect( params.threshold ).to.be.within( 1, 100 );
+		} );
+
 		it ( 'should make sure that gradients is set', function () {
 			var params = triangulate().getParams();
 			expect( typeof params.gradients ).to.be( 'boolean' );
@@ -113,6 +120,8 @@ describe( 'node tests for triangulate-image', function () {
 
 		describe( '#fromBuffer()', function () {
 			it ( 'should accept a buffer as parameter', function ( done ) {
+				this.timeout( 5000 );
+
 				loadImageBuffer( done, function ( buffer ) {
 					var failed = false;
 					
@@ -143,7 +152,7 @@ describe( 'node tests for triangulate-image', function () {
 		
 		describe( '#fromImageData()', function () {
 			it ( 'should be able to handle an imageData object', function ( done ) {
-				this.timeout( 10000 );
+				this.timeout( 5000 );
 				
 				loadImageBuffer( done, function ( buffer ) {
 					var imageData = bufferToImageData( buffer );
