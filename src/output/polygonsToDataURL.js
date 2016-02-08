@@ -1,19 +1,11 @@
-import Canvas from 'canvas-browserify';
+import makeCanvasAndContext from '../util/makeCanvasAndContext';
 import drawPolygonsOnContext from '../util/drawPolygonsOnContext';
 
 export default function ( polygons, size, options ) {
-	let dpr = options && options.dpr ? options.dpr : 1;
-	let backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
-	let canvas = new Canvas( size.width * dpr, size.height * dpr );
-	let ctx = canvas.getContext( '2d' );
+	let dpr = options && options.dpr ? options.dpr : 1;	
+	let canvasData = makeCanvasAndContext( size, options, dpr );
 
-	if ( backgroundColor ) {
-		ctx.fillStyle = backgroundColor;
-		ctx.fillRect( 0, 0, size.width * dpr, size.height * dpr );
-		ctx.fillStyle = 'transparent';
-	}
+	drawPolygonsOnContext( canvasData.ctx, polygons, size, dpr );
 
-	drawPolygonsOnContext( ctx, polygons, size, dpr );
-
-	return canvas.toDataURL();
+	return canvasData.canvas.toDataURL();
 }
