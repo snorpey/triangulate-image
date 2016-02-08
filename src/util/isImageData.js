@@ -4,6 +4,7 @@ export default function ( imageData ) {
 		typeof imageData.width === 'number' &&
 		typeof imageData.height === 'number' &&
 		imageData.data &&
-		typeof imageData.data.length === 'number'
+		typeof imageData.data.length === 'number' &&
+		typeof imageData.data === 'object'
 	);
 };
