@@ -1,11 +1,10 @@
-// http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports['default'] = function (polygons, size) {
+exports.default = function (polygons, size) {
 	var defStr = '';
 
 	if (polygons.length && polygons[0].gradient) {
@@ -18,6 +17,7 @@ exports['default'] = function (polygons, size) {
 		var a = polygon.a;
 		var b = polygon.b;
 		var c = polygon.c;
+
 
 		polygonStr += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"';
 
@@ -70,5 +70,5 @@ exports['default'] = function (polygons, size) {
 	return svg;
 };
 
-module.exports = exports['default'];
+module.exports = exports['default']; // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon

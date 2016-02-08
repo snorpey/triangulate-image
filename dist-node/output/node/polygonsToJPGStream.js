@@ -1,21 +1,10 @@
-// https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _canvasBrowserify = require('canvas-browserify');
-
-var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-
-var _utilDrawPolygonsOnContext = require('../../util/drawPolygonsOnContext');
-
-var _utilDrawPolygonsOnContext2 = _interopRequireDefault(_utilDrawPolygonsOnContext);
-
-exports['default'] = function (polygons, size, options) {
+exports.default = function (polygons, size, options) {
 	options = options || {};
 
 	var dpr = options.dpr || 1;
@@ -27,16 +16,26 @@ exports['default'] = function (polygons, size, options) {
 	};
 
 	var backgroundColor = options.backgroundColor || '#ffffff';
-	var canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr);
+	var canvas = new _canvasBrowserify2.default(size.width * dpr, size.height * dpr);
 	var ctx = canvas.getContext('2d');
 
 	ctx.fillStyle = backgroundColor;
 	ctx.fillRect(0, 0, size.width * dpr, size.height * dpr);
 	ctx.fillStyle = 'transparent';
 
-	(0, _utilDrawPolygonsOnContext2['default'])(ctx, polygons, size, dpr);
+	(0, _drawPolygonsOnContext2.default)(ctx, polygons, size, dpr);
 
 	return canvas.jpegStream(streamParams);
 };
 
-module.exports = exports['default'];
+var _canvasBrowserify = require('canvas-browserify');
+
+var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+
+var _drawPolygonsOnContext = require('../../util/drawPolygonsOnContext');
+
+var _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default']; // https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream

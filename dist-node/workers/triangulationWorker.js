@@ -1,15 +1,15 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports['default'] = worker;
+exports.default = worker;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _imageDataToPolygons = require('../polygons/imageDataToPolygons');
 
-var _polygonsImageDataToPolygons = require('../polygons/imageDataToPolygons');
+var _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons);
 
-var _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function worker(self) {
 	self.addEventListener('message', function (msg) {
@@ -26,7 +26,7 @@ function worker(self) {
 					imageData.height = msg.data.imageDataHeight;
 				}
 
-				var polygons = (0, _polygonsImageDataToPolygons2['default'])(msg.data.imageData, msg.data.params);
+				var polygons = (0, _imageDataToPolygons2.default)(msg.data.imageData, msg.data.params);
 
 				self.postMessage({
 					polygonJSONStr: JSON.stringify(polygons)
@@ -45,5 +45,4 @@ function worker(self) {
 		self.close();
 	});
 }
-
 module.exports = exports['default'];

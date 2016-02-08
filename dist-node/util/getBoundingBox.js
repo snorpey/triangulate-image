@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports["default"] = function (points) {
+exports.default = function (points) {
 	var xMin = Infinity;
 	var xMax = -Infinity;
 	var yMin = Infinity;
@@ -36,4 +36,4 @@ exports["default"] = function (points) {
 	};
 };
 
-module.exports = exports["default"];
+module.exports = exports['default'];

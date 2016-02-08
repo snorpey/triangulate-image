@@ -1,21 +1,11 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _canvasBrowserify = require('canvas-browserify');
-
-var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-
-var _utilIsImageData = require('../util/isImageData');
-
-var _utilIsImageData2 = _interopRequireDefault(_utilIsImageData);
-
-exports['default'] = function (imageData) {
-	if ((0, _utilIsImageData2['default'])(imageData)) {
+exports.default = function (imageData) {
+	if ((0, _isImageData2.default)(imageData)) {
 		if (typeof Uint8ClampedArray === 'undefined') {
 			if (typeof window === 'undefined') {
 				throw new Error("Can't copy imageData in webworker without Uint8ClampedArray support.");
@@ -58,9 +48,19 @@ exports['default'] = function (imageData) {
 	}
 };
 
+var _canvasBrowserify = require('canvas-browserify');
+
+var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+
+var _isImageData = require('../util/isImageData');
+
+var _isImageData2 = _interopRequireDefault(_isImageData);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // http://stackoverflow.com/a/11918126/229189
 function copyImageDataWithCanvas(imageData) {
-	var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height);
+	var canvas = (0, _canvasBrowserify2.default)(imageData.width, imageData.height);
 	var ctx = canvas.getContext('2d');
 	ctx.putImageData(imageData, 0, 0);
 

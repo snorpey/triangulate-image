@@ -1,10 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports['default'] = function (obj) {
+exports.default = function (obj) {
 	var result = false;
 
 	if (typeof obj !== 'undefined') {

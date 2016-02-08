@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports["default"] = function (ctx, polygons, size, dpr) {
+exports.default = function (ctx, polygons, size, dpr) {
 	dpr = dpr || 1;
 
 	polygons.forEach(function (polygon, index) {
@@ -58,4 +58,4 @@ exports["default"] = function (ctx, polygons, size, dpr) {
 };
 
 ;
-module.exports = exports["default"];
+module.exports = exports['default'];

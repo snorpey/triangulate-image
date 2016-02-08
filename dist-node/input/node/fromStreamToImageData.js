@@ -1,25 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _stream = require('stream');
-
-var _stream2 = _interopRequireDefault(_stream);
-
-// https://github.com/Automattic/node-canvas#imagesrcbuffer
-
-var _canvasBrowserify = require('canvas-browserify');
-
-var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-
-var Readable = _stream2['default'].Readable;
-var Image = _canvasBrowserify2['default'].Image;
-
-exports['default'] = function (stream, resolve, reject) {
+exports.default = function (stream, resolve, reject) {
 	if (stream instanceof Readable) {
 		(function () {
 			var bufferContent = [];
@@ -34,7 +19,7 @@ exports['default'] = function (stream, resolve, reject) {
 					var image = new Image();
 					image.src = buffer;
 
-					var canvas = new _canvasBrowserify2['default'](image.width, image.height);
+					var canvas = new _canvasBrowserify2.default(image.width, image.height);
 					var ctx = canvas.getContext('2d');
 
 					ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -49,6 +34,21 @@ exports['default'] = function (stream, resolve, reject) {
 		reject(new Error("Can't work with the buffer object provided."));
 	}
 };
+
+var _stream = require('stream');
+
+var _stream2 = _interopRequireDefault(_stream);
+
+var _canvasBrowserify = require('canvas-browserify');
+
+var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Readable = _stream2.default.Readable;
+// https://github.com/Automattic/node-canvas#imagesrcbuffer
+
+var Image = _canvasBrowserify2.default.Image;
 
 ;
 module.exports = exports['default'];

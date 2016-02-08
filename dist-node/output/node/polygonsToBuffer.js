@@ -1,45 +1,33 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = function (polygons, size, options) {
+	var dpr = options && options.dpr ? options.dpr : 1;
+	var format = options && options.format ? options.format : false;
 
-var _canvasBrowserify = require('canvas-browserify');
+	format = allowedFormats[format].indexOf(format) === -1 ? undefined : format;
 
-var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
+	var canvasData = (0, _makeCanvasAndContext2.default)(size, options, dpr, format);
 
-var _utilDrawPolygonsOnContext = require('../../util/drawPolygonsOnContext');
+	(0, _drawPolygonsOnContext2.default)(canvasData.ctx, polygons, size);
 
-var _utilDrawPolygonsOnContext2 = _interopRequireDefault(_utilDrawPolygonsOnContext);
+	return canvasData.canvas.toBuffer();
+};
+
+var _makeCanvasAndContext = require('../../util/makeCanvasAndContext');
+
+var _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext);
+
+var _drawPolygonsOnContext = require('../../util/drawPolygonsOnContext');
+
+var _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // https://github.com/Automattic/node-canvas#pdf-support
 var allowedFormats = ['svg', 'pdf'];
-
-exports['default'] = function (polygons, size, options) {
-	var canvas = undefined;
-	var format = options && options.format ? options.format : false;
-	var dpr = options && options.dpr ? options.dpr : 1;
-	var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
-
-	if (allowedFormats[format] !== -1) {
-		canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr, format);
-	} else {
-		canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr);
-	}
-
-	var ctx = canvas.getContext('2d');
-
-	if (backgroundColor) {
-		ctx.fillStyle = backgroundColor;
-		ctx.fillRect(0, 0, size.width * dpr, size.height * dpr);
-		ctx.fillStyle = 'transparent';
-	}
-
-	(0, _utilDrawPolygonsOnContext2['default'])(ctx, polygons, size);
-
-	return canvas.toBuffer();
-};
 
 module.exports = exports['default'];

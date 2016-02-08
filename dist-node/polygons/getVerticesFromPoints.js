@@ -1,26 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _utilClamp = require('../util/clamp');
-
-var _utilClamp2 = _interopRequireDefault(_utilClamp);
-
-function addVertex(x, y, hash) {
-	var resultKey = x + '|' + y;
-
-	if (!hash[resultKey]) {
-		hash[resultKey] = { x: x, y: y };
-	}
-
-	resultKey = null;
-}
-
-exports['default'] = function (points, maxPointCount, accuracy, width, height) {
+exports.default = function (points, maxPointCount, accuracy, width, height) {
 	// using hash for all points to make sure we have a set of unique vertices.
 	var resultHash = {};
 
@@ -82,5 +66,21 @@ exports['default'] = function (points, maxPointCount, accuracy, width, height) {
 		return resultHash[key];
 	});
 };
+
+var _clamp = require('../util/clamp');
+
+var _clamp2 = _interopRequireDefault(_clamp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function addVertex(x, y, hash) {
+	var resultKey = x + '|' + y;
+
+	if (!hash[resultKey]) {
+		hash[resultKey] = { x: x, y: y };
+	}
+
+	resultKey = null;
+}
 
 module.exports = exports['default'];

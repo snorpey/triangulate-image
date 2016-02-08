@@ -1,11 +1,10 @@
-// most parts taken from http://jsdo.it/akm2/xoYx
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports["default"] = function (imageData, threshold) {
+exports.default = function (imageData, threshold) {
 	// only check every 2nd pixel in imageData to save some time.
 	var multiplier = 2;
 	var width = imageData.width;
@@ -47,5 +46,5 @@ exports["default"] = function (imageData, threshold) {
 	return points;
 };
 
-module.exports = exports["default"];
+module.exports = exports['default']; // most parts taken from http://jsdo.it/akm2/xoYx
 // (starting line 293++)

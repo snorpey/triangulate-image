@@ -1,54 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _inputSanitizeInput = require('./input/sanitizeInput');
-
-var _inputSanitizeInput2 = _interopRequireDefault(_inputSanitizeInput);
-
-var _inputNodeFromBufferToImageData = require('./input/node/fromBufferToImageData');
-
-var _inputNodeFromBufferToImageData2 = _interopRequireDefault(_inputNodeFromBufferToImageData);
-
-var _inputNodeFromStreamToImageData = require('./input/node/fromStreamToImageData');
-
-var _inputNodeFromStreamToImageData2 = _interopRequireDefault(_inputNodeFromStreamToImageData);
-
-var _outputNodePolygonsToBufferJs = require('./output/node/polygonsToBuffer.js');
-
-var _outputNodePolygonsToBufferJs2 = _interopRequireDefault(_outputNodePolygonsToBufferJs);
-
-var _outputPolygonsToImageData = require('./output/polygonsToImageData');
-
-var _outputPolygonsToImageData2 = _interopRequireDefault(_outputPolygonsToImageData);
-
-var _outputPolygonsToDataURL = require('./output/polygonsToDataURL');
-
-var _outputPolygonsToDataURL2 = _interopRequireDefault(_outputPolygonsToDataURL);
-
-var _outputPolygonsToSVG = require('./output/polygonsToSVG');
-
-var _outputPolygonsToSVG2 = _interopRequireDefault(_outputPolygonsToSVG);
-
-var _outputNodePolygonsToSVGStream = require('./output/node/polygonsToSVGStream');
-
-var _outputNodePolygonsToSVGStream2 = _interopRequireDefault(_outputNodePolygonsToSVGStream);
-
-var _outputNodePolygonsToPNGStream = require('./output/node/polygonsToPNGStream');
-
-var _outputNodePolygonsToPNGStream2 = _interopRequireDefault(_outputNodePolygonsToPNGStream);
-
-var _outputNodePolygonsToJPGStream = require('./output/node/polygonsToJPGStream');
-
-var _outputNodePolygonsToJPGStream2 = _interopRequireDefault(_outputNodePolygonsToJPGStream);
-
-var _polygonsImageDataToPolygons = require('./polygons/imageDataToPolygons');
-
-var _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToPolygons);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -59,8 +15,8 @@ var _polygonsImageDataToPolygons2 = _interopRequireDefault(_polygonsImageDataToP
 //
 // etc...
 
-exports['default'] = function (params) {
-	params = (0, _inputSanitizeInput2['default'])(params);
+exports.default = function (params) {
+	params = (0, _sanitizeInput2.default)(params);
 
 	var isInputSync = false;
 	var isOutputSync = false;
@@ -104,33 +60,33 @@ exports['default'] = function (params) {
 	}
 
 	function getInput() {
-		var result = Object.assign({}, api);
+		var result = _extends({}, api);
 
 		if (!inputFn) {
-			Object.assign(result, inputMethods);
+			_extends(result, inputMethods);
 		}
 
 		return result;
 	}
 
 	function getOutput() {
-		var result = Object.assign({}, api);
+		var result = _extends({}, api);
 
 		if (!outputFn) {
-			Object.assign(result, outputMethods);
+			_extends(result, outputMethods);
 		}
 
 		return result;
 	}
 
 	function fromBuffer(inputParams) {
-		return setInput(_inputNodeFromBufferToImageData2['default'], inputParams);
+		return setInput(_fromBufferToImageData2.default, inputParams);
 	}
 	function fromStream(inputParams) {
-		return setInput(_inputNodeFromStreamToImageData2['default'], inputParams, false, true);
+		return setInput(_fromStreamToImageData2.default, inputParams, false, true);
 	}
 	function fromBufferSync(inputParams) {
-		return setInput(_inputNodeFromBufferToImageData2['default'], inputParams, true);
+		return setInput(_fromBufferToImageData2.default, inputParams, true);
 	}
 	function fromImageData(inputParams) {
 		return setInput(function (id) {
@@ -144,10 +100,10 @@ exports['default'] = function (params) {
 	}
 
 	function toBuffer(outputParams) {
-		return setOutput(_outputNodePolygonsToBufferJs2['default'], outputParams);
+		return setOutput(_polygonsToBuffer2.default, outputParams);
 	}
 	function toBufferSync(outputParams) {
-		return setOutput(_outputNodePolygonsToBufferJs2['default'], outputParams, true);
+		return setOutput(_polygonsToBuffer2.default, outputParams, true);
 	}
 	function toData(outputParams) {
 		return setOutput(function (p) {
@@ -160,40 +116,40 @@ exports['default'] = function (params) {
 		}, outputParams, true);
 	}
 	function toDataURL(outputParams) {
-		return setOutput(_outputPolygonsToDataURL2['default'], outputParams);
+		return setOutput(_polygonsToDataURL2.default, outputParams);
 	}
 	function toDataURLSync(outputParams) {
-		return setOutput(_outputPolygonsToDataURL2['default'], outputParams, true);
+		return setOutput(_polygonsToDataURL2.default, outputParams, true);
 	}
 	function toImageData(outputParams) {
-		return setOutput(_outputPolygonsToImageData2['default'], outputParams);
+		return setOutput(_polygonsToImageData2.default, outputParams);
 	}
 	function toImageDataSync(outputParams) {
-		return setOutput(_outputPolygonsToImageData2['default'], outputParams, true);
+		return setOutput(_polygonsToImageData2.default, outputParams, true);
 	}
 	function toSVG(outputParams) {
-		return setOutput(_outputPolygonsToSVG2['default'], outputParams);
+		return setOutput(_polygonsToSVG2.default, outputParams);
 	}
 	function toSVGSync(outputParams) {
-		return setOutput(_outputPolygonsToSVG2['default'], outputParams, true);
+		return setOutput(_polygonsToSVG2.default, outputParams, true);
 	}
 	function toSVGStream(outputParams) {
-		return setOutput(_outputNodePolygonsToSVGStream2['default'], outputParams, true);
+		return setOutput(_polygonsToSVGStream2.default, outputParams, true);
 	}
 	function toPNGStream(outputParams) {
-		return setOutput(_outputNodePolygonsToPNGStream2['default'], outputParams, true);
+		return setOutput(_polygonsToPNGStream2.default, outputParams, true);
 	}
 	function toJPGStream(outputParams) {
-		return setOutput(_outputNodePolygonsToJPGStream2['default'], outputParams, true);
+		return setOutput(_polygonsToJPGStream2.default, outputParams, true);
 	}
 	function toJPEGStream(outputParams) {
-		return setOutput(_outputNodePolygonsToJPGStream2['default'], outputParams, true);
+		return setOutput(_polygonsToJPGStream2.default, outputParams, true);
 	}
 
 	function setInput(fn, inputParams, isSync, canResolve) {
 		isInputSync = !!isSync;
 
-		inputFn = function () {
+		inputFn = function inputFn() {
 			if (isInputSync) {
 				return fn(inputParams);
 			} else {
@@ -223,7 +179,7 @@ exports['default'] = function (params) {
 	function setOutput(fn, outputParams, isSync) {
 		isOutputSync = !!isSync;
 
-		outputFn = function (polygons, size) {
+		outputFn = function outputFn(polygons, size) {
 			if (isOutputSync) {
 				return fn(polygons, size, outputParams);
 			} else {
@@ -252,7 +208,7 @@ exports['default'] = function (params) {
 	function getResult() {
 		if (isInputSync && isOutputSync) {
 			var imageData = inputFn(params);
-			var polygonData = (0, _polygonsImageDataToPolygons2['default'])(imageData, params);
+			var polygonData = (0, _imageDataToPolygons2.default)(imageData, params);
 			var outputData = outputFn(polygonData, imageData);
 
 			return outputData;
@@ -287,7 +243,7 @@ exports['default'] = function (params) {
 	function makePolygons(imageData, params) {
 		return new Promise(function (resolve, reject) {
 			try {
-				var polygons = (0, _polygonsImageDataToPolygons2['default'])(imageData, params);
+				var polygons = (0, _imageDataToPolygons2.default)(imageData, params);
 				resolve(polygons);
 			} catch (err) {
 				reject(err);
@@ -317,5 +273,51 @@ exports['default'] = function (params) {
 
 	return getInput();
 };
+
+var _sanitizeInput = require('./input/sanitizeInput');
+
+var _sanitizeInput2 = _interopRequireDefault(_sanitizeInput);
+
+var _fromBufferToImageData = require('./input/node/fromBufferToImageData');
+
+var _fromBufferToImageData2 = _interopRequireDefault(_fromBufferToImageData);
+
+var _fromStreamToImageData = require('./input/node/fromStreamToImageData');
+
+var _fromStreamToImageData2 = _interopRequireDefault(_fromStreamToImageData);
+
+var _polygonsToBuffer = require('./output/node/polygonsToBuffer.js');
+
+var _polygonsToBuffer2 = _interopRequireDefault(_polygonsToBuffer);
+
+var _polygonsToImageData = require('./output/polygonsToImageData');
+
+var _polygonsToImageData2 = _interopRequireDefault(_polygonsToImageData);
+
+var _polygonsToDataURL = require('./output/polygonsToDataURL');
+
+var _polygonsToDataURL2 = _interopRequireDefault(_polygonsToDataURL);
+
+var _polygonsToSVG = require('./output/polygonsToSVG');
+
+var _polygonsToSVG2 = _interopRequireDefault(_polygonsToSVG);
+
+var _polygonsToSVGStream = require('./output/node/polygonsToSVGStream');
+
+var _polygonsToSVGStream2 = _interopRequireDefault(_polygonsToSVGStream);
+
+var _polygonsToPNGStream = require('./output/node/polygonsToPNGStream');
+
+var _polygonsToPNGStream2 = _interopRequireDefault(_polygonsToPNGStream);
+
+var _polygonsToJPGStream = require('./output/node/polygonsToJPGStream');
+
+var _polygonsToJPGStream2 = _interopRequireDefault(_polygonsToJPGStream);
+
+var _imageDataToPolygons = require('./polygons/imageDataToPolygons');
+
+var _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = exports['default'];

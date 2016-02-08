@@ -1,29 +1,15 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _utilLuminance = require('../util/luminance');
-
-var _utilLuminance2 = _interopRequireDefault(_utilLuminance);
-
-var _utilDistance = require('../util/distance');
-
-var _utilDistance2 = _interopRequireDefault(_utilDistance);
-
-var _utilGetColorByPos = require('../util/getColorByPos');
-
-var _utilGetColorByPos2 = _interopRequireDefault(_utilGetColorByPos);
-
-exports['default'] = function (polygons, colorData, params) {
+exports.default = function (polygons, colorData, params) {
 	polygons.forEach(function (polygon, polygonIndex) {
 		var data = {};
 
 		'abc'.split('').forEach(function (key) {
-			var color = (0, _utilGetColorByPos2['default'])(polygon[key], colorData);
+			var color = (0, _getColorByPos2.default)(polygon[key], colorData);
 
 			data[key] = {
 				key: key,
@@ -32,7 +18,7 @@ exports['default'] = function (polygons, colorData, params) {
 				y: polygon[key].y
 			};
 
-			data[key].luminance = (0, _utilLuminance2['default'])(data[key].color);
+			data[key].luminance = (0, _luminance2.default)(data[key].color);
 
 			var otherKeys = 'abc'.replace(key, '').split('');
 
@@ -41,8 +27,8 @@ exports['default'] = function (polygons, colorData, params) {
 				y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
 			};
 
-			data[key].medianColor = (0, _utilGetColorByPos2['default'])(data[key].median, colorData);
-			data[key].medianLuminance = (0, _utilLuminance2['default'])(data[key].medianColor);
+			data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData);
+			data[key].medianLuminance = (0, _luminance2.default)(data[key].medianColor);
 		});
 
 		// sort by axis of most difference in luminance
@@ -56,7 +42,7 @@ exports['default'] = function (polygons, colorData, params) {
 
 		var gradienStopPositions = [startPoint];
 
-		var startToEndDistance = (0, _utilDistance2['default'])(startPoint, endPoint);
+		var startToEndDistance = (0, _distance2.default)(startPoint, endPoint);
 
 		for (var i = 1, len = params.gradientStops - 2; i < len; i++) {
 			var pointDistance = i * (startToEndDistance / params.gradientStops);
@@ -78,7 +64,7 @@ exports['default'] = function (polygons, colorData, params) {
 			x2: pointWithMostDeltaInLuminance.median.x,
 			y2: pointWithMostDeltaInLuminance.median.y,
 			colors: gradienStopPositions.map(function (pos) {
-				return (0, _utilGetColorByPos2['default'])(pos, colorData);
+				return (0, _getColorByPos2.default)(pos, colorData);
 			})
 		};
 
@@ -92,5 +78,19 @@ exports['default'] = function (polygons, colorData, params) {
 
 	return polygons;
 };
+
+var _luminance = require('../util/luminance');
+
+var _luminance2 = _interopRequireDefault(_luminance);
+
+var _distance = require('../util/distance');
+
+var _distance2 = _interopRequireDefault(_distance);
+
+var _getColorByPos = require('../util/getColorByPos');
+
+var _getColorByPos2 = _interopRequireDefault(_getColorByPos);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = exports['default'];

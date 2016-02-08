@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports["default"] = function (imageData) {
+exports.default = function (imageData) {
 	var len = imageData.data.length;
 	var brightness = undefined;
 
@@ -19,4 +19,4 @@ exports["default"] = function (imageData) {
 	return imageData;
 };
 
-module.exports = exports["default"];
+module.exports = exports['default'];
