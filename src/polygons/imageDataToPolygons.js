@@ -1,5 +1,5 @@
-import stackBlur from 'stackblur-canvas';
-import delaunay from 'delaunay-fast';
+import { imageDataRGBA as blurImageData } from 'stackblur-canvas';
+import { triangulate as delaunay } from 'delaunay-fast';
 import Sobel from 'sobel';
 
 import isImageData from '../util/isImageData';
@@ -16,12 +16,12 @@ export default function ( imageData, params ) {
 		let imageSize = { width: imageData.width, height: imageData.height };
 		let tmpImageData = copyImageData( imageData );
 		let colorImageData = copyImageData( imageData );
-		let blurredImageData = stackBlur.imageDataRGBA( tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur );
+		let blurredImageData = blurImageData( tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur );
 		let greyscaleImageData = greyscale( blurredImageData );
 		let edgesImageData = Sobel( greyscaleImageData ).toImageData();
 		let edgePoints = getEdgePoints( edgesImageData, params.threshold );
 		let edgeVertices = getVerticesFromPoints( edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height );
-		let polygons = delaunay.triangulate( edgeVertices );
+		let polygons = delaunay( edgeVertices );
 		
 		polygons = addBoundingBoxesToPolygons( polygons );
 
