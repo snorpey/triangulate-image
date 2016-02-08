@@ -3,13 +3,16 @@ var triangulate = require('../dist-node/index.js');
 var imagePath = 'img/lincoln.jpg';
 
 var params = {
-	blur: 110,
-	vertexCount: 700,
-	accuracy: 0.2,
+	accuracy: 0.7,
+	blur: 4,
 	fill: true,
 	stroke: true,
 	strokeWidth: 0.5,
-	lineJoin: 'miter'
+	lineJoin: 'miter',
+	vertexCount: 700,
+	threshold: 50,
+	gradients: true,
+	gradientStops: 2
 };
 
 fromBufferToDataURL();
