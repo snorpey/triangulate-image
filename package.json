@@ -35,7 +35,7 @@
     "es6-promise": "^3.0.2",
     "canvas-browserify": "^1.1.3",
     "delaunay-fast": "github:ironwallaby/delaunay#2d7110e",
-    "sobel": "^0.0.6",
+    "sobel": "^0.0.7",
     "stackblur-canvas": "^1.2.0",
     "webworkify": "^1.1.0"
   },
