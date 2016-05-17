@@ -83,7 +83,7 @@ triangulate()
 var triangulationParams = {
 	accuracy: 0.7,    // float beteween 0 and 1
 	blur: 40,         // positive integer
-	threshold: 50     // integer between 1 and 100
+	threshold: 50,    // integer between 1 and 100
 	vertexCount: 700, // positive integer
 	fill: true,       // boolean or string with css color (e.g '#bada55', 'red')
 	stroke: true,     // boolean or string with css color (e.g '#bada55', 'red')
