@@ -1,36 +1,24 @@
 import getColorByPos from '../util/getColorByPos';
+import polygonCenter from '../util/polygonCenter';
+import isTransparent from '../util/isTransparent';
 
 export default function ( polygons, colorData, params ) {
-	let pixelIndex = 0;
-	let polygonCenterX;
-	let polygonCenterY;
-
-	let fill = params.fill;
-	let fillColor = typeof fill === 'string' ? params.fill : false;
-	let stroke = params.stroke;
-	let strokeColor = typeof stroke === 'string' ? params.stroke : false;
-	let strokeWidth = params.strokeWidth;
-	let lineJoin = params.lineJoin;
+	const { fill, stroke, strokeWidth, lineJoin, transparent } = params;
+	const fillColor = typeof fill === 'string' ? fill : false;
+	const strokeColor = typeof stroke === 'string' ? stroke : false;
+	const transparent = typeof transparent === 'string' ? transparent : false;
 
 	polygons.forEach( function ( polygon, index ) {
-		let polygonCenter = {
-			x: ( polygon.a.x + polygon.b.x + polygon.c.x ) * 0.33333,
-			y: ( polygon.a.y + polygon.b.y + polygon.c.y ) * 0.33333
-		}
-
-		let color = getColorByPos( polygonCenter, colorData );
+		const color = getColorByPos( polygonCenter(polygon), colorData );
 
 		if ( fill ) {
-			polygon.fill = fillColor || `rgb(${color.r}, ${color.g}, ${color.b})`;
+			polygon.fill = (transparent && isTransparent(color)) ? transparent :
+											fillColor || `rgb(${color.r}, ${color.g}, ${color.b})`;
 		}
 
 		if ( stroke ) {
-			if ( strokeColor ) {
-				polygon.strokeColor = strokeColor;
-			} else {
-				polygon.strokeColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-			}
-
+			polygon.strokeColor = (transparent && isTransparent(color)) ? transparent : 
+														strokeColor || `rgb(${color.r}, ${color.g}, ${color.b})`;
 			polygon.strokeWidth = strokeWidth;
 			polygon.lineJoin = lineJoin;
 		}

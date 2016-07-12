@@ -74,5 +74,10 @@ export default function ( params ) {
 		params.vertexCount = 1;
 	}
 
+
+	if ( typeof params.transparent !== 'string' && typeof params.transparent !== 'boolean' ) {
+		params.transparent = defaultParams.transparent;
+	}
+
 	return params;
 }

@@ -12,6 +12,7 @@ export default function getColorByPos ( pos, colorData ) {
 	return {
 		r: colorData.data[index],
 		g: colorData.data[index + 1],
-		b: colorData.data[index + 2]
+		b: colorData.data[index + 2],
+		a: colorData.data[index + 3] / 255
 	};
 }

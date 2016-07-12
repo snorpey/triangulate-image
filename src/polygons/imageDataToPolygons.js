@@ -10,6 +10,7 @@ import getVerticesFromPoints from './getVerticesFromPoints';
 import addBoundingBoxesToPolygons from './addBoundingBoxesToPolygons';
 import addColorToPolygons from './addColorToPolygons';
 import addGradientsToPolygons from './addGradientsToPolygons';
+import filterTransparentPolygons from './filterTransparentPolygons';
 
 export default function ( imageData, params ) {
 	if ( isImageData( imageData ) ) {
@@ -24,7 +25,9 @@ export default function ( imageData, params ) {
 		let polygons = delaunay( edgeVertices );
 		
 		polygons = addBoundingBoxesToPolygons( polygons );
-
+		
+		if ( !params.transparent ) { polygons = filterTransparentPolygons( polygons, colorImageData ); }
+		
 		if ( params.fill === true && params.gradients === true ) {
 			polygons = addGradientsToPolygons( polygons, colorImageData, params );
 		} else {
