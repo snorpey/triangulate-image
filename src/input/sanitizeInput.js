@@ -1,5 +1,6 @@
 import clamp from '../util/clamp';
 import clone from '../util/clone';
+import toColor from '../util/toColor';
 import defaultParams from './defaultParams';
 
 let allowedLineJoins = [ 'miter', 'round', 'bevel' ];
@@ -78,6 +79,12 @@ export default function ( params ) {
 	if ( typeof params.transparent !== 'string' && typeof params.transparent !== 'boolean' ) {
 		params.transparent = defaultParams.transparent;
 	}
+
+	/** "transparent=true" is meaningless */
+	if ( typeof params.transparent === true ) {	params.transparent = false;	}
+
+	/** Transform `transparent` string to RGBA color object */
+	if ( typeof params.transparent === 'string' ) {	params.transparent = toColor(params.transparent);	}
 
 	return params;
 }

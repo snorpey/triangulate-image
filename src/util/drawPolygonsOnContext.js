@@ -1,3 +1,4 @@
+import toRGBA from './toRGBA';
 export default function ( ctx, polygons, size, dpr ) {
 	dpr = dpr || 1;
 
@@ -20,7 +21,7 @@ export default function ( ctx, polygons, size, dpr ) {
 			let lastColorIndex = polygon.gradient.colors.length - 1;
 			
 			polygon.gradient.colors.forEach( function ( color, index ) {
-				let rgb = `rgb(${color.r}, ${color.g}, ${color.b})`;
+				let rgb = toRGBA(color);
 				gradient.addColorStop( index / lastColorIndex, rgb );
 			} );
 

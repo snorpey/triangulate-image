@@ -1,6 +1,13 @@
 import clamp from './clamp';
 
-export default function getColorByPos ( pos, colorData ) {
+/**
+ * Get color object by position
+ * @param  {Object} pos         {x,y} object
+ * @param  {Object} colorData   Image color data object
+ * @param  {Object} [transparent] (optional) RGBA color object. Used to set specific color to transparent pixels
+ * @return {Object}             RGBA color object
+ */
+export default function getColorByPos ( pos, colorData, transparent ) {
 	let x = clamp( pos.x, 1, colorData.width - 2 );
 	let y = clamp( pos.y, 1, colorData.height - 2 );
 	let index = ( ( x | 0 ) + ( y | 0 ) * colorData.width ) << 2;
@@ -9,10 +16,13 @@ export default function getColorByPos ( pos, colorData ) {
 		index = colorData.data.length - 5;
 	}
 
-	return {
+	const alpha = colorData.data[index + 3] / 255;
+
+	// Return RGBA color object
+	return (transparent && alpha === 0)? transparent : {
 		r: colorData.data[index],
 		g: colorData.data[index + 1],
 		b: colorData.data[index + 2],
-		a: colorData.data[index + 3] / 255
+		a: alpha
 	};
 }

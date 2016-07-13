@@ -1,3 +1,4 @@
+import toRGBA from '../util/toRGBA';
 // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon
 export default function ( polygons, size ) {
@@ -27,7 +28,7 @@ export default function ( polygons, size ) {
 			let lastColorIndex = polygon.gradient.colors.length - 1;
 			
 			polygon.gradient.colors.forEach( function ( color, index ) {
-				let rgb = `rgb(${color.r}, ${color.g}, ${color.b})`;
+				let rgb = toRGBA(color);
 				let offset = ( ( index / lastColorIndex ) * 100 ).toFixed( 3 );
 				defStr += `
 					<stop offset="${offset}%" stop-color="${rgb}"/>
