@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>image triangulation - transparency example</title>
+		<style>
+			body { 
+				color: #fff; 
+				background-color: #222;
+				background-image: linear-gradient(180deg, transparent 50%, rgba(55,55,55,.55) 50%);
+				background-size: 20px 20px;
+			}
+			ol { display: -webkit-flex; display: flex; flex-direction: row; flex-wrap: wrap; }
+			li { padding: 2em; border-bottom: solid 1px; list-style-position: inside; }
+		</style>
+	</head>
+	<body>
+
+		<h1>Source image</h1>
+		<img id="srcImg" />
+		<hr />
+		
+		<h1>Processed SVGs</h1>
+		<ol id="container"></ol>
+
+		<script src="../dist/triangulate-image.js"></script>
+		<script>
+			/*global triangulate*/
+			var imagePath = 'img/transparent.png';
+			document.getElementById( 'srcImg' ).src = imagePath;	
+			var containerEl = document.getElementById( 'container' );
+			
+			var defaultParams = {
+				fill:           false,
+				stroke:         false,
+				gradients:      false,
+				transparent: 		false
+			};
+
+			var variants = [
+				{	fill: true },
+				{	fill: true, transparent: "hsla(0, 50%, 52%, 0.5)"	},
+				{	fill: "rgba(250,10,10,0.25)", transparent: "pink"	},
+				
+				{	stroke: true },
+				{	stroke: true, transparent: "#abcdef"	},
+				{	stroke: "rgba(0,0,0,0)", transparent: "#abcdef"	},
+				{	stroke: "rgba(250,10,10,0.25)", strokeWidth: 10, transparent: "hsla(0, 0%, 70%, 0.25)"	},
+				
+				{	fill: true, gradients: true },
+				{	fill: true, stroke: true, gradients: true, transparent: "hsl(0, 50%, 52%)"	},
+				{	fill: true, gradients: true, transparent: "rgba(0, 100, 0, 0.3)"	},
+			];
+
+			function getTitle(params) {
+				return Object.keys(params).map(function(k){
+					return k + ':' + params[k];
+				}).join('\n');
+			}
+
+			function renderer(img, params) {
+				var elm = document.createElement( 'li' );
+				elm.innerHTML = triangulate( params ).fromImageSync( img ).toSVGSync();
+				var titleEl = document.createElement( 'pre' );
+				titleEl.innerHTML = getTitle(params);
+				elm.appendChild( titleEl );
+				containerEl.appendChild( elm );
+			}
+
+
+			function loadImage ( src, callback ) {
+				var imageEl = new Image();
+				imageEl.onload = function () { callback( imageEl );	};
+				imageEl.src = src;
+			}
+
+			/** Load image and render all variants */
+			loadImage( imagePath, function ( img ) {
+				variants.forEach(function(v) {
+					var params = Object.assign({}, defaultParams, v);
+					renderer(img,params);
+				});
+			} );
+		</script>
+	</body>
+</html>
