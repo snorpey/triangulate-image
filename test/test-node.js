@@ -60,6 +60,7 @@ describe( 'node tests for triangulate-image', function () {
 			expect( typeof params.strokeWidth === 'number' || typeof params.strokeWidth === 'boolean' ).to.be( true );
 			expect( [ 'miter', 'round', 'bevel' ] ).to.contain( params.lineJoin );
 			expect( params.vertexCount ).to.be.a( 'number' );
+			expect( typeof params.transparentColor === 'string' || typeof params.transparentColor === 'boolean' ).to.be( true );
 		} );
 		
 		it ( 'should set the default no parameters are submitted', function () {
