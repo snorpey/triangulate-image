@@ -12,14 +12,14 @@ exports.default = function (points, maxPointCount, accuracy, width, height) {
 	// this avoids having too many "big" triangles in areas of the image with low contrast
 	// next to very small ones in areas with high contrast
 	// for every other row, start the x value at > 0, so the grid doesn't look too regular
-	var gridPointCount = Math.max(~ ~(maxPointCount * (1 - accuracy)), 5);
+	var gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5);
 
 	// http://stackoverflow.com/a/4107092/229189
 	var gridColumns = Math.round(Math.sqrt(gridPointCount));
 	var gridRows = Math.round(Math.ceil(gridPointCount / gridColumns));
 
-	var xIncrement = ~ ~(width / gridColumns);
-	var yIncrement = ~ ~(height / gridRows);
+	var xIncrement = ~~(width / gridColumns);
+	var yIncrement = ~~(height / gridRows);
 
 	var rowIndex = 0;
 	var startX = 0;
@@ -30,13 +30,13 @@ exports.default = function (points, maxPointCount, accuracy, width, height) {
 	for (y = 0; y < height; y += yIncrement) {
 		rowIndex++;
 
-		startX = rowIndex % 2 === 0 ? ~ ~(xIncrement / 2) : 0;
+		startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0;
 
 		for (x = startX; x < width; x += xIncrement) {
 			if (x < width && y < height) {
 				// "distorting" the grid a little bit so that the
 				// background vertices don't appear to be on a straight line (which looks boring)
-				addVertex(~ ~(x + Math.cos(y) * yIncrement), ~ ~(y + Math.sin(x) * xIncrement), resultHash);
+				addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
 			}
 		}
 	}
@@ -50,7 +50,7 @@ exports.default = function (points, maxPointCount, accuracy, width, height) {
 	// add points from all edge points
 	var remainingPointCount = maxPointCount - Object.keys(resultHash).length;
 	var edgePointCount = points.length;
-	var increment = ~ ~(edgePointCount / remainingPointCount);
+	var increment = ~~(edgePointCount / remainingPointCount);
 
 	if (maxPointCount > 0 && increment > 0) {
 		var i = 0;

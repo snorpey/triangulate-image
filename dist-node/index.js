@@ -21,8 +21,8 @@ exports.default = function (params) {
 	var isInputSync = false;
 	var isOutputSync = false;
 
-	var inputFn = undefined;
-	var outputFn = undefined;
+	var inputFn = void 0;
+	var outputFn = void 0;
 
 	var api = {
 		getParams: getParams,

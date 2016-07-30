@@ -72,6 +72,20 @@ exports.default = function (params) {
 		params.vertexCount = 1;
 	}
 
+	if (typeof params.transparentColor !== 'string' && typeof params.transparentColor !== 'boolean') {
+		params.transparentColor = _defaultParams2.default.transparentColor;
+	}
+
+	/** "transparentColor=true" is meaningless */
+	if (typeof params.transparentColor === true) {
+		params.transparentColor = false;
+	}
+
+	/** Transform `transparentColor` string to RGBA color object */
+	if (typeof params.transparentColor === 'string') {
+		params.transparentColor = (0, _toColor2.default)(params.transparentColor);
+	}
+
 	return params;
 };
 
@@ -82,6 +96,10 @@ var _clamp2 = _interopRequireDefault(_clamp);
 var _clone = require('../util/clone');
 
 var _clone2 = _interopRequireDefault(_clone);
+
+var _toColor = require('../util/toColor');
+
+var _toColor2 = _interopRequireDefault(_toColor);
 
 var _defaultParams = require('./defaultParams');
 

@@ -11,4 +11,4 @@ exports.default = function (a, b) {
 	return Math.sqrt(dx * dx + dy * dy);
 };
 
-module.exports = exports['default'];
+module.exports = exports["default"];

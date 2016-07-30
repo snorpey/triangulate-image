@@ -18,6 +18,10 @@ exports.default = function (imageData, params) {
 
 		polygons = (0, _addBoundingBoxesToPolygons2.default)(polygons);
 
+		if (!params.transparentColor) {
+			polygons = (0, _filterTransparentPolygons2.default)(polygons, colorImageData);
+		}
+
 		if (params.fill === true && params.gradients === true) {
 			polygons = (0, _addGradientsToPolygons2.default)(polygons, colorImageData, params);
 		} else {
@@ -70,6 +74,10 @@ var _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons);
 var _addGradientsToPolygons = require('./addGradientsToPolygons');
 
 var _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
+
+var _filterTransparentPolygons = require('./filterTransparentPolygons');
+
+var _filterTransparentPolygons2 = _interopRequireDefault(_filterTransparentPolygons);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

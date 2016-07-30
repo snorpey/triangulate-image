@@ -34,7 +34,7 @@ exports.default = function (polygons, size) {
 				var lastColorIndex = polygon.gradient.colors.length - 1;
 
 				polygon.gradient.colors.forEach(function (color, index) {
-					var rgb = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')';
+					var rgb = (0, _toRGBA2.default)(color);
 					var offset = (index / lastColorIndex * 100).toFixed(3);
 					defStr += '\n\t\t\t\t\t<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n\t\t\t\t';
 				});
@@ -70,5 +70,12 @@ exports.default = function (polygons, size) {
 	return svg;
 };
 
-module.exports = exports['default']; // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
+var _toRGBA = require('../util/toRGBA');
+
+var _toRGBA2 = _interopRequireDefault(_toRGBA);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];
+// http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon

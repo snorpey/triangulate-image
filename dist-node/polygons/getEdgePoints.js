@@ -46,5 +46,5 @@ exports.default = function (imageData, threshold) {
 	return points;
 };
 
-module.exports = exports['default']; // most parts taken from http://jsdo.it/akm2/xoYx
+module.exports = exports["default"]; // most parts taken from http://jsdo.it/akm2/xoYx
 // (starting line 293++)
