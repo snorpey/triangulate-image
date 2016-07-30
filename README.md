@@ -24,7 +24,7 @@ a javascript module that converts images to triangular polygons:
 
 ![triangulated image of a. lincoln](example.png)
 
-for a live example, you can check out my [triangulation](http://snorpey.github.io/triangulation/) editor online. there's also a list with [example images](examples/examples.md) included in this repository. 
+for a live example, you can check out my [triangulation](http://snorpey.github.io/triangulation/) editor online. there's also a list with [example images](examples/examples.md), and [transparency examples](examples/transparent-examples.md) included in this repository. 
 
 how to use it
 ===
@@ -63,7 +63,7 @@ for an explanation of all available methods and parameters, check out the [refer
 
 by default, all input and output methods are asynchronous and use promises for flow control. for most methods, there synchronous versions available as well. this library uses web workers for processing the image data where possible.
 
-you can find more examples for both node and brower in the [examples](examples) folder of this repository.
+you can find more examples for both node and broswer in the [examples](examples) folder of this repository.
 
 reference
 ===
@@ -81,16 +81,17 @@ triangulate()
 // the parameters listed are the default params
 
 var triangulationParams = {
-	accuracy: 0.7,    // float beteween 0 and 1
-	blur: 40,         // positive integer
-	threshold: 50,    // integer between 1 and 100
-	vertexCount: 700, // positive integer
-	fill: true,       // boolean or string with css color (e.g '#bada55', 'red')
-	stroke: true,     // boolean or string with css color (e.g '#bada55', 'red')
-	strokeWidth: 0.5, // positive float
-	gradients: true,  // boolean
-	gradientStops: 4, // positive integer >= 2
-	lineJoin: 'miter' // 'miter', 'round', or 'bevel'
+	accuracy: 0.7,    		// float beteween 0 and 1
+	blur: 40,         		// positive integer
+	threshold: 50,    		// integer between 1 and 100
+	vertexCount: 700, 		// positive integer
+	fill: true,       		// boolean or string with css color (e.g '#bada55', 'red', rgba(100,100,100,0.5))
+	stroke: true,     		// boolean or string with css color (e.g '#bada55', 'red', hsla(0, 50%, 52%, 0.5))
+	strokeWidth: 0.5, 		// positive float
+	gradients: true,  		// boolean
+	gradientStops: 4, 		// positive integer >= 2
+	lineJoin: 'miter',		// 'miter', 'round', or 'bevel'
+	transparentColor: false // boolean false or string with css color
 };
 
 ```
