@@ -10,7 +10,7 @@ import isTransparent from '../util/isTransparent';
  */
 export default function ( polygons, colorData ) {
 	return polygons.filter(polygon => {
-			const color = getColorByPos( polygonCenter(polygon), colorData, false );
+			const color = getColorByPos( polygonCenter(polygon), colorData );
 			return !isTransparent(color);
 	});
 }
