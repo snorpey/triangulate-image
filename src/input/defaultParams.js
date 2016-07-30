@@ -7,5 +7,5 @@ export default {
 	lineJoin: 'miter',
 	vertexCount: 700,
 	threshold: 50,
-	transparent: false
+	transparentColor: false
 };

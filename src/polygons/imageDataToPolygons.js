@@ -26,7 +26,7 @@ export default function ( imageData, params ) {
 		
 		polygons = addBoundingBoxesToPolygons( polygons );
 		
-		if ( !params.transparent ) { polygons = filterTransparentPolygons( polygons, colorImageData ); }
+		if ( !params.transparentColor ) { polygons = filterTransparentPolygons( polygons, colorImageData ); }
 		
 		if ( params.fill === true && params.gradients === true ) {
 			polygons = addGradientsToPolygons( polygons, colorImageData, params );

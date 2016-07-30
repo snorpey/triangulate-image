@@ -75,16 +75,15 @@ export default function ( params ) {
 		params.vertexCount = 1;
 	}
 
-
-	if ( typeof params.transparent !== 'string' && typeof params.transparent !== 'boolean' ) {
-		params.transparent = defaultParams.transparent;
+	if ( typeof params.transparentColor !== 'string' && typeof params.transparentColor !== 'boolean' ) {
+		params.transparentColor = defaultParams.transparentColor;
 	}
 
-	/** "transparent=true" is meaningless */
-	if ( typeof params.transparent === true ) {	params.transparent = false;	}
+	/** "transparentColor=true" is meaningless */
+	if ( typeof params.transparentColor === true ) {	params.transparentColor = false;	}
 
-	/** Transform `transparent` string to RGBA color object */
-	if ( typeof params.transparent === 'string' ) {	params.transparent = toColor(params.transparent);	}
+	/** Transform `transparentColor` string to RGBA color object */
+	if ( typeof params.transparentColor === 'string' ) {	params.transparentColor = toColor(params.transparentColor);	}
 
 	return params;
 }
