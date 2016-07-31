@@ -129,7 +129,7 @@ function fromBufferToPngSync () {
 			throw err;
 		}
 		
-		var imageBuffer = triangulate( params ).fromBuffer( buffer ).toBuffer();
+		var imageBuffer = triangulate( params ).fromBufferSync( buffer ).toBufferSync();
 
 		fs.writeFile( __dirname + '/node-output/fromBufferToPngSync.png', imageBuffer, function ( err ) {
 			if ( err ) {
