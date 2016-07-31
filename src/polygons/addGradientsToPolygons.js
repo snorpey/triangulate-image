@@ -7,7 +7,7 @@ export default function ( polygons, colorData, params ) {
 		let data = { };
 
 		'abc'.split( '' ).forEach( function ( key ) {
-			let color = getColorByPos( polygon[key], colorData );
+			let color = getColorByPos( polygon[key], colorData, params.transparentColor );
 			
 			data[key] = {
 				key: key,
@@ -25,7 +25,7 @@ export default function ( polygons, colorData, params ) {
 				y: ( polygon[otherKeys[0]].y + polygon[otherKeys[1]].y ) / 2
 			};
 
-			data[key].medianColor = getColorByPos( data[key].median, colorData );
+			data[key].medianColor = getColorByPos( data[key].median, colorData, params.transparentColor );
 			data[key].medianLuminance = luminance( data[key].medianColor );
 		} );
 
@@ -61,7 +61,7 @@ export default function ( polygons, colorData, params ) {
 			y1: pointWithMostDeltaInLuminance.y,
 			x2: pointWithMostDeltaInLuminance.median.x,
 			y2: pointWithMostDeltaInLuminance.median.y,
-			colors: gradienStopPositions.map( function ( pos ) { return getColorByPos( pos, colorData ); } )
+			colors: gradienStopPositions.map( function ( pos ) { return getColorByPos( pos, colorData, params.transparentColor); } )
 		};
 
 		if ( params.stroke ) {

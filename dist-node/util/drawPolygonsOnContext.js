@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -22,7 +22,7 @@ exports.default = function (ctx, polygons, size, dpr) {
 				var lastColorIndex = polygon.gradient.colors.length - 1;
 
 				polygon.gradient.colors.forEach(function (color, index) {
-					var rgb = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")";
+					var rgb = (0, _toRGBA2.default)(color);
 					gradient.addColorStop(index / lastColorIndex, rgb);
 				});
 
@@ -56,6 +56,12 @@ exports.default = function (ctx, polygons, size, dpr) {
 
 	return ctx;
 };
+
+var _toRGBA = require('./toRGBA');
+
+var _toRGBA2 = _interopRequireDefault(_toRGBA);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;
 module.exports = exports['default'];

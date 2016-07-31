@@ -13,4 +13,4 @@ exports.default = function (color) {
 	return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 };
 
-module.exports = exports['default']; //  http://stackoverflow.com/a/9733420/229189
+module.exports = exports["default"]; //  http://stackoverflow.com/a/9733420/229189

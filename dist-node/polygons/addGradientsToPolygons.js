@@ -9,7 +9,7 @@ exports.default = function (polygons, colorData, params) {
 		var data = {};
 
 		'abc'.split('').forEach(function (key) {
-			var color = (0, _getColorByPos2.default)(polygon[key], colorData);
+			var color = (0, _getColorByPos2.default)(polygon[key], colorData, params.transparentColor);
 
 			data[key] = {
 				key: key,
@@ -27,7 +27,7 @@ exports.default = function (polygons, colorData, params) {
 				y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
 			};
 
-			data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData);
+			data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData, params.transparentColor);
 			data[key].medianLuminance = (0, _luminance2.default)(data[key].medianColor);
 		});
 
@@ -64,7 +64,7 @@ exports.default = function (polygons, colorData, params) {
 			x2: pointWithMostDeltaInLuminance.median.x,
 			y2: pointWithMostDeltaInLuminance.median.y,
 			colors: gradienStopPositions.map(function (pos) {
-				return (0, _getColorByPos2.default)(pos, colorData);
+				return (0, _getColorByPos2.default)(pos, colorData, params.transparentColor);
 			})
 		};
 

@@ -58,23 +58,23 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
             var _es6Promise = _dereq_('es6-promise'), _browser = _dereq_('./browser'), _browser2 = _interopRequireDefault(_browser);
-            (0, _es6Promise.polyfill)(), exports['default'] = _browser2['default'], module.exports = exports['default'];
+            (0, _es6Promise.polyfill)(), exports.default = _browser2.default, module.exports = exports.default;
         }, {
             './browser': 2,
-            'es6-promise': 29
+            'es6-promise': 34
         } ],
         2: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -89,7 +89,7 @@
                 }
                 return target;
             };
-            exports['default'] = function(params) {
+            exports.default = function(params) {
                 function getParams() {
                     return params;
                 }
@@ -102,10 +102,10 @@
                     return outputFn || _extends(result, outputMethods), result;
                 }
                 function fromImage(inputParams) {
-                    return setInput(_fromImageToImageData2['default'], inputParams);
+                    return setInput(_fromImageToImageData2.default, inputParams);
                 }
                 function fromImageSync(inputParams) {
-                    return setInput(_fromImageToImageData2['default'], inputParams, !0);
+                    return setInput(_fromImageToImageData2.default, inputParams, !0);
                 }
                 function fromImageData(inputParams) {
                     return setInput(function(id) {
@@ -128,22 +128,22 @@
                     }, outputParams, !0);
                 }
                 function toDataURL(outputParams) {
-                    return setOutput(_polygonsToDataURL2['default'], outputParams);
+                    return setOutput(_polygonsToDataURL2.default, outputParams);
                 }
                 function toDataURLSync(outputParams) {
-                    return setOutput(_polygonsToDataURL2['default'], outputParams, !0);
+                    return setOutput(_polygonsToDataURL2.default, outputParams, !0);
                 }
                 function toImageData(outputParams) {
-                    return setOutput(_polygonsToImageData2['default'], outputParams);
+                    return setOutput(_polygonsToImageData2.default, outputParams);
                 }
                 function toImageDataSync(outputParams) {
-                    return setOutput(_polygonsToImageData2['default'], outputParams, !0);
+                    return setOutput(_polygonsToImageData2.default, outputParams, !0);
                 }
                 function toSVG(outputParams) {
-                    return setOutput(_polygonsToSVG2['default'], outputParams);
+                    return setOutput(_polygonsToSVG2.default, outputParams);
                 }
                 function toSVGSync(outputParams) {
-                    return setOutput(_polygonsToSVG2['default'], outputParams, !0);
+                    return setOutput(_polygonsToSVG2.default, outputParams, !0);
                 }
                 function setInput(fn, inputParams, isSync) {
                     return isInputSync = !!isSync, inputFn = function() {
@@ -174,7 +174,7 @@
                 }
                 function getResult() {
                     if (isInputSync && isOutputSync) {
-                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2['default'])(imageData, params), outputData = outputFn(polygonData, imageData);
+                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2.default)(imageData, params), outputData = outputFn(polygonData, imageData);
                         return outputData;
                     }
                     return new Promise(function(resolve, reject) {
@@ -233,8 +233,8 @@
                         }
                     });
                 }
-                params = (0, _sanitizeInput2['default'])(params);
-                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2['default'])(_triangulationWorker2['default']), inputFn = void 0, outputFn = void 0, api = {
+                params = (0, _sanitizeInput2.default)(params);
+                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2.default)(_triangulationWorker2.default), inputFn = void 0, outputFn = void 0, api = {
                     getParams: getParams,
                     getInput: getInput,
                     getOutput: getOutput
@@ -256,32 +256,32 @@
                 return getInput();
             };
             var _sanitizeInput = _dereq_('./input/sanitizeInput'), _sanitizeInput2 = _interopRequireDefault(_sanitizeInput), _fromImageToImageData = _dereq_('./input/browser/fromImageToImageData'), _fromImageToImageData2 = _interopRequireDefault(_fromImageToImageData), _polygonsToImageData = _dereq_('./output/polygonsToImageData'), _polygonsToImageData2 = _interopRequireDefault(_polygonsToImageData), _polygonsToDataURL = _dereq_('./output/polygonsToDataURL'), _polygonsToDataURL2 = _interopRequireDefault(_polygonsToDataURL), _polygonsToSVG = _dereq_('./output/polygonsToSVG'), _polygonsToSVG2 = _interopRequireDefault(_polygonsToSVG), _imageDataToPolygons = _dereq_('./polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons), _webworkify = _dereq_('webworkify'), _webworkify2 = _interopRequireDefault(_webworkify), _triangulationWorker = _dereq_('./workers/triangulationWorker'), _triangulationWorker2 = _interopRequireDefault(_triangulationWorker);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             './input/browser/fromImageToImageData': 5,
             './input/sanitizeInput': 7,
             './output/polygonsToDataURL': 8,
             './output/polygonsToImageData': 9,
             './output/polygonsToSVG': 10,
-            './polygons/imageDataToPolygons': 16,
-            './workers/triangulationWorker': 26,
-            webworkify: 33
+            './polygons/imageDataToPolygons': 17,
+            './workers/triangulationWorker': 31,
+            webworkify: 38
         } ],
         3: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function copyImageDataWithCanvas(imageData) {
-                var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height), ctx = canvas.getContext('2d');
+                var canvas = (0, _canvasBrowserify2.default)(imageData.width, imageData.height), ctx = canvas.getContext('2d');
                 return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData) {
-                if ((0, _isImageData2['default'])(imageData)) {
+            }), exports.default = function(imageData) {
+                if ((0, _isImageData2.default)(imageData)) {
                     if ('undefined' == typeof Uint8ClampedArray) {
                         if ('undefined' == typeof window) {
                             throw new Error('Can\'t copy imageData in webworker without Uint8ClampedArray support.');
@@ -310,38 +310,38 @@
                 throw new Error('Given imageData object is not useable.');
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/isImageData': 23,
-            'canvas-browserify': 27
+            '../util/isImageData': 24,
+            'canvas-browserify': 32
         } ],
         4: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData) {
-                for (var len = imageData.data.length, brightness = void 0, i = 0; len > i; i += 4) {
+            }), exports.default = function(imageData) {
+                for (var len = imageData.data.length, brightness = void 0, i = 0; i < len; i += 4) {
                     brightness = .34 * imageData.data[i] + .5 * imageData.data[i + 1] + .16 * imageData.data[i + 2], 
                     imageData.data[i] = brightness, imageData.data[i + 1] = brightness, imageData.data[i + 2] = brightness;
                 }
                 return imageData;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         5: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(image) {
+            }), exports.default = function(image) {
                 if (image instanceof HTMLImageElement) {
                     if (!image.naturalWidth || !image.naturalHeight || image.complete === !1) {
                         throw new Error('This this image hasn\'t finished loading: ' + image.src);
                     }
-                    var canvas = new _canvasBrowserify2['default'](image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
+                    var canvas = new _canvasBrowserify2.default(image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
                     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     return imageData.data && imageData.data.length && ('undefined' == typeof imageData.width && (imageData.width = image.naturalWidth), 
@@ -350,16 +350,16 @@
                 }
                 throw new Error('This object does not seem to be an image.');
             };
-            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2['default'].Image;
-            module.exports = exports['default'];
+            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2.default.Image;
+            module.exports = exports.default;
         }, {
-            'canvas-browserify': 27
+            'canvas-browserify': 32
         } ],
         6: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = {
+            }), exports.default = {
                 accuracy: .7,
                 blur: 4,
                 fill: !0,
@@ -367,14 +367,15 @@
                 strokeWidth: .5,
                 lineJoin: 'miter',
                 vertexCount: 700,
-                threshold: 50
-            }, module.exports = exports['default'];
+                threshold: 50,
+                transparentColor: !1
+            }, module.exports = exports.default;
         }, {} ],
         7: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -385,71 +386,79 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports['default'] = function(params) {
-                return params = (0, _clone2['default'])(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
-                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2['default'].accuracy : params.accuracy = (0, 
-                _clamp2['default'])(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2['default'].blur), 
-                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2['default'].fill), 
-                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2['default'].stroke), 
-                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2['default'].strokeWidth), 
-                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2['default'].threshold : params.threshold = (0, 
-                _clamp2['default'])(params.threshold, 1, 100), ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
+            exports.default = function(params) {
+                return params = (0, _clone2.default)(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
+                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2.default.accuracy : params.accuracy = (0, 
+                _clamp2.default)(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2.default.blur), 
+                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2.default.fill), 
+                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2.default.stroke), 
+                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2.default.strokeWidth), 
+                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2.default.threshold : params.threshold = (0, 
+                _clamp2.default)(params.threshold, 1, 100), 'string' == typeof params.lineJoin && allowedLineJoins.indexOf(params.lineJoin) !== -1 || (params.lineJoin = _defaultParams2.default.lineJoin), 
                 params.gradients && params.fill ? params.gradients = !0 : params.gradients = !1, 
                 params.gradients && (('number' != typeof params.gradientStops || isNaN(params.gradientStops) || params.gradientStops < 2) && (params.gradientStops = 2), 
-                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
-                params.vertexCount <= 0 && (params.vertexCount = 1), params;
+                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2.default.vertexCount), 
+                params.vertexCount <= 0 && (params.vertexCount = 1), 'string' != typeof params.transparentColor && 'boolean' != typeof params.transparentColor && (params.transparentColor = _defaultParams2.default.transparentColor), 
+                typeof params.transparentColor === !0 && (params.transparentColor = !1), 'string' == typeof params.transparentColor && (params.transparentColor = (0, 
+                _toColor2.default)(params.transparentColor)), params;
             };
-            var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp), _clone = _dereq_('../util/clone'), _clone2 = _interopRequireDefault(_clone), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
-            module.exports = exports['default'];
+            var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp), _clone = _dereq_('../util/clone'), _clone2 = _interopRequireDefault(_clone), _toColor = _dereq_('../util/toColor'), _toColor2 = _interopRequireDefault(_toColor), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
+            module.exports = exports.default;
         }, {
-            '../util/clamp': 17,
-            '../util/clone': 18,
+            '../util/clamp': 18,
+            '../util/clone': 19,
+            '../util/toColor': 29,
             './defaultParams': 6
         } ],
         8: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2['default'])(size, options, dpr);
-                return (0, _drawPolygonsOnContext2['default'])(canvasData.ctx, polygons, size, dpr), 
+            }), exports.default = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2.default)(size, options, dpr);
+                return (0, _drawPolygonsOnContext2.default)(canvasData.ctx, polygons, size, dpr), 
                 canvasData.canvas.toDataURL();
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/drawPolygonsOnContext': 20,
-            '../util/makeCanvasAndContext': 25
+            '../util/drawPolygonsOnContext': 21,
+            '../util/makeCanvasAndContext': 27
         } ],
         9: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2['default'])(size, options, dpr, !0).ctx;
-                return (0, _drawPolygonsOnContext2['default'])(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
+            }), exports.default = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2.default)(size, options, dpr, !0).ctx;
+                return (0, _drawPolygonsOnContext2.default)(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/drawPolygonsOnContext': 20,
-            '../util/makeCanvasAndContext': 25
+            '../util/drawPolygonsOnContext': 21,
+            '../util/makeCanvasAndContext': 27
         } ],
         10: [ function(_dereq_, module, exports) {
             'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    default: obj
+                };
+            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size) {
+            }), exports.default = function(polygons, size) {
                 var defStr = '';
                 polygons.length && polygons[0].gradient && (defStr = '<defs>');
                 var polygonStr = '';
@@ -458,99 +467,105 @@
                     polygonStr += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"', 
                     polygon.gradient ? !function() {
                         var bb = polygon.boundingBox, x1 = ((polygon.gradient.x1 - bb.x) / bb.width * 100).toFixed(3), y1 = ((polygon.gradient.y1 - bb.y) / bb.height * 100).toFixed(3), x2 = ((polygon.gradient.x2 - bb.x) / bb.width * 100).toFixed(3), y2 = ((polygon.gradient.y2 - bb.y) / bb.height * 100).toFixed(3);
-                        defStr += '\n	<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
+                        defStr += '\n\t<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
                         var lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')', offset = (index / lastColorIndex * 100).toFixed(3);
-                            defStr += '\n					<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n				';
+                            var rgb = (0, _toRGBA2.default)(color), offset = (index / lastColorIndex * 100).toFixed(3);
+                            defStr += '\n\t\t\t\t\t<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n\t\t\t\t';
                         }), defStr += '</linearGradient>', polygonStr += ' fill="url(#gradient-' + index + ')"', 
                         polygon.strokeWidth > 0 && (polygonStr += ' stroke="url(#gradient-' + index + ')" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"');
                     }() : (polygonStr += polygon.fill ? ' fill="' + polygon.fill + '"' : ' fill="transparent"', 
                     polygon.strokeColor && (polygonStr += ' stroke="' + polygon.strokeColor + '" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"')), 
-                    polygonStr += '/>\n	';
-                }), defStr.length && (defStr += '\n		</defs>');
-                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n	' + defStr + '\n	' + polygonStr + '\n</svg>';
+                    polygonStr += '/>\n\t';
+                }), defStr.length && (defStr += '\n\t\t</defs>');
+                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n\t' + defStr + '\n\t' + polygonStr + '\n</svg>';
                 return svg;
-            }, module.exports = exports['default'];
-        }, {} ],
+            };
+            var _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
+            module.exports = exports.default;
+        }, {
+            '../util/toRGBA': 30
+        } ],
         11: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
+            }), exports.default = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon) {
-                    polygon.boundingBox = (0, _getBoundingBox2['default'])([ polygon.a, polygon.b, polygon.c ]);
+                    polygon.boundingBox = (0, _getBoundingBox2.default)([ polygon.a, polygon.b, polygon.c ]);
                 }), polygons.filter(function(polygon) {
                     return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
                 });
             };
             var _getBoundingBox = _dereq_('../util/getBoundingBox'), _getBoundingBox2 = _interopRequireDefault(_getBoundingBox);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/getBoundingBox': 21
+            '../util/getBoundingBox': 22
         } ],
         12: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
-                var fill = params.fill, fillColor = 'string' == typeof fill ? params.fill : !1, stroke = params.stroke, strokeColor = 'string' == typeof stroke ? params.stroke : !1, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin;
+            }), exports.default = function(polygons, colorData, params) {
+                var fill = params.fill, stroke = params.stroke, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, transparentColor = params.transparentColor, fillColor = 'string' == typeof fill && fill, strokeColor = 'string' == typeof stroke && stroke, getColor = function(color, override) {
+                    var t = (0, _isTransparent2.default)(color) && transparentColor, c = t ? transparentColor : color;
+                    return override && !t ? override : (0, _toRGBA2.default)(c);
+                };
                 return polygons.forEach(function(polygon, index) {
-                    var polygonCenter = {
-                        x: .33333 * (polygon.a.x + polygon.b.x + polygon.c.x),
-                        y: .33333 * (polygon.a.y + polygon.b.y + polygon.c.y)
-                    }, color = (0, _getColorByPos2['default'])(polygonCenter, colorData);
-                    fill && (polygon.fill = fillColor || 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')'), 
-                    stroke && (strokeColor ? polygon.strokeColor = strokeColor : polygon.strokeColor = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')', 
+                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
+                    fill && (polygon.fill = getColor(color, fillColor)), stroke && (polygon.strokeColor = getColor(color, strokeColor), 
                     polygon.strokeWidth = strokeWidth, polygon.lineJoin = lineJoin);
                 }), polygons;
             };
-            var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos);
-            module.exports = exports['default'];
+            var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent), _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
+            module.exports = exports.default;
         }, {
-            '../util/getColorByPos': 22
+            '../util/getColorByPos': 23,
+            '../util/isTransparent': 25,
+            '../util/polygonCenter': 28,
+            '../util/toRGBA': 30
         } ],
         13: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
+            }), exports.default = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon, polygonIndex) {
                     var data = {};
                     'abc'.split('').forEach(function(key) {
-                        var color = (0, _getColorByPos2['default'])(polygon[key], colorData);
+                        var color = (0, _getColorByPos2.default)(polygon[key], colorData, params.transparentColor);
                         data[key] = {
                             key: key,
                             color: color,
                             x: polygon[key].x,
                             y: polygon[key].y
-                        }, data[key].luminance = (0, _luminance2['default'])(data[key].color);
+                        }, data[key].luminance = (0, _luminance2.default)(data[key].color);
                         var otherKeys = 'abc'.replace(key, '').split('');
                         data[key].median = {
                             x: (polygon[otherKeys[0]].x + polygon[otherKeys[1]].x) / 2,
                             y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
-                        }, data[key].medianColor = (0, _getColorByPos2['default'])(data[key].median, colorData), 
-                        data[key].medianLuminance = (0, _luminance2['default'])(data[key].medianColor);
+                        }, data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData, params.transparentColor), 
+                        data[key].medianLuminance = (0, _luminance2.default)(data[key].medianColor);
                     });
                     for (var pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort(function(u, v) {
                         return Math.abs(u.luminance - u.medianLuminance) - Math.abs(v.luminance - v.medianLuminance);
                     }), pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0], startPoint = pointsByDeltaInLuminance[0], endPoint = pointWithMostDeltaInLuminance.median, gradienStopPositions = [ startPoint ], startToEndDistance = (0, 
-                    _distance2['default'])(startPoint, endPoint), i = 1, len = params.gradientStops - 2; len > i; i++) {
+                    _distance2.default)(startPoint, endPoint), i = 1, len = params.gradientStops - 2; i < len; i++) {
                         var pointDistance = i * (startToEndDistance / params.gradientStops), pointPercent = pointDistance / startToEndDistance, point = {
                             x: startPoint.x + pointPercent * (endPoint.x - startPoint.x),
                             y: startPoint.y + pointPercent * (endPoint.y - startPoint.y)
@@ -563,31 +578,53 @@
                         x2: pointWithMostDeltaInLuminance.median.x,
                         y2: pointWithMostDeltaInLuminance.median.y,
                         colors: gradienStopPositions.map(function(pos) {
-                            return (0, _getColorByPos2['default'])(pos, colorData);
+                            return (0, _getColorByPos2.default)(pos, colorData, params.transparentColor);
                         })
                     }, params.stroke && (polygon.strokeWidth = params.strokeWidth, polygon.lineJoin = params.lineJoin), 
                     data = null;
                 }), polygons;
             };
             var _luminance = _dereq_('../util/luminance'), _luminance2 = _interopRequireDefault(_luminance), _distance = _dereq_('../util/distance'), _distance2 = _interopRequireDefault(_distance), _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/distance': 19,
-            '../util/getColorByPos': 22,
-            '../util/luminance': 24
+            '../util/distance': 20,
+            '../util/getColorByPos': 23,
+            '../util/luminance': 26
         } ],
         14: [ function(_dereq_, module, exports) {
             'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    default: obj
+                };
+            }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, threshold) {
+            }), exports.default = function(polygons, colorData) {
+                return polygons.filter(function(polygon) {
+                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
+                    return !(0, _isTransparent2.default)(color);
+                });
+            };
+            var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent);
+            module.exports = exports.default;
+        }, {
+            '../util/getColorByPos': 23,
+            '../util/isTransparent': 25,
+            '../util/polygonCenter': 28
+        } ],
+        15: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(imageData, threshold) {
                 var x, y, row, col, sx, sy, step, sum, total, multiplier = 2, width = imageData.width, height = imageData.height, data = imageData.data, points = [];
-                for (y = 0; height > y; y += multiplier) {
-                    for (x = 0; width > x; x += multiplier) {
-                        for (sum = total = 0, row = -1; 1 >= row; row++) {
-                            if (sy = y + row, step = sy * width, sy >= 0 && height > sy) {
-                                for (col = -1; 1 >= col; col++) {
-                                    sx = x + col, sx >= 0 && width > sx && (sum += data[sx + step << 2], total++);
+                for (y = 0; y < height; y += multiplier) {
+                    for (x = 0; x < width; x += multiplier) {
+                        for (sum = total = 0, row = -1; row <= 1; row++) {
+                            if (sy = y + row, step = sy * width, sy >= 0 && sy < height) {
+                                for (col = -1; col <= 1; col++) {
+                                    sx = x + col, sx >= 0 && sx < width && (sum += data[sx + step << 2], total++);
                                 }
                             }
                         }
@@ -598,13 +635,13 @@
                     }
                 }
                 return points;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
-        15: [ function(_dereq_, module, exports) {
+        16: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function addVertex(x, y, hash) {
@@ -616,11 +653,11 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(points, maxPointCount, accuracy, width, height) {
+            }), exports.default = function(points, maxPointCount, accuracy, width, height) {
                 var resultHash = {}, gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5), gridColumns = Math.round(Math.sqrt(gridPointCount)), gridRows = Math.round(Math.ceil(gridPointCount / gridColumns)), xIncrement = ~~(width / gridColumns), yIncrement = ~~(height / gridRows), rowIndex = 0, startX = 0, x = 0, y = 0;
-                for (y = 0; height > y; y += yIncrement) {
-                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; width > x; x += xIncrement) {
-                        width > x && height > y && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
+                for (y = 0; y < height; y += yIncrement) {
+                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; x < width; x += xIncrement) {
+                        x < width && y < height && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
                     }
                 }
                 addVertex(0, 0, resultHash), addVertex(width - 1, 0, resultHash), addVertex(width - 1, height - 1, resultHash), 
@@ -628,7 +665,7 @@
                 var remainingPointCount = maxPointCount - Object.keys(resultHash).length, edgePointCount = points.length, increment = ~~(edgePointCount / remainingPointCount);
                 if (maxPointCount > 0 && increment > 0) {
                     var i = 0;
-                    for (i = 0; edgePointCount > i; i += increment) {
+                    for (i = 0; i < edgePointCount; i += increment) {
                         addVertex(points[i].x, points[i].y, resultHash);
                     }
                 }
@@ -637,63 +674,64 @@
                 });
             };
             var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../util/clamp': 17
+            '../util/clamp': 18
         } ],
-        16: [ function(_dereq_, module, exports) {
+        17: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, params) {
-                if ((0, _isImageData2['default'])(imageData)) {
+            }), exports.default = function(imageData, params) {
+                if ((0, _isImageData2.default)(imageData)) {
                     var imageSize = {
                         width: imageData.width,
                         height: imageData.height
-                    }, tmpImageData = (0, _copyImageData2['default'])(imageData), colorImageData = (0, 
-                    _copyImageData2['default'])(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
-                    _greyscale2['default'])(blurredImageData), edgesImageData = (0, _sobel2['default'])(greyscaleImageData).toImageData(), edgePoints = (0, 
-                    _getEdgePoints2['default'])(edgesImageData, params.threshold), edgeVertices = (0, 
-                    _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
+                    }, tmpImageData = (0, _copyImageData2.default)(imageData), colorImageData = (0, 
+                    _copyImageData2.default)(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
+                    _greyscale2.default)(blurredImageData), edgesImageData = (0, _sobel2.default)(greyscaleImageData).toImageData(), edgePoints = (0, 
+                    _getEdgePoints2.default)(edgesImageData, params.threshold), edgeVertices = (0, _getVerticesFromPoints2.default)(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
                     _delaunayFast.triangulate)(edgeVertices);
-                    return polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
-                    _addGradientsToPolygons2['default'])(polygons, colorImageData, params) : (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
+                    return polygons = (0, _addBoundingBoxesToPolygons2.default)(polygons), params.transparentColor || (polygons = (0, 
+                    _filterTransparentPolygons2.default)(polygons, colorImageData)), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
+                    _addGradientsToPolygons2.default)(polygons, colorImageData, params) : (0, _addColorToPolygons2.default)(polygons, colorImageData, params);
                 }
                 throw new Error('Can\'t work with the imageData provided. It seems to be corrupt.');
             };
-            var _stackblurCanvas = _dereq_('stackblur-canvas'), _delaunayFast = _dereq_('delaunay-fast'), _sobel = _dereq_('sobel'), _sobel2 = _interopRequireDefault(_sobel), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData), _copyImageData = _dereq_('../imagedata/copyImageData'), _copyImageData2 = _interopRequireDefault(_copyImageData), _greyscale = _dereq_('../imagedata/greyscale'), _greyscale2 = _interopRequireDefault(_greyscale), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons);
-            module.exports = exports['default'];
+            var _stackblurCanvas = _dereq_('stackblur-canvas'), _delaunayFast = _dereq_('delaunay-fast'), _sobel = _dereq_('sobel'), _sobel2 = _interopRequireDefault(_sobel), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData), _copyImageData = _dereq_('../imagedata/copyImageData'), _copyImageData2 = _interopRequireDefault(_copyImageData), _greyscale = _dereq_('../imagedata/greyscale'), _greyscale2 = _interopRequireDefault(_greyscale), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons), _filterTransparentPolygons = _dereq_('./filterTransparentPolygons'), _filterTransparentPolygons2 = _interopRequireDefault(_filterTransparentPolygons);
+            module.exports = exports.default;
         }, {
             '../imagedata/copyImageData': 3,
             '../imagedata/greyscale': 4,
-            '../util/isImageData': 23,
+            '../util/isImageData': 24,
             './addBoundingBoxesToPolygons': 11,
             './addColorToPolygons': 12,
             './addGradientsToPolygons': 13,
-            './getEdgePoints': 14,
-            './getVerticesFromPoints': 15,
-            'delaunay-fast': 28,
-            sobel: 31,
-            'stackblur-canvas': 32
+            './filterTransparentPolygons': 14,
+            './getEdgePoints': 15,
+            './getVerticesFromPoints': 16,
+            'delaunay-fast': 33,
+            sobel: 36,
+            'stackblur-canvas': 37
         } ],
-        17: [ function(_dereq_, module, exports) {
-            'use strict';
-            Object.defineProperty(exports, '__esModule', {
-                value: !0
-            }), exports['default'] = function(value, min, max) {
-                return min > value ? min : value > max ? max : value;
-            }, module.exports = exports['default'];
-        }, {} ],
         18: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(obj) {
+            }), exports.default = function(value, min, max) {
+                return value < min ? min : value > max ? max : value;
+            }, module.exports = exports.default;
+        }, {} ],
+        19: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(obj) {
                 var result = !1;
                 if ('undefined' != typeof obj) {
                     try {
@@ -701,29 +739,34 @@
                     } catch (e) {}
                 }
                 return result;
-            }, module.exports = exports['default'];
-        }, {} ],
-        19: [ function(_dereq_, module, exports) {
-            'use strict';
-            Object.defineProperty(exports, '__esModule', {
-                value: !0
-            }), exports['default'] = function(a, b) {
-                var dx = b.x - a.x, dy = b.y - a.y;
-                return Math.sqrt(dx * dx + dy * dy);
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         20: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(ctx, polygons, size, dpr) {
+            }), exports.default = function(a, b) {
+                var dx = b.x - a.x, dy = b.y - a.y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }, module.exports = exports.default;
+        }, {} ],
+        21: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    default: obj
+                };
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(ctx, polygons, size, dpr) {
                 return dpr = dpr || 1, polygons.forEach(function(polygon, index) {
                     ctx.beginPath(), ctx.moveTo(polygon.a.x * dpr, polygon.a.y * dpr), ctx.lineTo(polygon.b.x * dpr, polygon.b.y * dpr), 
                     ctx.lineTo(polygon.c.x * dpr, polygon.c.y * dpr), ctx.lineTo(polygon.a.x * dpr, polygon.a.y * dpr), 
                     polygon.gradient ? !function() {
                         var gradient = ctx.createLinearGradient(polygon.gradient.x1 * dpr, polygon.gradient.y1 * dpr, polygon.gradient.x2 * dpr, polygon.gradient.y2 * dpr), lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')';
+                            var rgb = (0, _toRGBA2.default)(color);
                             gradient.addColorStop(index / lastColorIndex, rgb);
                         }), ctx.fillStyle = gradient, ctx.fill(), polygon.strokeWidth > 0 && (ctx.strokeStyle = gradient, 
                         ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke());
@@ -731,13 +774,17 @@
                     ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke())), 
                     ctx.closePath();
                 }), ctx;
-            }, module.exports = exports['default'];
-        }, {} ],
-        21: [ function(_dereq_, module, exports) {
+            };
+            var _toRGBA = _dereq_('./toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
+            module.exports = exports.default;
+        }, {
+            './toRGBA': 30
+        } ],
+        22: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(points) {
+            }), exports.default = function(points) {
                 var xMin = 1 / 0, xMax = -(1 / 0), yMin = 1 / 0, yMax = -(1 / 0);
                 return points.forEach(function(p) {
                     p.x < xMin && (xMin = p.x), p.y < yMin && (yMin = p.y), p.x > xMax && (xMax = p.x), 
@@ -748,32 +795,35 @@
                     width: xMax - xMin,
                     height: yMax - yMin
                 };
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
-        22: [ function(_dereq_, module, exports) {
+        23: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
-            function getColorByPos(pos, colorData) {
-                var x = (0, _clamp2['default'])(pos.x, 1, colorData.width - 2), y = (0, _clamp2['default'])(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
-                return index >= colorData.data.length && (index = colorData.data.length - 5), {
+            function getColorByPos(pos, colorData, transparentColor) {
+                var x = (0, _clamp2.default)(pos.x, 1, colorData.width - 2), y = (0, _clamp2.default)(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
+                index >= colorData.data.length && (index = colorData.data.length - 5);
+                var alpha = colorData.data[index + 3] / 255;
+                return transparentColor && 0 === alpha ? transparentColor : {
                     r: colorData.data[index],
                     g: colorData.data[index + 1],
-                    b: colorData.data[index + 2]
+                    b: colorData.data[index + 2],
+                    a: alpha
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = getColorByPos;
+            }), exports.default = getColorByPos;
             var _clamp = _dereq_('./clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            './clamp': 17
+            './clamp': 18
         } ],
-        23: [ function(_dereq_, module, exports) {
+        24: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
@@ -783,32 +833,40 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports['default'] = function(imageData) {
+            exports.default = function(imageData) {
                 return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length && 'object' === _typeof(imageData.data);
-            }, module.exports = exports['default'];
-        }, {} ],
-        24: [ function(_dereq_, module, exports) {
-            'use strict';
-            Object.defineProperty(exports, '__esModule', {
-                value: !0
-            }), exports['default'] = function(color) {
-                var a = [ color.r, color.g, color.b ].map(function(v) {
-                    return v /= 255, .03928 >= v ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
-                });
-                return .2126 * a[0] + .7152 * a[1] + .0722 * a[2];
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         25: [ function(_dereq_, module, exports) {
             'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(color) {
+                return 0 === color.a;
+            }, module.exports = exports.default;
+        }, {} ],
+        26: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(color) {
+                var a = [ color.r, color.g, color.b ].map(function(v) {
+                    return v /= 255, v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+                });
+                return .2126 * a[0] + .7152 * a[1] + .0722 * a[2];
+            }, module.exports = exports.default;
+        }, {} ],
+        27: [ function(_dereq_, module, exports) {
+            'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(size, options, dpr, format) {
-                var backgroundColor = options && options.backgroundColor ? options.backgroundColor : !1, canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
+            }), exports.default = function(size, options, dpr, format) {
+                var backgroundColor = !(!options || !options.backgroundColor) && options.backgroundColor, canvas = new _canvasBrowserify2.default(size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
                 return backgroundColor && (ctx.fillStyle = backgroundColor, ctx.fillRect(0, 0, size.width * dpr, size.height * dpr), 
                 ctx.fillStyle = 'transparent'), {
                     canvas: canvas,
@@ -816,15 +874,75 @@
                 };
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            'canvas-browserify': 27
+            'canvas-browserify': 32
         } ],
-        26: [ function(_dereq_, module, exports) {
+        28: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(polygon) {
+                return {
+                    x: .33333 * (polygon.a.x + polygon.b.x + polygon.c.x),
+                    y: .33333 * (polygon.a.y + polygon.b.y + polygon.c.y)
+                };
+            }, module.exports = exports.default;
+        }, {} ],
+        29: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
+                };
+            }
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            }), exports.default = function(color) {
+                var size = 1, ctx = (0, _makeCanvasAndContext2.default)({
+                    width: size,
+                    height: size
+                }, {}, 1, !0).ctx;
+                ctx.fillStyle = color, ctx.fillRect(0, 0, size, size);
+                var data = ctx.getImageData(0, 0, size, size).data;
+                return {
+                    r: data[0],
+                    g: data[1],
+                    b: data[2],
+                    a: data[3] / 255
+                };
+            };
+            var _makeCanvasAndContext = _dereq_('./makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext);
+            module.exports = exports.default;
+        }, {
+            './makeCanvasAndContext': 27
+        } ],
+        30: [ function(_dereq_, module, exports) {
+            'use strict';
+            Object.defineProperty(exports, '__esModule', {
+                value: !0
+            });
+            var _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) {
+                        Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                    }
+                }
+                return target;
+            };
+            exports.default = function(colorObj) {
+                var c = _extends({
+                    a: 1
+                }, colorObj);
+                return 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + c.a + ')';
+            }, module.exports = exports.default;
+        }, {} ],
+        31: [ function(_dereq_, module, exports) {
+            'use strict';
+            function _interopRequireDefault(obj) {
+                return obj && obj.__esModule ? obj : {
+                    default: obj
                 };
             }
             function worker(self) {
@@ -834,7 +952,7 @@
                             var imageData = msg.data.imageData;
                             'undefined' == typeof imageData.width && 'number' == typeof msg.data.imageDataWidth && (imageData.width = msg.data.imageDataWidth), 
                             'undefined' == typeof imageData.height && 'number' == typeof msg.data.imageDataHeight && (imageData.height = msg.data.imageDataHeight);
-                            var polygons = (0, _imageDataToPolygons2['default'])(msg.data.imageData, msg.data.params);
+                            var polygons = (0, _imageDataToPolygons2.default)(msg.data.imageData, msg.data.params);
                             self.postMessage({
                                 polygonJSONStr: JSON.stringify(polygons)
                             });
@@ -855,13 +973,13 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = worker;
+            }), exports.default = worker;
             var _imageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
-            '../polygons/imageDataToPolygons': 16
+            '../polygons/imageDataToPolygons': 17
         } ],
-        27: [ function(_dereq_, module, exports) {
+        32: [ function(_dereq_, module, exports) {
             var Canvas = module.exports = function Canvas(w, h) {
                 var canvas = document.createElement('canvas');
                 canvas.width = w || 300;
@@ -873,7 +991,7 @@
                 return img;
             };
         }, {} ],
-        28: [ function(_dereq_, module, exports) {
+        33: [ function(_dereq_, module, exports) {
             function Triangle(a, b, c) {
                 this.a = a;
                 this.b = b;
@@ -993,7 +1111,7 @@
                 };
             }
         }, {} ],
-        29: [ function(_dereq_, module, exports) {
+        34: [ function(_dereq_, module, exports) {
             (function(process, global) {
                 (function() {
                     'use strict';
@@ -1016,7 +1134,6 @@
                     }
                     var lib$es6$promise$utils$$isArray = lib$es6$promise$utils$$_isArray;
                     var lib$es6$promise$asap$$len = 0;
-                    var lib$es6$promise$asap$$toString = {}.toString;
                     var lib$es6$promise$asap$$vertxNext;
                     var lib$es6$promise$asap$$customSchedulerFn;
                     var lib$es6$promise$asap$$asap = function asap(callback, arg) {
@@ -1040,7 +1157,7 @@
                     var lib$es6$promise$asap$$browserWindow = typeof window !== 'undefined' ? window : undefined;
                     var lib$es6$promise$asap$$browserGlobal = lib$es6$promise$asap$$browserWindow || {};
                     var lib$es6$promise$asap$$BrowserMutationObserver = lib$es6$promise$asap$$browserGlobal.MutationObserver || lib$es6$promise$asap$$browserGlobal.WebKitMutationObserver;
-                    var lib$es6$promise$asap$$isNode = typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
+                    var lib$es6$promise$asap$$isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
                     var lib$es6$promise$asap$$isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
                     function lib$es6$promise$asap$$useNextTick() {
                         return function() {
@@ -1114,6 +1231,35 @@
                             }
                         }
                     }
+                    function lib$es6$promise$then$$then(onFulfillment, onRejection) {
+                        var parent = this;
+                        var child = new this.constructor(lib$es6$promise$$internal$$noop);
+                        if (child[lib$es6$promise$$internal$$PROMISE_ID] === undefined) {
+                            lib$es6$promise$$internal$$makePromise(child);
+                        }
+                        var state = parent._state;
+                        if (state) {
+                            var callback = arguments[state - 1];
+                            lib$es6$promise$asap$$asap(function() {
+                                lib$es6$promise$$internal$$invokeCallback(state, child, callback, parent._result);
+                            });
+                        } else {
+                            lib$es6$promise$$internal$$subscribe(parent, child, onFulfillment, onRejection);
+                        }
+                        return child;
+                    }
+                    var lib$es6$promise$then$$default = lib$es6$promise$then$$then;
+                    function lib$es6$promise$promise$resolve$$resolve(object) {
+                        var Constructor = this;
+                        if (object && typeof object === 'object' && object.constructor === Constructor) {
+                            return object;
+                        }
+                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
+                        lib$es6$promise$$internal$$resolve(promise, object);
+                        return promise;
+                    }
+                    var lib$es6$promise$promise$resolve$$default = lib$es6$promise$promise$resolve$$resolve;
+                    var lib$es6$promise$$internal$$PROMISE_ID = Math.random().toString(36).substring(16);
                     function lib$es6$promise$$internal$$noop() {}
                     var lib$es6$promise$$internal$$PENDING = void 0;
                     var lib$es6$promise$$internal$$FULFILLED = 1;
@@ -1181,11 +1327,10 @@
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$handleMaybeThenable(promise, maybeThenable) {
-                        if (maybeThenable.constructor === promise.constructor) {
+                    function lib$es6$promise$$internal$$handleMaybeThenable(promise, maybeThenable, then) {
+                        if (maybeThenable.constructor === promise.constructor && then === lib$es6$promise$then$$default && constructor.resolve === lib$es6$promise$promise$resolve$$default) {
                             lib$es6$promise$$internal$$handleOwnThenable(promise, maybeThenable);
                         } else {
-                            var then = lib$es6$promise$$internal$$getThen(maybeThenable);
                             if (then === lib$es6$promise$$internal$$GET_THEN_ERROR) {
                                 lib$es6$promise$$internal$$reject(promise, lib$es6$promise$$internal$$GET_THEN_ERROR.error);
                             } else {
@@ -1206,7 +1351,7 @@
                             lib$es6$promise$$internal$$reject(promise, lib$es6$promise$$internal$$selfFulfillment());
                         } else {
                             if (lib$es6$promise$utils$$objectOrFunction(value)) {
-                                lib$es6$promise$$internal$$handleMaybeThenable(promise, value);
+                                lib$es6$promise$$internal$$handleMaybeThenable(promise, value, lib$es6$promise$$internal$$getThen(value));
                             } else {
                                 lib$es6$promise$$internal$$fulfill(promise, value);
                             }
@@ -1325,119 +1470,36 @@
                             lib$es6$promise$$internal$$reject(promise, e);
                         }
                     }
-                    function lib$es6$promise$enumerator$$Enumerator(Constructor, input) {
-                        var enumerator = this;
-                        enumerator._instanceConstructor = Constructor;
-                        enumerator.promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        if (enumerator._validateInput(input)) {
-                            enumerator._input = input;
-                            enumerator.length = input.length;
-                            enumerator._remaining = input.length;
-                            enumerator._init();
-                            if (enumerator.length === 0) {
-                                lib$es6$promise$$internal$$fulfill(enumerator.promise, enumerator._result);
-                            } else {
-                                enumerator.length = enumerator.length || 0;
-                                enumerator._enumerate();
-                                if (enumerator._remaining === 0) {
-                                    lib$es6$promise$$internal$$fulfill(enumerator.promise, enumerator._result);
-                                }
-                            }
-                        } else {
-                            lib$es6$promise$$internal$$reject(enumerator.promise, enumerator._validationError());
-                        }
+                    var lib$es6$promise$$internal$$id = 0;
+                    function lib$es6$promise$$internal$$nextId() {
+                        return lib$es6$promise$$internal$$id++;
                     }
-                    lib$es6$promise$enumerator$$Enumerator.prototype._validateInput = function(input) {
-                        return lib$es6$promise$utils$$isArray(input);
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._validationError = function() {
-                        return new Error('Array Methods must be provided an Array');
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._init = function() {
-                        this._result = new Array(this.length);
-                    };
-                    var lib$es6$promise$enumerator$$default = lib$es6$promise$enumerator$$Enumerator;
-                    lib$es6$promise$enumerator$$Enumerator.prototype._enumerate = function() {
-                        var enumerator = this;
-                        var length = enumerator.length;
-                        var promise = enumerator.promise;
-                        var input = enumerator._input;
-                        for (var i = 0; promise._state === lib$es6$promise$$internal$$PENDING && i < length; i++) {
-                            enumerator._eachEntry(input[i], i);
-                        }
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._eachEntry = function(entry, i) {
-                        var enumerator = this;
-                        var c = enumerator._instanceConstructor;
-                        if (lib$es6$promise$utils$$isMaybeThenable(entry)) {
-                            if (entry.constructor === c && entry._state !== lib$es6$promise$$internal$$PENDING) {
-                                entry._onerror = null;
-                                enumerator._settledAt(entry._state, i, entry._result);
-                            } else {
-                                enumerator._willSettleAt(c.resolve(entry), i);
-                            }
-                        } else {
-                            enumerator._remaining--;
-                            enumerator._result[i] = entry;
-                        }
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._settledAt = function(state, i, value) {
-                        var enumerator = this;
-                        var promise = enumerator.promise;
-                        if (promise._state === lib$es6$promise$$internal$$PENDING) {
-                            enumerator._remaining--;
-                            if (state === lib$es6$promise$$internal$$REJECTED) {
-                                lib$es6$promise$$internal$$reject(promise, value);
-                            } else {
-                                enumerator._result[i] = value;
-                            }
-                        }
-                        if (enumerator._remaining === 0) {
-                            lib$es6$promise$$internal$$fulfill(promise, enumerator._result);
-                        }
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._willSettleAt = function(promise, i) {
-                        var enumerator = this;
-                        lib$es6$promise$$internal$$subscribe(promise, undefined, function(value) {
-                            enumerator._settledAt(lib$es6$promise$$internal$$FULFILLED, i, value);
-                        }, function(reason) {
-                            enumerator._settledAt(lib$es6$promise$$internal$$REJECTED, i, reason);
-                        });
-                    };
+                    function lib$es6$promise$$internal$$makePromise(promise) {
+                        promise[lib$es6$promise$$internal$$PROMISE_ID] = lib$es6$promise$$internal$$id++;
+                        promise._state = undefined;
+                        promise._result = undefined;
+                        promise._subscribers = [];
+                    }
                     function lib$es6$promise$promise$all$$all(entries) {
                         return new lib$es6$promise$enumerator$$default(this, entries).promise;
                     }
                     var lib$es6$promise$promise$all$$default = lib$es6$promise$promise$all$$all;
                     function lib$es6$promise$promise$race$$race(entries) {
                         var Constructor = this;
-                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
                         if (!lib$es6$promise$utils$$isArray(entries)) {
-                            lib$es6$promise$$internal$$reject(promise, new TypeError('You must pass an array to race.'));
-                            return promise;
+                            return new Constructor(function(resolve, reject) {
+                                reject(new TypeError('You must pass an array to race.'));
+                            });
+                        } else {
+                            return new Constructor(function(resolve, reject) {
+                                var length = entries.length;
+                                for (var i = 0; i < length; i++) {
+                                    Constructor.resolve(entries[i]).then(resolve, reject);
+                                }
+                            });
                         }
-                        var length = entries.length;
-                        function onFulfillment(value) {
-                            lib$es6$promise$$internal$$resolve(promise, value);
-                        }
-                        function onRejection(reason) {
-                            lib$es6$promise$$internal$$reject(promise, reason);
-                        }
-                        for (var i = 0; promise._state === lib$es6$promise$$internal$$PENDING && i < length; i++) {
-                            lib$es6$promise$$internal$$subscribe(Constructor.resolve(entries[i]), undefined, onFulfillment, onRejection);
-                        }
-                        return promise;
                     }
                     var lib$es6$promise$promise$race$$default = lib$es6$promise$promise$race$$race;
-                    function lib$es6$promise$promise$resolve$$resolve(object) {
-                        var Constructor = this;
-                        if (object && typeof object === 'object' && object.constructor === Constructor) {
-                            return object;
-                        }
-                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        lib$es6$promise$$internal$$resolve(promise, object);
-                        return promise;
-                    }
-                    var lib$es6$promise$promise$resolve$$default = lib$es6$promise$promise$resolve$$resolve;
                     function lib$es6$promise$promise$reject$$reject(reason) {
                         var Constructor = this;
                         var promise = new Constructor(lib$es6$promise$$internal$$noop);
@@ -1445,7 +1507,6 @@
                         return promise;
                     }
                     var lib$es6$promise$promise$reject$$default = lib$es6$promise$promise$reject$$reject;
-                    var lib$es6$promise$promise$$counter = 0;
                     function lib$es6$promise$promise$$needsResolver() {
                         throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
                     }
@@ -1454,18 +1515,12 @@
                     }
                     var lib$es6$promise$promise$$default = lib$es6$promise$promise$$Promise;
                     function lib$es6$promise$promise$$Promise(resolver) {
-                        this._id = lib$es6$promise$promise$$counter++;
-                        this._state = undefined;
-                        this._result = undefined;
+                        this[lib$es6$promise$$internal$$PROMISE_ID] = lib$es6$promise$$internal$$nextId();
+                        this._result = this._state = undefined;
                         this._subscribers = [];
                         if (lib$es6$promise$$internal$$noop !== resolver) {
-                            if (!lib$es6$promise$utils$$isFunction(resolver)) {
-                                lib$es6$promise$promise$$needsResolver();
-                            }
-                            if (!(this instanceof lib$es6$promise$promise$$Promise)) {
-                                lib$es6$promise$promise$$needsNew();
-                            }
-                            lib$es6$promise$$internal$$initializePromise(this, resolver);
+                            typeof resolver !== 'function' && lib$es6$promise$promise$$needsResolver();
+                            this instanceof lib$es6$promise$promise$$Promise ? lib$es6$promise$$internal$$initializePromise(this, resolver) : lib$es6$promise$promise$$needsNew();
                         }
                     }
                     lib$es6$promise$promise$$Promise.all = lib$es6$promise$promise$all$$default;
@@ -1477,27 +1532,94 @@
                     lib$es6$promise$promise$$Promise._asap = lib$es6$promise$asap$$asap;
                     lib$es6$promise$promise$$Promise.prototype = {
                         constructor: lib$es6$promise$promise$$Promise,
-                        then: function(onFulfillment, onRejection) {
-                            var parent = this;
-                            var state = parent._state;
-                            if (state === lib$es6$promise$$internal$$FULFILLED && !onFulfillment || state === lib$es6$promise$$internal$$REJECTED && !onRejection) {
-                                return this;
-                            }
-                            var child = new this.constructor(lib$es6$promise$$internal$$noop);
-                            var result = parent._result;
-                            if (state) {
-                                var callback = arguments[state - 1];
-                                lib$es6$promise$asap$$asap(function() {
-                                    lib$es6$promise$$internal$$invokeCallback(state, child, callback, result);
-                                });
-                            } else {
-                                lib$es6$promise$$internal$$subscribe(parent, child, onFulfillment, onRejection);
-                            }
-                            return child;
-                        },
-                        'catch': function(onRejection) {
+                        then: lib$es6$promise$then$$default,
+                        catch: function(onRejection) {
                             return this.then(null, onRejection);
                         }
+                    };
+                    var lib$es6$promise$enumerator$$default = lib$es6$promise$enumerator$$Enumerator;
+                    function lib$es6$promise$enumerator$$Enumerator(Constructor, input) {
+                        this._instanceConstructor = Constructor;
+                        this.promise = new Constructor(lib$es6$promise$$internal$$noop);
+                        if (!this.promise[lib$es6$promise$$internal$$PROMISE_ID]) {
+                            lib$es6$promise$$internal$$makePromise(this.promise);
+                        }
+                        if (lib$es6$promise$utils$$isArray(input)) {
+                            this._input = input;
+                            this.length = input.length;
+                            this._remaining = input.length;
+                            this._result = new Array(this.length);
+                            if (this.length === 0) {
+                                lib$es6$promise$$internal$$fulfill(this.promise, this._result);
+                            } else {
+                                this.length = this.length || 0;
+                                this._enumerate();
+                                if (this._remaining === 0) {
+                                    lib$es6$promise$$internal$$fulfill(this.promise, this._result);
+                                }
+                            }
+                        } else {
+                            lib$es6$promise$$internal$$reject(this.promise, lib$es6$promise$enumerator$$validationError());
+                        }
+                    }
+                    function lib$es6$promise$enumerator$$validationError() {
+                        return new Error('Array Methods must be provided an Array');
+                    }
+                    lib$es6$promise$enumerator$$Enumerator.prototype._enumerate = function() {
+                        var length = this.length;
+                        var input = this._input;
+                        for (var i = 0; this._state === lib$es6$promise$$internal$$PENDING && i < length; i++) {
+                            this._eachEntry(input[i], i);
+                        }
+                    };
+                    lib$es6$promise$enumerator$$Enumerator.prototype._eachEntry = function(entry, i) {
+                        var c = this._instanceConstructor;
+                        var resolve = c.resolve;
+                        if (resolve === lib$es6$promise$promise$resolve$$default) {
+                            var then = lib$es6$promise$$internal$$getThen(entry);
+                            if (then === lib$es6$promise$then$$default && entry._state !== lib$es6$promise$$internal$$PENDING) {
+                                this._settledAt(entry._state, i, entry._result);
+                            } else {
+                                if (typeof then !== 'function') {
+                                    this._remaining--;
+                                    this._result[i] = entry;
+                                } else {
+                                    if (c === lib$es6$promise$promise$$default) {
+                                        var promise = new c(lib$es6$promise$$internal$$noop);
+                                        lib$es6$promise$$internal$$handleMaybeThenable(promise, entry, then);
+                                        this._willSettleAt(promise, i);
+                                    } else {
+                                        this._willSettleAt(new c(function(resolve) {
+                                            resolve(entry);
+                                        }), i);
+                                    }
+                                }
+                            }
+                        } else {
+                            this._willSettleAt(resolve(entry), i);
+                        }
+                    };
+                    lib$es6$promise$enumerator$$Enumerator.prototype._settledAt = function(state, i, value) {
+                        var promise = this.promise;
+                        if (promise._state === lib$es6$promise$$internal$$PENDING) {
+                            this._remaining--;
+                            if (state === lib$es6$promise$$internal$$REJECTED) {
+                                lib$es6$promise$$internal$$reject(promise, value);
+                            } else {
+                                this._result[i] = value;
+                            }
+                        }
+                        if (this._remaining === 0) {
+                            lib$es6$promise$$internal$$fulfill(promise, this._result);
+                        }
+                    };
+                    lib$es6$promise$enumerator$$Enumerator.prototype._willSettleAt = function(promise, i) {
+                        var enumerator = this;
+                        lib$es6$promise$$internal$$subscribe(promise, undefined, function(value) {
+                            enumerator._settledAt(lib$es6$promise$$internal$$FULFILLED, i, value);
+                        }, function(reason) {
+                            enumerator._settledAt(lib$es6$promise$$internal$$REJECTED, i, reason);
+                        });
                     };
                     function lib$es6$promise$polyfill$$polyfill() {
                         var local;
@@ -1542,15 +1664,36 @@
                 }).call(this);
             }).call(this, _dereq_('_process'), typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {});
         }, {
-            _process: 30
+            _process: 35
         } ],
-        30: [ function(_dereq_, module, exports) {
+        35: [ function(_dereq_, module, exports) {
             var process = module.exports = {};
+            var cachedSetTimeout;
+            var cachedClearTimeout;
+            (function() {
+                try {
+                    cachedSetTimeout = setTimeout;
+                } catch (e) {
+                    cachedSetTimeout = function() {
+                        throw new Error('setTimeout is not defined');
+                    };
+                }
+                try {
+                    cachedClearTimeout = clearTimeout;
+                } catch (e) {
+                    cachedClearTimeout = function() {
+                        throw new Error('clearTimeout is not defined');
+                    };
+                }
+            })();
             var queue = [];
             var draining = false;
             var currentQueue;
             var queueIndex = -1;
             function cleanUpNextTick() {
+                if (!draining || !currentQueue) {
+                    return;
+                }
                 draining = false;
                 if (currentQueue.length) {
                     queue = currentQueue.concat(queue);
@@ -1565,7 +1708,7 @@
                 if (draining) {
                     return;
                 }
-                var timeout = setTimeout(cleanUpNextTick);
+                var timeout = cachedSetTimeout(cleanUpNextTick);
                 draining = true;
                 var len = queue.length;
                 while (len) {
@@ -1581,7 +1724,7 @@
                 }
                 currentQueue = null;
                 draining = false;
-                clearTimeout(timeout);
+                cachedClearTimeout(timeout);
             }
             process.nextTick = function(fun) {
                 var args = new Array(arguments.length - 1);
@@ -1592,7 +1735,7 @@
                 }
                 queue.push(new Item(fun, args));
                 if (queue.length === 1 && !draining) {
-                    setTimeout(drainQueue, 0);
+                    cachedSetTimeout(drainQueue, 0);
                 }
             };
             function Item(fun, array) {
@@ -1629,7 +1772,7 @@
                 return 0;
             };
         }, {} ],
-        31: [ function(_dereq_, module, exports) {
+        36: [ function(_dereq_, module, exports) {
             (function(root) {
                 'use strict';
                 function Sobel(imageData) {
@@ -1720,7 +1863,7 @@
                 }
             })(this);
         }, {} ],
-        32: [ function(_dereq_, module, exports) {
+        37: [ function(_dereq_, module, exports) {
             var mul_table = [ 512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
             var shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
             function processImage(img, canvas, radius, blurAlphaChannel) {
@@ -2124,19 +2267,18 @@
                 imageDataRGB: processImageDataRGB
             };
         }, {} ],
-        33: [ function(_dereq_, module, exports) {
+        38: [ function(_dereq_, module, exports) {
             var bundleFn = arguments[3];
             var sources = arguments[4];
             var cache = arguments[5];
             var stringify = JSON.stringify;
-            module.exports = function(fn) {
-                var keys = [];
+            module.exports = function(fn, options) {
                 var wkey;
                 var cacheKeys = Object.keys(cache);
                 for (var i = 0, l = cacheKeys.length; i < l; i++) {
                     var key = cacheKeys[i];
                     var exp = cache[key].exports;
-                    if (exp === fn || exp.default === fn) {
+                    if (exp === fn || exp && exp.default === fn) {
                         wkey = key;
                         break;
                     }
@@ -2158,9 +2300,16 @@
                     return stringify(key) + ':[' + sources[key][0] + ',' + stringify(sources[key][1]) + ']';
                 }).join(',') + '},{},[' + stringify(skey) + '])';
                 var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                return new Worker(URL.createObjectURL(new Blob([ src ], {
+                var blob = new Blob([ src ], {
                     type: 'text/javascript'
-                })));
+                });
+                if (options && options.bare) {
+                    return blob;
+                }
+                var workerUrl = URL.createObjectURL(blob);
+                var worker = new Worker(workerUrl);
+                worker.objectURL = workerUrl;
+                return worker;
             };
         }, {} ]
     }, {}, [ 1 ])(1);

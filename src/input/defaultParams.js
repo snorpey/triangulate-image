@@ -6,5 +6,6 @@ export default {
 	strokeWidth: 0.5,
 	lineJoin: 'miter',
 	vertexCount: 700,
-	threshold: 50
+	threshold: 50,
+	transparentColor: false
 };

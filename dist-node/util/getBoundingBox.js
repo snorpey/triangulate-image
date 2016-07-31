@@ -36,4 +36,4 @@ exports.default = function (points) {
 	};
 };
 
-module.exports = exports['default'];
+module.exports = exports["default"];

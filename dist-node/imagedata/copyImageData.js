@@ -26,7 +26,7 @@ exports.default = function (imageData) {
 				};
 			} else {
 				// http://stackoverflow.com/a/15908922/229189#comment57192591_15908922
-				var result = undefined;
+				var result = void 0;
 
 				try {
 					result = new ImageData(clampedArray, imageData.width, imageData.height);
