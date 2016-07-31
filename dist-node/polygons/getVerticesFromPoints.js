@@ -9,7 +9,7 @@ exports.default = function (points, maxPointCount, accuracy, width, height) {
 	var resultHash = {};
 
 	// use 25% of max point count to create a background grid.
-	// this avoids having too many "big" triangles in areas of the image with low contrast
+	// this avoids having too many "big" triangles in areas of the image with low contrast 
 	// next to very small ones in areas with high contrast
 	// for every other row, start the x value at > 0, so the grid doesn't look too regular
 	var gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5);

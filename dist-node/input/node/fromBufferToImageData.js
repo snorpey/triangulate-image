@@ -28,7 +28,5 @@ var _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Image = _canvasBrowserify2.default.Image; // https://github.com/Automattic/node-canvas#imagesrcbuffer
-
-
 ;
 module.exports = exports['default'];

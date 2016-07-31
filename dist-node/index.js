@@ -8,11 +8,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
-//
+// 
 // triangulate( params )
 //     .fromBuffer( buffer )
 //     .toImageData()
-//
+// 
 // etc...
 
 exports.default = function (params) {

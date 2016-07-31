@@ -8,7 +8,7 @@ exports.default = function (polygons, size, options) {
 	var dpr = options && options.dpr ? options.dpr : 1;
 	var format = options && options.format ? options.format : false;
 
-	format = allowedFormats[format].indexOf(format) === -1 ? undefined : format;
+	format = allowedFormats.indexOf(format) === -1 ? undefined : format;
 
 	var canvasData = (0, _makeCanvasAndContext2.default)(size, options, dpr, format);
 
