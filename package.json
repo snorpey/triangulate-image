@@ -51,6 +51,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^2.3.4",
     "mocha-phantomjs-core": "^2.0.0",
+    "phantomjs": "^2.1.7",
     "rimraf": "^2.4.3",
     "uglify-js": "^2.6.1",
     "uglifyify": "^3.0.1"
