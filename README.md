@@ -63,7 +63,7 @@ for an explanation of all available methods and parameters, check out the [refer
 
 by default, all input and output methods are asynchronous and use promises for flow control. for most methods, there synchronous versions available as well. this library uses web workers for processing the image data where possible.
 
-you can find more examples for both node and broswer in the [examples](examples) folder of this repository.
+you can find more examples for both node and browser in the [examples](examples) folder of this repository.
 
 reference
 ===
