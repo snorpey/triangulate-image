@@ -668,7 +668,7 @@ dependencies:
 * [stackblur-canvas](https://github.com/flozz/StackBlur) by [flozz](https://github.com/flozz) and [quasimondo](https://github.com/quasimondo), MIT license
 
 
-missing somehing?
+missing something?
 ---
 
 found a bug? missing a feature? are you using this library in an interesting project? take a look at the [issues](../../issues), open a pull request and let me know.
