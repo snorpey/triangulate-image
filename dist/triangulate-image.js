@@ -58,7 +58,7 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -73,7 +73,7 @@
                 }
                 return target;
             };
-            exports.default = function(params) {
+            exports['default'] = function(params) {
                 function getParams() {
                     return params;
                 }
@@ -86,10 +86,10 @@
                     return outputFn || _extends(result, outputMethods), result;
                 }
                 function fromImage(inputParams) {
-                    return setInput(_fromImageToImageData2.default, inputParams);
+                    return setInput(_fromImageToImageData2['default'], inputParams);
                 }
                 function fromImageSync(inputParams) {
-                    return setInput(_fromImageToImageData2.default, inputParams, !0);
+                    return setInput(_fromImageToImageData2['default'], inputParams, !0);
                 }
                 function fromImageData(inputParams) {
                     return setInput(function(id) {
@@ -112,22 +112,22 @@
                     }, outputParams, !0);
                 }
                 function toDataURL(outputParams) {
-                    return setOutput(_polygonsToDataURL2.default, outputParams);
+                    return setOutput(_polygonsToDataURL2['default'], outputParams);
                 }
                 function toDataURLSync(outputParams) {
-                    return setOutput(_polygonsToDataURL2.default, outputParams, !0);
+                    return setOutput(_polygonsToDataURL2['default'], outputParams, !0);
                 }
                 function toImageData(outputParams) {
-                    return setOutput(_polygonsToImageData2.default, outputParams);
+                    return setOutput(_polygonsToImageData2['default'], outputParams);
                 }
                 function toImageDataSync(outputParams) {
-                    return setOutput(_polygonsToImageData2.default, outputParams, !0);
+                    return setOutput(_polygonsToImageData2['default'], outputParams, !0);
                 }
                 function toSVG(outputParams) {
-                    return setOutput(_polygonsToSVG2.default, outputParams);
+                    return setOutput(_polygonsToSVG2['default'], outputParams);
                 }
                 function toSVGSync(outputParams) {
-                    return setOutput(_polygonsToSVG2.default, outputParams, !0);
+                    return setOutput(_polygonsToSVG2['default'], outputParams, !0);
                 }
                 function setInput(fn, inputParams, isSync) {
                     return isInputSync = !!isSync, inputFn = function() {
@@ -158,7 +158,7 @@
                 }
                 function getResult() {
                     if (isInputSync && isOutputSync) {
-                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2.default)(imageData, params), outputData = outputFn(polygonData, imageData);
+                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2['default'])(imageData, params), outputData = outputFn(polygonData, imageData);
                         return outputData;
                     }
                     return new Promise(function(resolve, reject) {
@@ -217,8 +217,8 @@
                         }
                     });
                 }
-                params = (0, _sanitizeInput2.default)(params);
-                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2.default)(_triangulationWorker2.default), inputFn = void 0, outputFn = void 0, api = {
+                params = (0, _sanitizeInput2['default'])(params);
+                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2['default'])(_triangulationWorker2['default']), inputFn = void 0, outputFn = void 0, api = {
                     getParams: getParams,
                     getInput: getInput,
                     getOutput: getOutput
@@ -240,7 +240,7 @@
                 return getInput();
             };
             var _sanitizeInput = _dereq_('./input/sanitizeInput'), _sanitizeInput2 = _interopRequireDefault(_sanitizeInput), _fromImageToImageData = _dereq_('./input/browser/fromImageToImageData'), _fromImageToImageData2 = _interopRequireDefault(_fromImageToImageData), _polygonsToImageData = _dereq_('./output/polygonsToImageData'), _polygonsToImageData2 = _interopRequireDefault(_polygonsToImageData), _polygonsToDataURL = _dereq_('./output/polygonsToDataURL'), _polygonsToDataURL2 = _interopRequireDefault(_polygonsToDataURL), _polygonsToSVG = _dereq_('./output/polygonsToSVG'), _polygonsToSVG2 = _interopRequireDefault(_polygonsToSVG), _imageDataToPolygons = _dereq_('./polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons), _webworkify = _dereq_('webworkify'), _webworkify2 = _interopRequireDefault(_webworkify), _triangulationWorker = _dereq_('./workers/triangulationWorker'), _triangulationWorker2 = _interopRequireDefault(_triangulationWorker);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             './input/browser/fromImageToImageData': 4,
             './input/sanitizeInput': 6,
@@ -255,17 +255,17 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             function copyImageDataWithCanvas(imageData) {
-                var canvas = (0, _canvasBrowserify2.default)(imageData.width, imageData.height), ctx = canvas.getContext('2d');
+                var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height), ctx = canvas.getContext('2d');
                 return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(imageData) {
-                if ((0, _isImageData2.default)(imageData)) {
+            }), exports['default'] = function(imageData) {
+                if ((0, _isImageData2['default'])(imageData)) {
                     if ('undefined' == typeof Uint8ClampedArray) {
                         if ('undefined' == typeof window) {
                             throw new Error('Can\'t copy imageData in webworker without Uint8ClampedArray support.');
@@ -294,7 +294,7 @@
                 throw new Error('Given imageData object is not useable.');
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/isImageData': 23,
             'canvas-browserify': 31
@@ -303,29 +303,29 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(imageData) {
-                for (var len = imageData.data.length, brightness = void 0, i = 0; i < len; i += 4) {
+            }), exports['default'] = function(imageData) {
+                for (var len = imageData.data.length, brightness = void 0, i = 0; len > i; i += 4) {
                     brightness = .34 * imageData.data[i] + .5 * imageData.data[i + 1] + .16 * imageData.data[i + 2], 
                     imageData.data[i] = brightness, imageData.data[i + 1] = brightness, imageData.data[i + 2] = brightness;
                 }
                 return imageData;
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         4: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(image) {
+            }), exports['default'] = function(image) {
                 if (image instanceof HTMLImageElement) {
                     if (!image.naturalWidth || !image.naturalHeight || image.complete === !1) {
                         throw new Error('This this image hasn\'t finished loading: ' + image.src);
                     }
-                    var canvas = new _canvasBrowserify2.default(image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
+                    var canvas = new _canvasBrowserify2['default'](image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
                     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     return imageData.data && imageData.data.length && ('undefined' == typeof imageData.width && (imageData.width = image.naturalWidth), 
@@ -334,8 +334,8 @@
                 }
                 throw new Error('This object does not seem to be an image.');
             };
-            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2.default.Image;
-            module.exports = exports.default;
+            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2['default'].Image;
+            module.exports = exports['default'];
         }, {
             'canvas-browserify': 31
         } ],
@@ -343,7 +343,7 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = {
+            }), exports['default'] = {
                 accuracy: .7,
                 blur: 4,
                 fill: !0,
@@ -353,13 +353,13 @@
                 vertexCount: 700,
                 threshold: 50,
                 transparentColor: !1
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         6: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -370,24 +370,24 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports.default = function(params) {
-                return params = (0, _clone2.default)(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
-                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2.default.accuracy : params.accuracy = (0, 
-                _clamp2.default)(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2.default.blur), 
-                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2.default.fill), 
-                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2.default.stroke), 
-                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2.default.strokeWidth), 
-                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2.default.threshold : params.threshold = (0, 
-                _clamp2.default)(params.threshold, 1, 100), 'string' == typeof params.lineJoin && allowedLineJoins.indexOf(params.lineJoin) !== -1 || (params.lineJoin = _defaultParams2.default.lineJoin), 
+            exports['default'] = function(params) {
+                return params = (0, _clone2['default'])(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
+                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2['default'].accuracy : params.accuracy = (0, 
+                _clamp2['default'])(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2['default'].blur), 
+                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2['default'].fill), 
+                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2['default'].stroke), 
+                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2['default'].strokeWidth), 
+                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2['default'].threshold : params.threshold = (0, 
+                _clamp2['default'])(params.threshold, 1, 100), ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
                 params.gradients && params.fill ? params.gradients = !0 : params.gradients = !1, 
                 params.gradients && (('number' != typeof params.gradientStops || isNaN(params.gradientStops) || params.gradientStops < 2) && (params.gradientStops = 2), 
-                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2.default.vertexCount), 
-                params.vertexCount <= 0 && (params.vertexCount = 1), 'string' != typeof params.transparentColor && 'boolean' != typeof params.transparentColor && (params.transparentColor = _defaultParams2.default.transparentColor), 
+                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
+                params.vertexCount <= 0 && (params.vertexCount = 1), 'string' != typeof params.transparentColor && 'boolean' != typeof params.transparentColor && (params.transparentColor = _defaultParams2['default'].transparentColor), 
                 typeof params.transparentColor === !0 && (params.transparentColor = !1), 'string' == typeof params.transparentColor && (params.transparentColor = (0, 
-                _toColor2.default)(params.transparentColor)), params;
+                _toColor2['default'])(params.transparentColor)), params;
             };
             var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp), _clone = _dereq_('../util/clone'), _clone2 = _interopRequireDefault(_clone), _toColor = _dereq_('../util/toColor'), _toColor2 = _interopRequireDefault(_toColor), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/clamp': 17,
             '../util/clone': 18,
@@ -398,18 +398,18 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2.default)(size, options, dpr);
-                return (0, _drawPolygonsOnContext2.default)(canvasData.ctx, polygons, size, dpr), 
+            }), exports['default'] = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2['default'])(size, options, dpr);
+                return (0, _drawPolygonsOnContext2['default'])(canvasData.ctx, polygons, size, dpr), 
                 canvasData.canvas.toDataURL();
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/drawPolygonsOnContext': 20,
             '../util/makeCanvasAndContext': 26
@@ -418,17 +418,17 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2.default)(size, options, dpr, !0).ctx;
-                return (0, _drawPolygonsOnContext2.default)(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
+            }), exports['default'] = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2['default'])(size, options, dpr, !0).ctx;
+                return (0, _drawPolygonsOnContext2['default'])(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/drawPolygonsOnContext': 20,
             '../util/makeCanvasAndContext': 26
@@ -437,12 +437,12 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, size) {
+            }), exports['default'] = function(polygons, size) {
                 var defStr = '';
                 polygons.length && polygons[0].gradient && (defStr = '<defs>');
                 var polygonStr = '';
@@ -451,22 +451,22 @@
                     polygonStr += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"', 
                     polygon.gradient ? !function() {
                         var bb = polygon.boundingBox, x1 = ((polygon.gradient.x1 - bb.x) / bb.width * 100).toFixed(3), y1 = ((polygon.gradient.y1 - bb.y) / bb.height * 100).toFixed(3), x2 = ((polygon.gradient.x2 - bb.x) / bb.width * 100).toFixed(3), y2 = ((polygon.gradient.y2 - bb.y) / bb.height * 100).toFixed(3);
-                        defStr += '\n\t<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
+                        defStr += '\n	<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
                         var lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = (0, _toRGBA2.default)(color), offset = (index / lastColorIndex * 100).toFixed(3);
-                            defStr += '\n\t\t\t\t\t<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n\t\t\t\t';
+                            var rgb = (0, _toRGBA2['default'])(color), offset = (index / lastColorIndex * 100).toFixed(3);
+                            defStr += '\n					<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n				';
                         }), defStr += '</linearGradient>', polygonStr += ' fill="url(#gradient-' + index + ')"', 
                         polygon.strokeWidth > 0 && (polygonStr += ' stroke="url(#gradient-' + index + ')" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"');
                     }() : (polygonStr += polygon.fill ? ' fill="' + polygon.fill + '"' : ' fill="transparent"', 
                     polygon.strokeColor && (polygonStr += ' stroke="' + polygon.strokeColor + '" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"')), 
-                    polygonStr += '/>\n\t';
-                }), defStr.length && (defStr += '\n\t\t</defs>');
-                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n\t' + defStr + '\n\t' + polygonStr + '\n</svg>';
+                    polygonStr += '/>\n	';
+                }), defStr.length && (defStr += '\n		</defs>');
+                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n	' + defStr + '\n	' + polygonStr + '\n</svg>';
                 return svg;
             };
             var _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/toRGBA': 29
         } ],
@@ -474,20 +474,20 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, colorData, params) {
+            }), exports['default'] = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon) {
-                    polygon.boundingBox = (0, _getBoundingBox2.default)([ polygon.a, polygon.b, polygon.c ]);
+                    polygon.boundingBox = (0, _getBoundingBox2['default'])([ polygon.a, polygon.b, polygon.c ]);
                 }), polygons.filter(function(polygon) {
                     return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
                 });
             };
             var _getBoundingBox = _dereq_('../util/getBoundingBox'), _getBoundingBox2 = _interopRequireDefault(_getBoundingBox);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/getBoundingBox': 21
         } ],
@@ -495,24 +495,24 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, colorData, params) {
-                var fill = params.fill, stroke = params.stroke, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, transparentColor = params.transparentColor, fillColor = 'string' == typeof fill && fill, strokeColor = 'string' == typeof stroke && stroke, getColor = function(color, override) {
-                    var t = (0, _isTransparent2.default)(color) && transparentColor, c = t ? transparentColor : color;
-                    return override && !t ? override : (0, _toRGBA2.default)(c);
+            }), exports['default'] = function(polygons, colorData, params) {
+                var fill = params.fill, stroke = params.stroke, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, transparentColor = params.transparentColor, fillColor = 'string' == typeof fill ? fill : !1, strokeColor = 'string' == typeof stroke ? stroke : !1, getColor = function(color, override) {
+                    var t = (0, _isTransparent2['default'])(color) && transparentColor, c = t ? transparentColor : color;
+                    return override && !t ? override : (0, _toRGBA2['default'])(c);
                 };
                 return polygons.forEach(function(polygon, index) {
-                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
+                    var color = (0, _getColorByPos2['default'])((0, _polygonCenter2['default'])(polygon), colorData);
                     fill && (polygon.fill = getColor(color, fillColor)), stroke && (polygon.strokeColor = getColor(color, strokeColor), 
                     polygon.strokeWidth = strokeWidth, polygon.lineJoin = lineJoin);
                 }), polygons;
             };
             var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent), _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/getColorByPos': 22,
             '../util/isTransparent': 24,
@@ -523,33 +523,33 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, colorData, params) {
+            }), exports['default'] = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon, polygonIndex) {
                     var data = {};
                     'abc'.split('').forEach(function(key) {
-                        var color = (0, _getColorByPos2.default)(polygon[key], colorData, params.transparentColor);
+                        var color = (0, _getColorByPos2['default'])(polygon[key], colorData, params.transparentColor);
                         data[key] = {
                             key: key,
                             color: color,
                             x: polygon[key].x,
                             y: polygon[key].y
-                        }, data[key].luminance = (0, _luminance2.default)(data[key].color);
+                        }, data[key].luminance = (0, _luminance2['default'])(data[key].color);
                         var otherKeys = 'abc'.replace(key, '').split('');
                         data[key].median = {
                             x: (polygon[otherKeys[0]].x + polygon[otherKeys[1]].x) / 2,
                             y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
-                        }, data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData, params.transparentColor), 
-                        data[key].medianLuminance = (0, _luminance2.default)(data[key].medianColor);
+                        }, data[key].medianColor = (0, _getColorByPos2['default'])(data[key].median, colorData, params.transparentColor), 
+                        data[key].medianLuminance = (0, _luminance2['default'])(data[key].medianColor);
                     });
                     for (var pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort(function(u, v) {
                         return Math.abs(u.luminance - u.medianLuminance) - Math.abs(v.luminance - v.medianLuminance);
                     }), pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0], startPoint = pointsByDeltaInLuminance[0], endPoint = pointWithMostDeltaInLuminance.median, gradienStopPositions = [ startPoint ], startToEndDistance = (0, 
-                    _distance2.default)(startPoint, endPoint), i = 1, len = params.gradientStops - 2; i < len; i++) {
+                    _distance2['default'])(startPoint, endPoint), i = 1, len = params.gradientStops - 2; len > i; i++) {
                         var pointDistance = i * (startToEndDistance / params.gradientStops), pointPercent = pointDistance / startToEndDistance, point = {
                             x: startPoint.x + pointPercent * (endPoint.x - startPoint.x),
                             y: startPoint.y + pointPercent * (endPoint.y - startPoint.y)
@@ -562,14 +562,14 @@
                         x2: pointWithMostDeltaInLuminance.median.x,
                         y2: pointWithMostDeltaInLuminance.median.y,
                         colors: gradienStopPositions.map(function(pos) {
-                            return (0, _getColorByPos2.default)(pos, colorData, params.transparentColor);
+                            return (0, _getColorByPos2['default'])(pos, colorData, params.transparentColor);
                         })
                     }, params.stroke && (polygon.strokeWidth = params.strokeWidth, polygon.lineJoin = params.lineJoin), 
                     data = null;
                 }), polygons;
             };
             var _luminance = _dereq_('../util/luminance'), _luminance2 = _interopRequireDefault(_luminance), _distance = _dereq_('../util/distance'), _distance2 = _interopRequireDefault(_distance), _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/distance': 19,
             '../util/getColorByPos': 22,
@@ -579,19 +579,19 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygons, colorData) {
+            }), exports['default'] = function(polygons, colorData) {
                 return polygons.filter(function(polygon) {
-                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
-                    return !(0, _isTransparent2.default)(color);
+                    var color = (0, _getColorByPos2['default'])((0, _polygonCenter2['default'])(polygon), colorData);
+                    return !(0, _isTransparent2['default'])(color);
                 });
             };
             var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/getColorByPos': 22,
             '../util/isTransparent': 24,
@@ -601,14 +601,14 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(imageData, threshold) {
+            }), exports['default'] = function(imageData, threshold) {
                 var x, y, row, col, sx, sy, step, sum, total, multiplier = 2, width = imageData.width, height = imageData.height, data = imageData.data, points = [];
-                for (y = 0; y < height; y += multiplier) {
-                    for (x = 0; x < width; x += multiplier) {
-                        for (sum = total = 0, row = -1; row <= 1; row++) {
-                            if (sy = y + row, step = sy * width, sy >= 0 && sy < height) {
-                                for (col = -1; col <= 1; col++) {
-                                    sx = x + col, sx >= 0 && sx < width && (sum += data[sx + step << 2], total++);
+                for (y = 0; height > y; y += multiplier) {
+                    for (x = 0; width > x; x += multiplier) {
+                        for (sum = total = 0, row = -1; 1 >= row; row++) {
+                            if (sy = y + row, step = sy * width, sy >= 0 && height > sy) {
+                                for (col = -1; 1 >= col; col++) {
+                                    sx = x + col, sx >= 0 && width > sx && (sum += data[sx + step << 2], total++);
                                 }
                             }
                         }
@@ -619,13 +619,13 @@
                     }
                 }
                 return points;
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         15: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             function addVertex(x, y, hash) {
@@ -637,11 +637,11 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(points, maxPointCount, accuracy, width, height) {
+            }), exports['default'] = function(points, maxPointCount, accuracy, width, height) {
                 var resultHash = {}, gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5), gridColumns = Math.round(Math.sqrt(gridPointCount)), gridRows = Math.round(Math.ceil(gridPointCount / gridColumns)), xIncrement = ~~(width / gridColumns), yIncrement = ~~(height / gridRows), rowIndex = 0, startX = 0, x = 0, y = 0;
-                for (y = 0; y < height; y += yIncrement) {
-                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; x < width; x += xIncrement) {
-                        x < width && y < height && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
+                for (y = 0; height > y; y += yIncrement) {
+                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; width > x; x += xIncrement) {
+                        width > x && height > y && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
                     }
                 }
                 addVertex(0, 0, resultHash), addVertex(width - 1, 0, resultHash), addVertex(width - 1, height - 1, resultHash), 
@@ -649,7 +649,7 @@
                 var remainingPointCount = maxPointCount - Object.keys(resultHash).length, edgePointCount = points.length, increment = ~~(edgePointCount / remainingPointCount);
                 if (maxPointCount > 0 && increment > 0) {
                     var i = 0;
-                    for (i = 0; i < edgePointCount; i += increment) {
+                    for (i = 0; edgePointCount > i; i += increment) {
                         addVertex(points[i].x, points[i].y, resultHash);
                     }
                 }
@@ -658,7 +658,7 @@
                 });
             };
             var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../util/clamp': 17
         } ],
@@ -666,29 +666,30 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(imageData, params) {
-                if ((0, _isImageData2.default)(imageData)) {
+            }), exports['default'] = function(imageData, params) {
+                if ((0, _isImageData2['default'])(imageData)) {
                     var imageSize = {
                         width: imageData.width,
                         height: imageData.height
-                    }, tmpImageData = (0, _copyImageData2.default)(imageData), colorImageData = (0, 
-                    _copyImageData2.default)(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
-                    _greyscale2.default)(blurredImageData), edgesImageData = (0, _sobel2.default)(greyscaleImageData).toImageData(), edgePoints = (0, 
-                    _getEdgePoints2.default)(edgesImageData, params.threshold), edgeVertices = (0, _getVerticesFromPoints2.default)(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
+                    }, tmpImageData = (0, _copyImageData2['default'])(imageData), colorImageData = (0, 
+                    _copyImageData2['default'])(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
+                    _greyscale2['default'])(blurredImageData), edgesImageData = (0, _sobel2['default'])(greyscaleImageData).toImageData(), edgePoints = (0, 
+                    _getEdgePoints2['default'])(edgesImageData, params.threshold), edgeVertices = (0, 
+                    _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
                     _delaunayFast.triangulate)(edgeVertices);
-                    return polygons = (0, _addBoundingBoxesToPolygons2.default)(polygons), params.transparentColor || (polygons = (0, 
-                    _filterTransparentPolygons2.default)(polygons, colorImageData)), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
-                    _addGradientsToPolygons2.default)(polygons, colorImageData, params) : (0, _addColorToPolygons2.default)(polygons, colorImageData, params);
+                    return polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons), params.transparentColor || (polygons = (0, 
+                    _filterTransparentPolygons2['default'])(polygons, colorImageData)), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
+                    _addGradientsToPolygons2['default'])(polygons, colorImageData, params) : (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
                 }
                 throw new Error('Can\'t work with the imageData provided. It seems to be corrupt.');
             };
             var _stackblurCanvas = _dereq_('stackblur-canvas'), _delaunayFast = _dereq_('delaunay-fast'), _sobel = _dereq_('sobel'), _sobel2 = _interopRequireDefault(_sobel), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData), _copyImageData = _dereq_('../imagedata/copyImageData'), _copyImageData2 = _interopRequireDefault(_copyImageData), _greyscale = _dereq_('../imagedata/greyscale'), _greyscale2 = _interopRequireDefault(_greyscale), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons), _filterTransparentPolygons = _dereq_('./filterTransparentPolygons'), _filterTransparentPolygons2 = _interopRequireDefault(_filterTransparentPolygons);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../imagedata/copyImageData': 2,
             '../imagedata/greyscale': 3,
@@ -707,15 +708,15 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(value, min, max) {
-                return value < min ? min : value > max ? max : value;
-            }, module.exports = exports.default;
+            }), exports['default'] = function(value, min, max) {
+                return min > value ? min : value > max ? max : value;
+            }, module.exports = exports['default'];
         }, {} ],
         18: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(obj) {
+            }), exports['default'] = function(obj) {
                 var result = !1;
                 if ('undefined' != typeof obj) {
                     try {
@@ -723,34 +724,34 @@
                     } catch (e) {}
                 }
                 return result;
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         19: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(a, b) {
+            }), exports['default'] = function(a, b) {
                 var dx = b.x - a.x, dy = b.y - a.y;
                 return Math.sqrt(dx * dx + dy * dy);
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         20: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(ctx, polygons, size, dpr) {
+            }), exports['default'] = function(ctx, polygons, size, dpr) {
                 return dpr = dpr || 1, polygons.forEach(function(polygon, index) {
                     ctx.beginPath(), ctx.moveTo(polygon.a.x * dpr, polygon.a.y * dpr), ctx.lineTo(polygon.b.x * dpr, polygon.b.y * dpr), 
                     ctx.lineTo(polygon.c.x * dpr, polygon.c.y * dpr), ctx.lineTo(polygon.a.x * dpr, polygon.a.y * dpr), 
                     polygon.gradient ? !function() {
                         var gradient = ctx.createLinearGradient(polygon.gradient.x1 * dpr, polygon.gradient.y1 * dpr, polygon.gradient.x2 * dpr, polygon.gradient.y2 * dpr), lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = (0, _toRGBA2.default)(color);
+                            var rgb = (0, _toRGBA2['default'])(color);
                             gradient.addColorStop(index / lastColorIndex, rgb);
                         }), ctx.fillStyle = gradient, ctx.fill(), polygon.strokeWidth > 0 && (ctx.strokeStyle = gradient, 
                         ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke());
@@ -760,7 +761,7 @@
                 }), ctx;
             };
             var _toRGBA = _dereq_('./toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             './toRGBA': 29
         } ],
@@ -768,7 +769,7 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(points) {
+            }), exports['default'] = function(points) {
                 var xMin = 1 / 0, xMax = -(1 / 0), yMin = 1 / 0, yMax = -(1 / 0);
                 return points.forEach(function(p) {
                     p.x < xMin && (xMin = p.x), p.y < yMin && (yMin = p.y), p.x > xMax && (xMax = p.x), 
@@ -779,17 +780,17 @@
                     width: xMax - xMin,
                     height: yMax - yMin
                 };
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         22: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             function getColorByPos(pos, colorData, transparentColor) {
-                var x = (0, _clamp2.default)(pos.x, 1, colorData.width - 2), y = (0, _clamp2.default)(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
+                var x = (0, _clamp2['default'])(pos.x, 1, colorData.width - 2), y = (0, _clamp2['default'])(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
                 index >= colorData.data.length && (index = colorData.data.length - 5);
                 var alpha = colorData.data[index + 3] / 255;
                 return transparentColor && 0 === alpha ? transparentColor : {
@@ -801,9 +802,9 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = getColorByPos;
+            }), exports['default'] = getColorByPos;
             var _clamp = _dereq_('./clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             './clamp': 17
         } ],
@@ -817,40 +818,40 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports.default = function(imageData) {
+            exports['default'] = function(imageData) {
                 return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length && 'object' === _typeof(imageData.data);
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         24: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(color) {
+            }), exports['default'] = function(color) {
                 return 0 === color.a;
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         25: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(color) {
+            }), exports['default'] = function(color) {
                 var a = [ color.r, color.g, color.b ].map(function(v) {
-                    return v /= 255, v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+                    return v /= 255, .03928 >= v ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
                 });
                 return .2126 * a[0] + .7152 * a[1] + .0722 * a[2];
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         26: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(size, options, dpr, format) {
-                var backgroundColor = !(!options || !options.backgroundColor) && options.backgroundColor, canvas = new _canvasBrowserify2.default(size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
+            }), exports['default'] = function(size, options, dpr, format) {
+                var backgroundColor = options && options.backgroundColor ? options.backgroundColor : !1, canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
                 return backgroundColor && (ctx.fillStyle = backgroundColor, ctx.fillRect(0, 0, size.width * dpr, size.height * dpr), 
                 ctx.fillStyle = 'transparent'), {
                     canvas: canvas,
@@ -858,7 +859,7 @@
                 };
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             'canvas-browserify': 31
         } ],
@@ -866,24 +867,24 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(polygon) {
+            }), exports['default'] = function(polygon) {
                 return {
                     x: .33333 * (polygon.a.x + polygon.b.x + polygon.c.x),
                     y: .33333 * (polygon.a.y + polygon.b.y + polygon.c.y)
                 };
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         28: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = function(color) {
-                var size = 1, ctx = (0, _makeCanvasAndContext2.default)({
+            }), exports['default'] = function(color) {
+                var size = 1, ctx = (0, _makeCanvasAndContext2['default'])({
                     width: size,
                     height: size
                 }, {}, 1, !0).ctx;
@@ -897,7 +898,7 @@
                 };
             };
             var _makeCanvasAndContext = _dereq_('./makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             './makeCanvasAndContext': 26
         } ],
@@ -915,18 +916,18 @@
                 }
                 return target;
             };
-            exports.default = function(colorObj) {
+            exports['default'] = function(colorObj) {
                 var c = _extends({
                     a: 1
                 }, colorObj);
                 return 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + c.a + ')';
-            }, module.exports = exports.default;
+            }, module.exports = exports['default'];
         }, {} ],
         30: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    default: obj
+                    'default': obj
                 };
             }
             function worker(self) {
@@ -936,7 +937,7 @@
                             var imageData = msg.data.imageData;
                             'undefined' == typeof imageData.width && 'number' == typeof msg.data.imageDataWidth && (imageData.width = msg.data.imageDataWidth), 
                             'undefined' == typeof imageData.height && 'number' == typeof msg.data.imageDataHeight && (imageData.height = msg.data.imageDataHeight);
-                            var polygons = (0, _imageDataToPolygons2.default)(msg.data.imageData, msg.data.params);
+                            var polygons = (0, _imageDataToPolygons2['default'])(msg.data.imageData, msg.data.params);
                             self.postMessage({
                                 polygonJSONStr: JSON.stringify(polygons)
                             });
@@ -957,9 +958,9 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports.default = worker;
+            }), exports['default'] = worker;
             var _imageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons);
-            module.exports = exports.default;
+            module.exports = exports['default'];
         }, {
             '../polygons/imageDataToPolygons': 16
         } ],
@@ -1595,13 +1596,14 @@
             var sources = arguments[4];
             var cache = arguments[5];
             var stringify = JSON.stringify;
-            module.exports = function(fn, options) {
+            module.exports = function(fn) {
+                var keys = [];
                 var wkey;
                 var cacheKeys = Object.keys(cache);
                 for (var i = 0, l = cacheKeys.length; i < l; i++) {
                     var key = cacheKeys[i];
                     var exp = cache[key].exports;
-                    if (exp === fn || exp && exp.default === fn) {
+                    if (exp === fn || exp.default === fn) {
                         wkey = key;
                         break;
                     }
@@ -1623,16 +1625,9 @@
                     return stringify(key) + ':[' + sources[key][0] + ',' + stringify(sources[key][1]) + ']';
                 }).join(',') + '},{},[' + stringify(skey) + '])';
                 var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                var blob = new Blob([ src ], {
+                return new Worker(URL.createObjectURL(new Blob([ src ], {
                     type: 'text/javascript'
-                });
-                if (options && options.bare) {
-                    return blob;
-                }
-                var workerUrl = URL.createObjectURL(blob);
-                var worker = new Worker(workerUrl);
-                worker.objectURL = workerUrl;
-                return worker;
+                })));
             };
         }, {} ]
     }, {}, [ 1 ])(1);
