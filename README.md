@@ -667,6 +667,9 @@ dependencies:
 * [canvas-browserify](https://github.com/dominictarr/canvas-browserify) by [dominictarr](https://github.com/dominictarr), MIT license
 * [stackblur-canvas](https://github.com/flozz/StackBlur) by [flozz](https://github.com/flozz) and [quasimondo](https://github.com/quasimondo), MIT license
 
+more information
+---
+this repository contains a [changelog](CHANGELOG.md) and an [authors](AUTHORS.md) file with even more information.
 
 missing something?
 ---
