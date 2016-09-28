@@ -58,14 +58,14 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
             });
             var _es6Promise = _dereq_('es6-promise'), _browser = _dereq_('./browser'), _browser2 = _interopRequireDefault(_browser);
-            (0, _es6Promise.polyfill)(), exports['default'] = _browser2['default'], module.exports = exports['default'];
+            (0, _es6Promise.polyfill)(), exports.default = _browser2.default, module.exports = exports.default;
         }, {
             './browser': 2,
             'es6-promise': 34
@@ -74,7 +74,7 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -89,7 +89,7 @@
                 }
                 return target;
             };
-            exports['default'] = function(params) {
+            exports.default = function(params) {
                 function getParams() {
                     return params;
                 }
@@ -102,10 +102,10 @@
                     return outputFn || _extends(result, outputMethods), result;
                 }
                 function fromImage(inputParams) {
-                    return setInput(_fromImageToImageData2['default'], inputParams);
+                    return setInput(_fromImageToImageData2.default, inputParams);
                 }
                 function fromImageSync(inputParams) {
-                    return setInput(_fromImageToImageData2['default'], inputParams, !0);
+                    return setInput(_fromImageToImageData2.default, inputParams, !0);
                 }
                 function fromImageData(inputParams) {
                     return setInput(function(id) {
@@ -128,22 +128,22 @@
                     }, outputParams, !0);
                 }
                 function toDataURL(outputParams) {
-                    return setOutput(_polygonsToDataURL2['default'], outputParams);
+                    return setOutput(_polygonsToDataURL2.default, outputParams);
                 }
                 function toDataURLSync(outputParams) {
-                    return setOutput(_polygonsToDataURL2['default'], outputParams, !0);
+                    return setOutput(_polygonsToDataURL2.default, outputParams, !0);
                 }
                 function toImageData(outputParams) {
-                    return setOutput(_polygonsToImageData2['default'], outputParams);
+                    return setOutput(_polygonsToImageData2.default, outputParams);
                 }
                 function toImageDataSync(outputParams) {
-                    return setOutput(_polygonsToImageData2['default'], outputParams, !0);
+                    return setOutput(_polygonsToImageData2.default, outputParams, !0);
                 }
                 function toSVG(outputParams) {
-                    return setOutput(_polygonsToSVG2['default'], outputParams);
+                    return setOutput(_polygonsToSVG2.default, outputParams);
                 }
                 function toSVGSync(outputParams) {
-                    return setOutput(_polygonsToSVG2['default'], outputParams, !0);
+                    return setOutput(_polygonsToSVG2.default, outputParams, !0);
                 }
                 function setInput(fn, inputParams, isSync) {
                     return isInputSync = !!isSync, inputFn = function() {
@@ -174,7 +174,7 @@
                 }
                 function getResult() {
                     if (isInputSync && isOutputSync) {
-                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2['default'])(imageData, params), outputData = outputFn(polygonData, imageData);
+                        var imageData = inputFn(params), polygonData = (0, _imageDataToPolygons2.default)(imageData, params), outputData = outputFn(polygonData, imageData);
                         return outputData;
                     }
                     return new Promise(function(resolve, reject) {
@@ -233,8 +233,8 @@
                         }
                     });
                 }
-                params = (0, _sanitizeInput2['default'])(params);
-                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2['default'])(_triangulationWorker2['default']), inputFn = void 0, outputFn = void 0, api = {
+                params = (0, _sanitizeInput2.default)(params);
+                var isInputSync = !1, isOutputSync = !1, worker = (0, _webworkify2.default)(_triangulationWorker2.default), inputFn = void 0, outputFn = void 0, api = {
                     getParams: getParams,
                     getInput: getInput,
                     getOutput: getOutput
@@ -256,7 +256,7 @@
                 return getInput();
             };
             var _sanitizeInput = _dereq_('./input/sanitizeInput'), _sanitizeInput2 = _interopRequireDefault(_sanitizeInput), _fromImageToImageData = _dereq_('./input/browser/fromImageToImageData'), _fromImageToImageData2 = _interopRequireDefault(_fromImageToImageData), _polygonsToImageData = _dereq_('./output/polygonsToImageData'), _polygonsToImageData2 = _interopRequireDefault(_polygonsToImageData), _polygonsToDataURL = _dereq_('./output/polygonsToDataURL'), _polygonsToDataURL2 = _interopRequireDefault(_polygonsToDataURL), _polygonsToSVG = _dereq_('./output/polygonsToSVG'), _polygonsToSVG2 = _interopRequireDefault(_polygonsToSVG), _imageDataToPolygons = _dereq_('./polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons), _webworkify = _dereq_('webworkify'), _webworkify2 = _interopRequireDefault(_webworkify), _triangulationWorker = _dereq_('./workers/triangulationWorker'), _triangulationWorker2 = _interopRequireDefault(_triangulationWorker);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             './input/browser/fromImageToImageData': 5,
             './input/sanitizeInput': 7,
@@ -271,17 +271,17 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function copyImageDataWithCanvas(imageData) {
-                var canvas = (0, _canvasBrowserify2['default'])(imageData.width, imageData.height), ctx = canvas.getContext('2d');
+                var canvas = (0, _canvasBrowserify2.default)(imageData.width, imageData.height), ctx = canvas.getContext('2d');
                 return ctx.putImageData(imageData, 0, 0), ctx.getImageData(0, 0, imageData.width, imageData.height);
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData) {
-                if ((0, _isImageData2['default'])(imageData)) {
+            }), exports.default = function(imageData) {
+                if ((0, _isImageData2.default)(imageData)) {
                     if ('undefined' == typeof Uint8ClampedArray) {
                         if ('undefined' == typeof window) {
                             throw new Error('Can\'t copy imageData in webworker without Uint8ClampedArray support.');
@@ -310,7 +310,7 @@
                 throw new Error('Given imageData object is not useable.');
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/isImageData': 24,
             'canvas-browserify': 32
@@ -319,29 +319,29 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData) {
-                for (var len = imageData.data.length, brightness = void 0, i = 0; len > i; i += 4) {
+            }), exports.default = function(imageData) {
+                for (var len = imageData.data.length, brightness = void 0, i = 0; i < len; i += 4) {
                     brightness = .34 * imageData.data[i] + .5 * imageData.data[i + 1] + .16 * imageData.data[i + 2], 
                     imageData.data[i] = brightness, imageData.data[i + 1] = brightness, imageData.data[i + 2] = brightness;
                 }
                 return imageData;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         5: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(image) {
+            }), exports.default = function(image) {
                 if (image instanceof HTMLImageElement) {
                     if (!image.naturalWidth || !image.naturalHeight || image.complete === !1) {
                         throw new Error('This this image hasn\'t finished loading: ' + image.src);
                     }
-                    var canvas = new _canvasBrowserify2['default'](image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
+                    var canvas = new _canvasBrowserify2.default(image.naturalWidth, image.naturalHeight), ctx = canvas.getContext('2d');
                     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     return imageData.data && imageData.data.length && ('undefined' == typeof imageData.width && (imageData.width = image.naturalWidth), 
@@ -350,8 +350,8 @@
                 }
                 throw new Error('This object does not seem to be an image.');
             };
-            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2['default'].Image;
-            module.exports = exports['default'];
+            var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify), Image = _canvasBrowserify2.default.Image;
+            module.exports = exports.default;
         }, {
             'canvas-browserify': 32
         } ],
@@ -359,7 +359,7 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = {
+            }), exports.default = {
                 accuracy: .7,
                 blur: 4,
                 fill: !0,
@@ -369,13 +369,13 @@
                 vertexCount: 700,
                 threshold: 50,
                 transparentColor: !1
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         7: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
@@ -386,24 +386,24 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports['default'] = function(params) {
-                return params = (0, _clone2['default'])(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
-                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2['default'].accuracy : params.accuracy = (0, 
-                _clamp2['default'])(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2['default'].blur), 
-                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2['default'].fill), 
-                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2['default'].stroke), 
-                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2['default'].strokeWidth), 
-                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2['default'].threshold : params.threshold = (0, 
-                _clamp2['default'])(params.threshold, 1, 100), ('string' != typeof params.lineJoin || -1 === allowedLineJoins.indexOf(params.lineJoin)) && (params.lineJoin = _defaultParams2['default'].lineJoin), 
+            exports.default = function(params) {
+                return params = (0, _clone2.default)(params), 'object' !== ('undefined' == typeof params ? 'undefined' : _typeof(params)) && (params = {}), 
+                'number' != typeof params.accuracy || isNaN(params.accuracy) ? params.accuracy = _defaultParams2.default.accuracy : params.accuracy = (0, 
+                _clamp2.default)(params.accuracy, 0, 1), ('number' != typeof params.blur || isNaN(params.blur)) && (params.blur = _defaultParams2.default.blur), 
+                params.blur <= 0 && (params.blur = 1), 'string' != typeof params.fill && 'boolean' != typeof params.fill && (params.fill = _defaultParams2.default.fill), 
+                'string' != typeof params.stroke && 'boolean' != typeof params.stroke && (params.stroke = _defaultParams2.default.stroke), 
+                ('number' != typeof params.strokeWidth || isNaN(params.strokeWidth)) && (params.strokeWidth = _defaultParams2.default.strokeWidth), 
+                'number' != typeof params.threshold || isNaN(params.threshold) ? params.threshold = _defaultParams2.default.threshold : params.threshold = (0, 
+                _clamp2.default)(params.threshold, 1, 100), 'string' == typeof params.lineJoin && allowedLineJoins.indexOf(params.lineJoin) !== -1 || (params.lineJoin = _defaultParams2.default.lineJoin), 
                 params.gradients && params.fill ? params.gradients = !0 : params.gradients = !1, 
                 params.gradients && (('number' != typeof params.gradientStops || isNaN(params.gradientStops) || params.gradientStops < 2) && (params.gradientStops = 2), 
-                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2['default'].vertexCount), 
-                params.vertexCount <= 0 && (params.vertexCount = 1), 'string' != typeof params.transparentColor && 'boolean' != typeof params.transparentColor && (params.transparentColor = _defaultParams2['default'].transparentColor), 
+                params.gradientStops = Math.round(params.gradientStops)), ('number' != typeof params.vertexCount || isNaN(params.vertexCount)) && (params.vertexCount = _defaultParams2.default.vertexCount), 
+                params.vertexCount <= 0 && (params.vertexCount = 1), 'string' != typeof params.transparentColor && 'boolean' != typeof params.transparentColor && (params.transparentColor = _defaultParams2.default.transparentColor), 
                 typeof params.transparentColor === !0 && (params.transparentColor = !1), 'string' == typeof params.transparentColor && (params.transparentColor = (0, 
-                _toColor2['default'])(params.transparentColor)), params;
+                _toColor2.default)(params.transparentColor)), params;
             };
             var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp), _clone = _dereq_('../util/clone'), _clone2 = _interopRequireDefault(_clone), _toColor = _dereq_('../util/toColor'), _toColor2 = _interopRequireDefault(_toColor), _defaultParams = _dereq_('./defaultParams'), _defaultParams2 = _interopRequireDefault(_defaultParams), allowedLineJoins = [ 'miter', 'round', 'bevel' ];
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/clamp': 18,
             '../util/clone': 19,
@@ -414,18 +414,18 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2['default'])(size, options, dpr);
-                return (0, _drawPolygonsOnContext2['default'])(canvasData.ctx, polygons, size, dpr), 
+            }), exports.default = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, canvasData = (0, _makeCanvasAndContext2.default)(size, options, dpr);
+                return (0, _drawPolygonsOnContext2.default)(canvasData.ctx, polygons, size, dpr), 
                 canvasData.canvas.toDataURL();
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/drawPolygonsOnContext': 21,
             '../util/makeCanvasAndContext': 27
@@ -434,17 +434,17 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size, options) {
-                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2['default'])(size, options, dpr, !0).ctx;
-                return (0, _drawPolygonsOnContext2['default'])(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
+            }), exports.default = function(polygons, size, options) {
+                var dpr = options && options.dpr ? options.dpr : 1, ctx = (0, _makeCanvasAndContext2.default)(size, options, dpr, !0).ctx;
+                return (0, _drawPolygonsOnContext2.default)(ctx, polygons, size, dpr), ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
             };
             var _makeCanvasAndContext = _dereq_('../util/makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext), _drawPolygonsOnContext = _dereq_('../util/drawPolygonsOnContext'), _drawPolygonsOnContext2 = _interopRequireDefault(_drawPolygonsOnContext);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/drawPolygonsOnContext': 21,
             '../util/makeCanvasAndContext': 27
@@ -453,12 +453,12 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, size) {
+            }), exports.default = function(polygons, size) {
                 var defStr = '';
                 polygons.length && polygons[0].gradient && (defStr = '<defs>');
                 var polygonStr = '';
@@ -467,22 +467,22 @@
                     polygonStr += '<polygon points="' + a.x + ',' + a.y + ' ' + b.x + ',' + b.y + ' ' + c.x + ',' + c.y + '"', 
                     polygon.gradient ? !function() {
                         var bb = polygon.boundingBox, x1 = ((polygon.gradient.x1 - bb.x) / bb.width * 100).toFixed(3), y1 = ((polygon.gradient.y1 - bb.y) / bb.height * 100).toFixed(3), x2 = ((polygon.gradient.x2 - bb.x) / bb.width * 100).toFixed(3), y2 = ((polygon.gradient.y2 - bb.y) / bb.height * 100).toFixed(3);
-                        defStr += '\n	<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
+                        defStr += '\n\t<linearGradient id="gradient-' + index + '" x1="' + x1 + '%" y1="' + y1 + '%" x2="' + x2 + '%" y2="' + y2 + '%">';
                         var lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = (0, _toRGBA2['default'])(color), offset = (index / lastColorIndex * 100).toFixed(3);
-                            defStr += '\n					<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n				';
+                            var rgb = (0, _toRGBA2.default)(color), offset = (index / lastColorIndex * 100).toFixed(3);
+                            defStr += '\n\t\t\t\t\t<stop offset="' + offset + '%" stop-color="' + rgb + '"/>\n\t\t\t\t';
                         }), defStr += '</linearGradient>', polygonStr += ' fill="url(#gradient-' + index + ')"', 
                         polygon.strokeWidth > 0 && (polygonStr += ' stroke="url(#gradient-' + index + ')" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"');
                     }() : (polygonStr += polygon.fill ? ' fill="' + polygon.fill + '"' : ' fill="transparent"', 
                     polygon.strokeColor && (polygonStr += ' stroke="' + polygon.strokeColor + '" stroke-width="' + polygon.strokeWidth + '" stroke-linejoin="' + polygon.lineJoin + '"')), 
-                    polygonStr += '/>\n	';
-                }), defStr.length && (defStr += '\n		</defs>');
-                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n	' + defStr + '\n	' + polygonStr + '\n</svg>';
+                    polygonStr += '/>\n\t';
+                }), defStr.length && (defStr += '\n\t\t</defs>');
+                var svg = '<?xml version="1.0" standalone="yes"?>\n<svg width="' + size.width + '" height="' + size.height + '" xmlns="http://www.w3.org/2000/svg" version="1.1" >\n\t' + defStr + '\n\t' + polygonStr + '\n</svg>';
                 return svg;
             };
             var _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/toRGBA': 30
         } ],
@@ -490,20 +490,20 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
+            }), exports.default = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon) {
-                    polygon.boundingBox = (0, _getBoundingBox2['default'])([ polygon.a, polygon.b, polygon.c ]);
+                    polygon.boundingBox = (0, _getBoundingBox2.default)([ polygon.a, polygon.b, polygon.c ]);
                 }), polygons.filter(function(polygon) {
                     return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
                 });
             };
             var _getBoundingBox = _dereq_('../util/getBoundingBox'), _getBoundingBox2 = _interopRequireDefault(_getBoundingBox);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/getBoundingBox': 22
         } ],
@@ -511,24 +511,24 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
-                var fill = params.fill, stroke = params.stroke, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, transparentColor = params.transparentColor, fillColor = 'string' == typeof fill ? fill : !1, strokeColor = 'string' == typeof stroke ? stroke : !1, getColor = function(color, override) {
-                    var t = (0, _isTransparent2['default'])(color) && transparentColor, c = t ? transparentColor : color;
-                    return override && !t ? override : (0, _toRGBA2['default'])(c);
+            }), exports.default = function(polygons, colorData, params) {
+                var fill = params.fill, stroke = params.stroke, strokeWidth = params.strokeWidth, lineJoin = params.lineJoin, transparentColor = params.transparentColor, fillColor = 'string' == typeof fill && fill, strokeColor = 'string' == typeof stroke && stroke, getColor = function(color, override) {
+                    var t = (0, _isTransparent2.default)(color) && transparentColor, c = t ? transparentColor : color;
+                    return override && !t ? override : (0, _toRGBA2.default)(c);
                 };
                 return polygons.forEach(function(polygon, index) {
-                    var color = (0, _getColorByPos2['default'])((0, _polygonCenter2['default'])(polygon), colorData);
+                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
                     fill && (polygon.fill = getColor(color, fillColor)), stroke && (polygon.strokeColor = getColor(color, strokeColor), 
                     polygon.strokeWidth = strokeWidth, polygon.lineJoin = lineJoin);
                 }), polygons;
             };
             var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent), _toRGBA = _dereq_('../util/toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/getColorByPos': 23,
             '../util/isTransparent': 25,
@@ -539,33 +539,33 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData, params) {
+            }), exports.default = function(polygons, colorData, params) {
                 return polygons.forEach(function(polygon, polygonIndex) {
                     var data = {};
                     'abc'.split('').forEach(function(key) {
-                        var color = (0, _getColorByPos2['default'])(polygon[key], colorData, params.transparentColor);
+                        var color = (0, _getColorByPos2.default)(polygon[key], colorData, params.transparentColor);
                         data[key] = {
                             key: key,
                             color: color,
                             x: polygon[key].x,
                             y: polygon[key].y
-                        }, data[key].luminance = (0, _luminance2['default'])(data[key].color);
+                        }, data[key].luminance = (0, _luminance2.default)(data[key].color);
                         var otherKeys = 'abc'.replace(key, '').split('');
                         data[key].median = {
                             x: (polygon[otherKeys[0]].x + polygon[otherKeys[1]].x) / 2,
                             y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2
-                        }, data[key].medianColor = (0, _getColorByPos2['default'])(data[key].median, colorData, params.transparentColor), 
-                        data[key].medianLuminance = (0, _luminance2['default'])(data[key].medianColor);
+                        }, data[key].medianColor = (0, _getColorByPos2.default)(data[key].median, colorData, params.transparentColor), 
+                        data[key].medianLuminance = (0, _luminance2.default)(data[key].medianColor);
                     });
                     for (var pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort(function(u, v) {
                         return Math.abs(u.luminance - u.medianLuminance) - Math.abs(v.luminance - v.medianLuminance);
                     }), pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0], startPoint = pointsByDeltaInLuminance[0], endPoint = pointWithMostDeltaInLuminance.median, gradienStopPositions = [ startPoint ], startToEndDistance = (0, 
-                    _distance2['default'])(startPoint, endPoint), i = 1, len = params.gradientStops - 2; len > i; i++) {
+                    _distance2.default)(startPoint, endPoint), i = 1, len = params.gradientStops - 2; i < len; i++) {
                         var pointDistance = i * (startToEndDistance / params.gradientStops), pointPercent = pointDistance / startToEndDistance, point = {
                             x: startPoint.x + pointPercent * (endPoint.x - startPoint.x),
                             y: startPoint.y + pointPercent * (endPoint.y - startPoint.y)
@@ -578,14 +578,14 @@
                         x2: pointWithMostDeltaInLuminance.median.x,
                         y2: pointWithMostDeltaInLuminance.median.y,
                         colors: gradienStopPositions.map(function(pos) {
-                            return (0, _getColorByPos2['default'])(pos, colorData, params.transparentColor);
+                            return (0, _getColorByPos2.default)(pos, colorData, params.transparentColor);
                         })
                     }, params.stroke && (polygon.strokeWidth = params.strokeWidth, polygon.lineJoin = params.lineJoin), 
                     data = null;
                 }), polygons;
             };
             var _luminance = _dereq_('../util/luminance'), _luminance2 = _interopRequireDefault(_luminance), _distance = _dereq_('../util/distance'), _distance2 = _interopRequireDefault(_distance), _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/distance': 20,
             '../util/getColorByPos': 23,
@@ -595,19 +595,19 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygons, colorData) {
+            }), exports.default = function(polygons, colorData) {
                 return polygons.filter(function(polygon) {
-                    var color = (0, _getColorByPos2['default'])((0, _polygonCenter2['default'])(polygon), colorData);
-                    return !(0, _isTransparent2['default'])(color);
+                    var color = (0, _getColorByPos2.default)((0, _polygonCenter2.default)(polygon), colorData);
+                    return !(0, _isTransparent2.default)(color);
                 });
             };
             var _getColorByPos = _dereq_('../util/getColorByPos'), _getColorByPos2 = _interopRequireDefault(_getColorByPos), _polygonCenter = _dereq_('../util/polygonCenter'), _polygonCenter2 = _interopRequireDefault(_polygonCenter), _isTransparent = _dereq_('../util/isTransparent'), _isTransparent2 = _interopRequireDefault(_isTransparent);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/getColorByPos': 23,
             '../util/isTransparent': 25,
@@ -617,14 +617,14 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, threshold) {
+            }), exports.default = function(imageData, threshold) {
                 var x, y, row, col, sx, sy, step, sum, total, multiplier = 2, width = imageData.width, height = imageData.height, data = imageData.data, points = [];
-                for (y = 0; height > y; y += multiplier) {
-                    for (x = 0; width > x; x += multiplier) {
-                        for (sum = total = 0, row = -1; 1 >= row; row++) {
-                            if (sy = y + row, step = sy * width, sy >= 0 && height > sy) {
-                                for (col = -1; 1 >= col; col++) {
-                                    sx = x + col, sx >= 0 && width > sx && (sum += data[sx + step << 2], total++);
+                for (y = 0; y < height; y += multiplier) {
+                    for (x = 0; x < width; x += multiplier) {
+                        for (sum = total = 0, row = -1; row <= 1; row++) {
+                            if (sy = y + row, step = sy * width, sy >= 0 && sy < height) {
+                                for (col = -1; col <= 1; col++) {
+                                    sx = x + col, sx >= 0 && sx < width && (sum += data[sx + step << 2], total++);
                                 }
                             }
                         }
@@ -635,13 +635,13 @@
                     }
                 }
                 return points;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         16: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function addVertex(x, y, hash) {
@@ -653,11 +653,11 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(points, maxPointCount, accuracy, width, height) {
+            }), exports.default = function(points, maxPointCount, accuracy, width, height) {
                 var resultHash = {}, gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5), gridColumns = Math.round(Math.sqrt(gridPointCount)), gridRows = Math.round(Math.ceil(gridPointCount / gridColumns)), xIncrement = ~~(width / gridColumns), yIncrement = ~~(height / gridRows), rowIndex = 0, startX = 0, x = 0, y = 0;
-                for (y = 0; height > y; y += yIncrement) {
-                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; width > x; x += xIncrement) {
-                        width > x && height > y && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
+                for (y = 0; y < height; y += yIncrement) {
+                    for (rowIndex++, startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0, x = startX; x < width; x += xIncrement) {
+                        x < width && y < height && addVertex(~~(x + Math.cos(y) * yIncrement), ~~(y + Math.sin(x) * xIncrement), resultHash);
                     }
                 }
                 addVertex(0, 0, resultHash), addVertex(width - 1, 0, resultHash), addVertex(width - 1, height - 1, resultHash), 
@@ -665,7 +665,7 @@
                 var remainingPointCount = maxPointCount - Object.keys(resultHash).length, edgePointCount = points.length, increment = ~~(edgePointCount / remainingPointCount);
                 if (maxPointCount > 0 && increment > 0) {
                     var i = 0;
-                    for (i = 0; edgePointCount > i; i += increment) {
+                    for (i = 0; i < edgePointCount; i += increment) {
                         addVertex(points[i].x, points[i].y, resultHash);
                     }
                 }
@@ -674,7 +674,7 @@
                 });
             };
             var _clamp = _dereq_('../util/clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../util/clamp': 18
         } ],
@@ -682,30 +682,29 @@
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(imageData, params) {
-                if ((0, _isImageData2['default'])(imageData)) {
+            }), exports.default = function(imageData, params) {
+                if ((0, _isImageData2.default)(imageData)) {
                     var imageSize = {
                         width: imageData.width,
                         height: imageData.height
-                    }, tmpImageData = (0, _copyImageData2['default'])(imageData), colorImageData = (0, 
-                    _copyImageData2['default'])(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
-                    _greyscale2['default'])(blurredImageData), edgesImageData = (0, _sobel2['default'])(greyscaleImageData).toImageData(), edgePoints = (0, 
-                    _getEdgePoints2['default'])(edgesImageData, params.threshold), edgeVertices = (0, 
-                    _getVerticesFromPoints2['default'])(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
+                    }, tmpImageData = (0, _copyImageData2.default)(imageData), colorImageData = (0, 
+                    _copyImageData2.default)(imageData), blurredImageData = (0, _stackblurCanvas.imageDataRGBA)(tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur), greyscaleImageData = (0, 
+                    _greyscale2.default)(blurredImageData), edgesImageData = (0, _sobel2.default)(greyscaleImageData).toImageData(), edgePoints = (0, 
+                    _getEdgePoints2.default)(edgesImageData, params.threshold), edgeVertices = (0, _getVerticesFromPoints2.default)(edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height), polygons = (0, 
                     _delaunayFast.triangulate)(edgeVertices);
-                    return polygons = (0, _addBoundingBoxesToPolygons2['default'])(polygons), params.transparentColor || (polygons = (0, 
-                    _filterTransparentPolygons2['default'])(polygons, colorImageData)), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
-                    _addGradientsToPolygons2['default'])(polygons, colorImageData, params) : (0, _addColorToPolygons2['default'])(polygons, colorImageData, params);
+                    return polygons = (0, _addBoundingBoxesToPolygons2.default)(polygons), params.transparentColor || (polygons = (0, 
+                    _filterTransparentPolygons2.default)(polygons, colorImageData)), polygons = params.fill === !0 && params.gradients === !0 ? (0, 
+                    _addGradientsToPolygons2.default)(polygons, colorImageData, params) : (0, _addColorToPolygons2.default)(polygons, colorImageData, params);
                 }
                 throw new Error('Can\'t work with the imageData provided. It seems to be corrupt.');
             };
             var _stackblurCanvas = _dereq_('stackblur-canvas'), _delaunayFast = _dereq_('delaunay-fast'), _sobel = _dereq_('sobel'), _sobel2 = _interopRequireDefault(_sobel), _isImageData = _dereq_('../util/isImageData'), _isImageData2 = _interopRequireDefault(_isImageData), _copyImageData = _dereq_('../imagedata/copyImageData'), _copyImageData2 = _interopRequireDefault(_copyImageData), _greyscale = _dereq_('../imagedata/greyscale'), _greyscale2 = _interopRequireDefault(_greyscale), _getEdgePoints = _dereq_('./getEdgePoints'), _getEdgePoints2 = _interopRequireDefault(_getEdgePoints), _getVerticesFromPoints = _dereq_('./getVerticesFromPoints'), _getVerticesFromPoints2 = _interopRequireDefault(_getVerticesFromPoints), _addBoundingBoxesToPolygons = _dereq_('./addBoundingBoxesToPolygons'), _addBoundingBoxesToPolygons2 = _interopRequireDefault(_addBoundingBoxesToPolygons), _addColorToPolygons = _dereq_('./addColorToPolygons'), _addColorToPolygons2 = _interopRequireDefault(_addColorToPolygons), _addGradientsToPolygons = _dereq_('./addGradientsToPolygons'), _addGradientsToPolygons2 = _interopRequireDefault(_addGradientsToPolygons), _filterTransparentPolygons = _dereq_('./filterTransparentPolygons'), _filterTransparentPolygons2 = _interopRequireDefault(_filterTransparentPolygons);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../imagedata/copyImageData': 3,
             '../imagedata/greyscale': 4,
@@ -724,15 +723,15 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(value, min, max) {
-                return min > value ? min : value > max ? max : value;
-            }, module.exports = exports['default'];
+            }), exports.default = function(value, min, max) {
+                return value < min ? min : value > max ? max : value;
+            }, module.exports = exports.default;
         }, {} ],
         19: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(obj) {
+            }), exports.default = function(obj) {
                 var result = !1;
                 if ('undefined' != typeof obj) {
                     try {
@@ -740,34 +739,34 @@
                     } catch (e) {}
                 }
                 return result;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         20: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(a, b) {
+            }), exports.default = function(a, b) {
                 var dx = b.x - a.x, dy = b.y - a.y;
                 return Math.sqrt(dx * dx + dy * dy);
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         21: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(ctx, polygons, size, dpr) {
+            }), exports.default = function(ctx, polygons, size, dpr) {
                 return dpr = dpr || 1, polygons.forEach(function(polygon, index) {
                     ctx.beginPath(), ctx.moveTo(polygon.a.x * dpr, polygon.a.y * dpr), ctx.lineTo(polygon.b.x * dpr, polygon.b.y * dpr), 
                     ctx.lineTo(polygon.c.x * dpr, polygon.c.y * dpr), ctx.lineTo(polygon.a.x * dpr, polygon.a.y * dpr), 
                     polygon.gradient ? !function() {
                         var gradient = ctx.createLinearGradient(polygon.gradient.x1 * dpr, polygon.gradient.y1 * dpr, polygon.gradient.x2 * dpr, polygon.gradient.y2 * dpr), lastColorIndex = polygon.gradient.colors.length - 1;
                         polygon.gradient.colors.forEach(function(color, index) {
-                            var rgb = (0, _toRGBA2['default'])(color);
+                            var rgb = (0, _toRGBA2.default)(color);
                             gradient.addColorStop(index / lastColorIndex, rgb);
                         }), ctx.fillStyle = gradient, ctx.fill(), polygon.strokeWidth > 0 && (ctx.strokeStyle = gradient, 
                         ctx.lineWidth = polygon.strokeWidth * dpr, ctx.lineJoin = polygon.lineJoin, ctx.stroke());
@@ -777,7 +776,7 @@
                 }), ctx;
             };
             var _toRGBA = _dereq_('./toRGBA'), _toRGBA2 = _interopRequireDefault(_toRGBA);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             './toRGBA': 30
         } ],
@@ -785,7 +784,7 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(points) {
+            }), exports.default = function(points) {
                 var xMin = 1 / 0, xMax = -(1 / 0), yMin = 1 / 0, yMax = -(1 / 0);
                 return points.forEach(function(p) {
                     p.x < xMin && (xMin = p.x), p.y < yMin && (yMin = p.y), p.x > xMax && (xMax = p.x), 
@@ -796,17 +795,17 @@
                     width: xMax - xMin,
                     height: yMax - yMin
                 };
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         23: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function getColorByPos(pos, colorData, transparentColor) {
-                var x = (0, _clamp2['default'])(pos.x, 1, colorData.width - 2), y = (0, _clamp2['default'])(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
+                var x = (0, _clamp2.default)(pos.x, 1, colorData.width - 2), y = (0, _clamp2.default)(pos.y, 1, colorData.height - 2), index = (0 | x) + (0 | y) * colorData.width << 2;
                 index >= colorData.data.length && (index = colorData.data.length - 5);
                 var alpha = colorData.data[index + 3] / 255;
                 return transparentColor && 0 === alpha ? transparentColor : {
@@ -818,9 +817,9 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = getColorByPos;
+            }), exports.default = getColorByPos;
             var _clamp = _dereq_('./clamp'), _clamp2 = _interopRequireDefault(_clamp);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             './clamp': 18
         } ],
@@ -834,40 +833,40 @@
             } : function(obj) {
                 return obj && 'function' == typeof Symbol && obj.constructor === Symbol ? 'symbol' : typeof obj;
             };
-            exports['default'] = function(imageData) {
+            exports.default = function(imageData) {
                 return imageData && 'number' == typeof imageData.width && 'number' == typeof imageData.height && imageData.data && 'number' == typeof imageData.data.length && 'object' === _typeof(imageData.data);
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         25: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(color) {
+            }), exports.default = function(color) {
                 return 0 === color.a;
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         26: [ function(_dereq_, module, exports) {
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(color) {
+            }), exports.default = function(color) {
                 var a = [ color.r, color.g, color.b ].map(function(v) {
-                    return v /= 255, .03928 >= v ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+                    return v /= 255, v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
                 });
                 return .2126 * a[0] + .7152 * a[1] + .0722 * a[2];
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         27: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(size, options, dpr, format) {
-                var backgroundColor = options && options.backgroundColor ? options.backgroundColor : !1, canvas = new _canvasBrowserify2['default'](size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
+            }), exports.default = function(size, options, dpr, format) {
+                var backgroundColor = !(!options || !options.backgroundColor) && options.backgroundColor, canvas = new _canvasBrowserify2.default(size.width * dpr, size.height * dpr, format), ctx = canvas.getContext('2d');
                 return backgroundColor && (ctx.fillStyle = backgroundColor, ctx.fillRect(0, 0, size.width * dpr, size.height * dpr), 
                 ctx.fillStyle = 'transparent'), {
                     canvas: canvas,
@@ -875,7 +874,7 @@
                 };
             };
             var _canvasBrowserify = _dereq_('canvas-browserify'), _canvasBrowserify2 = _interopRequireDefault(_canvasBrowserify);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             'canvas-browserify': 32
         } ],
@@ -883,24 +882,24 @@
             'use strict';
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(polygon) {
+            }), exports.default = function(polygon) {
                 return {
                     x: .33333 * (polygon.a.x + polygon.b.x + polygon.c.x),
                     y: .33333 * (polygon.a.y + polygon.b.y + polygon.c.y)
                 };
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         29: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(color) {
-                var size = 1, ctx = (0, _makeCanvasAndContext2['default'])({
+            }), exports.default = function(color) {
+                var size = 1, ctx = (0, _makeCanvasAndContext2.default)({
                     width: size,
                     height: size
                 }, {}, 1, !0).ctx;
@@ -914,7 +913,7 @@
                 };
             };
             var _makeCanvasAndContext = _dereq_('./makeCanvasAndContext'), _makeCanvasAndContext2 = _interopRequireDefault(_makeCanvasAndContext);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             './makeCanvasAndContext': 27
         } ],
@@ -932,18 +931,18 @@
                 }
                 return target;
             };
-            exports['default'] = function(colorObj) {
+            exports.default = function(colorObj) {
                 var c = _extends({
                     a: 1
                 }, colorObj);
                 return 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + c.a + ')';
-            }, module.exports = exports['default'];
+            }, module.exports = exports.default;
         }, {} ],
         31: [ function(_dereq_, module, exports) {
             'use strict';
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    'default': obj
+                    default: obj
                 };
             }
             function worker(self) {
@@ -953,7 +952,7 @@
                             var imageData = msg.data.imageData;
                             'undefined' == typeof imageData.width && 'number' == typeof msg.data.imageDataWidth && (imageData.width = msg.data.imageDataWidth), 
                             'undefined' == typeof imageData.height && 'number' == typeof msg.data.imageDataHeight && (imageData.height = msg.data.imageDataHeight);
-                            var polygons = (0, _imageDataToPolygons2['default'])(msg.data.imageData, msg.data.params);
+                            var polygons = (0, _imageDataToPolygons2.default)(msg.data.imageData, msg.data.params);
                             self.postMessage({
                                 polygonJSONStr: JSON.stringify(polygons)
                             });
@@ -974,9 +973,9 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = worker;
+            }), exports.default = worker;
             var _imageDataToPolygons = _dereq_('../polygons/imageDataToPolygons'), _imageDataToPolygons2 = _interopRequireDefault(_imageDataToPolygons);
-            module.exports = exports['default'];
+            module.exports = exports.default;
         }, {
             '../polygons/imageDataToPolygons': 17
         } ],
@@ -1114,66 +1113,64 @@
         }, {} ],
         34: [ function(_dereq_, module, exports) {
             (function(process, global) {
-                (function() {
+                (function(global, factory) {
+                    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : global.ES6Promise = factory();
+                })(this, function() {
                     'use strict';
-                    function lib$es6$promise$utils$$objectOrFunction(x) {
+                    function objectOrFunction(x) {
                         return typeof x === 'function' || typeof x === 'object' && x !== null;
                     }
-                    function lib$es6$promise$utils$$isFunction(x) {
+                    function isFunction(x) {
                         return typeof x === 'function';
                     }
-                    function lib$es6$promise$utils$$isMaybeThenable(x) {
-                        return typeof x === 'object' && x !== null;
-                    }
-                    var lib$es6$promise$utils$$_isArray;
+                    var _isArray = undefined;
                     if (!Array.isArray) {
-                        lib$es6$promise$utils$$_isArray = function(x) {
+                        _isArray = function(x) {
                             return Object.prototype.toString.call(x) === '[object Array]';
                         };
                     } else {
-                        lib$es6$promise$utils$$_isArray = Array.isArray;
+                        _isArray = Array.isArray;
                     }
-                    var lib$es6$promise$utils$$isArray = lib$es6$promise$utils$$_isArray;
-                    var lib$es6$promise$asap$$len = 0;
-                    var lib$es6$promise$asap$$toString = {}.toString;
-                    var lib$es6$promise$asap$$vertxNext;
-                    var lib$es6$promise$asap$$customSchedulerFn;
-                    var lib$es6$promise$asap$$asap = function asap(callback, arg) {
-                        lib$es6$promise$asap$$queue[lib$es6$promise$asap$$len] = callback;
-                        lib$es6$promise$asap$$queue[lib$es6$promise$asap$$len + 1] = arg;
-                        lib$es6$promise$asap$$len += 2;
-                        if (lib$es6$promise$asap$$len === 2) {
-                            if (lib$es6$promise$asap$$customSchedulerFn) {
-                                lib$es6$promise$asap$$customSchedulerFn(lib$es6$promise$asap$$flush);
+                    var isArray = _isArray;
+                    var len = 0;
+                    var vertxNext = undefined;
+                    var customSchedulerFn = undefined;
+                    var asap = function asap(callback, arg) {
+                        queue[len] = callback;
+                        queue[len + 1] = arg;
+                        len += 2;
+                        if (len === 2) {
+                            if (customSchedulerFn) {
+                                customSchedulerFn(flush);
                             } else {
-                                lib$es6$promise$asap$$scheduleFlush();
+                                scheduleFlush();
                             }
                         }
                     };
-                    function lib$es6$promise$asap$$setScheduler(scheduleFn) {
-                        lib$es6$promise$asap$$customSchedulerFn = scheduleFn;
+                    function setScheduler(scheduleFn) {
+                        customSchedulerFn = scheduleFn;
                     }
-                    function lib$es6$promise$asap$$setAsap(asapFn) {
-                        lib$es6$promise$asap$$asap = asapFn;
+                    function setAsap(asapFn) {
+                        asap = asapFn;
                     }
-                    var lib$es6$promise$asap$$browserWindow = typeof window !== 'undefined' ? window : undefined;
-                    var lib$es6$promise$asap$$browserGlobal = lib$es6$promise$asap$$browserWindow || {};
-                    var lib$es6$promise$asap$$BrowserMutationObserver = lib$es6$promise$asap$$browserGlobal.MutationObserver || lib$es6$promise$asap$$browserGlobal.WebKitMutationObserver;
-                    var lib$es6$promise$asap$$isNode = typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
-                    var lib$es6$promise$asap$$isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
-                    function lib$es6$promise$asap$$useNextTick() {
+                    var browserWindow = typeof window !== 'undefined' ? window : undefined;
+                    var browserGlobal = browserWindow || {};
+                    var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
+                    var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
+                    var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
+                    function useNextTick() {
                         return function() {
-                            process.nextTick(lib$es6$promise$asap$$flush);
+                            return process.nextTick(flush);
                         };
                     }
-                    function lib$es6$promise$asap$$useVertxTimer() {
+                    function useVertxTimer() {
                         return function() {
-                            lib$es6$promise$asap$$vertxNext(lib$es6$promise$asap$$flush);
+                            vertxNext(flush);
                         };
                     }
-                    function lib$es6$promise$asap$$useMutationObserver() {
+                    function useMutationObserver() {
                         var iterations = 0;
-                        var observer = new lib$es6$promise$asap$$BrowserMutationObserver(lib$es6$promise$asap$$flush);
+                        var observer = new BrowserMutationObserver(flush);
                         var node = document.createTextNode('');
                         observer.observe(node, {
                             characterData: true
@@ -1182,225 +1179,255 @@
                             node.data = iterations = ++iterations % 2;
                         };
                     }
-                    function lib$es6$promise$asap$$useMessageChannel() {
+                    function useMessageChannel() {
                         var channel = new MessageChannel();
-                        channel.port1.onmessage = lib$es6$promise$asap$$flush;
+                        channel.port1.onmessage = flush;
                         return function() {
-                            channel.port2.postMessage(0);
+                            return channel.port2.postMessage(0);
                         };
                     }
-                    function lib$es6$promise$asap$$useSetTimeout() {
+                    function useSetTimeout() {
+                        var globalSetTimeout = setTimeout;
                         return function() {
-                            setTimeout(lib$es6$promise$asap$$flush, 1);
+                            return globalSetTimeout(flush, 1);
                         };
                     }
-                    var lib$es6$promise$asap$$queue = new Array(1e3);
-                    function lib$es6$promise$asap$$flush() {
-                        for (var i = 0; i < lib$es6$promise$asap$$len; i += 2) {
-                            var callback = lib$es6$promise$asap$$queue[i];
-                            var arg = lib$es6$promise$asap$$queue[i + 1];
+                    var queue = new Array(1e3);
+                    function flush() {
+                        for (var i = 0; i < len; i += 2) {
+                            var callback = queue[i];
+                            var arg = queue[i + 1];
                             callback(arg);
-                            lib$es6$promise$asap$$queue[i] = undefined;
-                            lib$es6$promise$asap$$queue[i + 1] = undefined;
+                            queue[i] = undefined;
+                            queue[i + 1] = undefined;
                         }
-                        lib$es6$promise$asap$$len = 0;
+                        len = 0;
                     }
-                    function lib$es6$promise$asap$$attemptVertx() {
+                    function attemptVertx() {
                         try {
                             var r = _dereq_;
                             var vertx = r('vertx');
-                            lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
-                            return lib$es6$promise$asap$$useVertxTimer();
+                            vertxNext = vertx.runOnLoop || vertx.runOnContext;
+                            return useVertxTimer();
                         } catch (e) {
-                            return lib$es6$promise$asap$$useSetTimeout();
+                            return useSetTimeout();
                         }
                     }
-                    var lib$es6$promise$asap$$scheduleFlush;
-                    if (lib$es6$promise$asap$$isNode) {
-                        lib$es6$promise$asap$$scheduleFlush = lib$es6$promise$asap$$useNextTick();
+                    var scheduleFlush = undefined;
+                    if (isNode) {
+                        scheduleFlush = useNextTick();
                     } else {
-                        if (lib$es6$promise$asap$$BrowserMutationObserver) {
-                            lib$es6$promise$asap$$scheduleFlush = lib$es6$promise$asap$$useMutationObserver();
+                        if (BrowserMutationObserver) {
+                            scheduleFlush = useMutationObserver();
                         } else {
-                            if (lib$es6$promise$asap$$isWorker) {
-                                lib$es6$promise$asap$$scheduleFlush = lib$es6$promise$asap$$useMessageChannel();
+                            if (isWorker) {
+                                scheduleFlush = useMessageChannel();
                             } else {
-                                if (lib$es6$promise$asap$$browserWindow === undefined && typeof _dereq_ === 'function') {
-                                    lib$es6$promise$asap$$scheduleFlush = lib$es6$promise$asap$$attemptVertx();
+                                if (browserWindow === undefined && typeof _dereq_ === 'function') {
+                                    scheduleFlush = attemptVertx();
                                 } else {
-                                    lib$es6$promise$asap$$scheduleFlush = lib$es6$promise$asap$$useSetTimeout();
+                                    scheduleFlush = useSetTimeout();
                                 }
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$noop() {}
-                    var lib$es6$promise$$internal$$PENDING = void 0;
-                    var lib$es6$promise$$internal$$FULFILLED = 1;
-                    var lib$es6$promise$$internal$$REJECTED = 2;
-                    var lib$es6$promise$$internal$$GET_THEN_ERROR = new lib$es6$promise$$internal$$ErrorObject();
-                    function lib$es6$promise$$internal$$selfFulfillment() {
+                    function then(onFulfillment, onRejection) {
+                        var _arguments = arguments;
+                        var parent = this;
+                        var child = new this.constructor(noop);
+                        if (child[PROMISE_ID] === undefined) {
+                            makePromise(child);
+                        }
+                        var _state = parent._state;
+                        if (_state) {
+                            (function() {
+                                var callback = _arguments[_state - 1];
+                                asap(function() {
+                                    return invokeCallback(_state, child, callback, parent._result);
+                                });
+                            })();
+                        } else {
+                            subscribe(parent, child, onFulfillment, onRejection);
+                        }
+                        return child;
+                    }
+                    function resolve(object) {
+                        var Constructor = this;
+                        if (object && typeof object === 'object' && object.constructor === Constructor) {
+                            return object;
+                        }
+                        var promise = new Constructor(noop);
+                        _resolve(promise, object);
+                        return promise;
+                    }
+                    var PROMISE_ID = Math.random().toString(36).substring(16);
+                    function noop() {}
+                    var PENDING = void 0;
+                    var FULFILLED = 1;
+                    var REJECTED = 2;
+                    var GET_THEN_ERROR = new ErrorObject();
+                    function selfFulfillment() {
                         return new TypeError('You cannot resolve a promise with itself');
                     }
-                    function lib$es6$promise$$internal$$cannotReturnOwn() {
+                    function cannotReturnOwn() {
                         return new TypeError('A promises callback cannot return that same promise.');
                     }
-                    function lib$es6$promise$$internal$$getThen(promise) {
+                    function getThen(promise) {
                         try {
                             return promise.then;
                         } catch (error) {
-                            lib$es6$promise$$internal$$GET_THEN_ERROR.error = error;
-                            return lib$es6$promise$$internal$$GET_THEN_ERROR;
+                            GET_THEN_ERROR.error = error;
+                            return GET_THEN_ERROR;
                         }
                     }
-                    function lib$es6$promise$$internal$$tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+                    function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
                         try {
                             then.call(value, fulfillmentHandler, rejectionHandler);
                         } catch (e) {
                             return e;
                         }
                     }
-                    function lib$es6$promise$$internal$$handleForeignThenable(promise, thenable, then) {
-                        lib$es6$promise$asap$$asap(function(promise) {
+                    function handleForeignThenable(promise, thenable, then) {
+                        asap(function(promise) {
                             var sealed = false;
-                            var error = lib$es6$promise$$internal$$tryThen(then, thenable, function(value) {
+                            var error = tryThen(then, thenable, function(value) {
                                 if (sealed) {
                                     return;
                                 }
                                 sealed = true;
                                 if (thenable !== value) {
-                                    lib$es6$promise$$internal$$resolve(promise, value);
+                                    _resolve(promise, value);
                                 } else {
-                                    lib$es6$promise$$internal$$fulfill(promise, value);
+                                    fulfill(promise, value);
                                 }
                             }, function(reason) {
                                 if (sealed) {
                                     return;
                                 }
                                 sealed = true;
-                                lib$es6$promise$$internal$$reject(promise, reason);
+                                _reject(promise, reason);
                             }, 'Settle: ' + (promise._label || ' unknown promise'));
                             if (!sealed && error) {
                                 sealed = true;
-                                lib$es6$promise$$internal$$reject(promise, error);
+                                _reject(promise, error);
                             }
                         }, promise);
                     }
-                    function lib$es6$promise$$internal$$handleOwnThenable(promise, thenable) {
-                        if (thenable._state === lib$es6$promise$$internal$$FULFILLED) {
-                            lib$es6$promise$$internal$$fulfill(promise, thenable._result);
+                    function handleOwnThenable(promise, thenable) {
+                        if (thenable._state === FULFILLED) {
+                            fulfill(promise, thenable._result);
                         } else {
-                            if (thenable._state === lib$es6$promise$$internal$$REJECTED) {
-                                lib$es6$promise$$internal$$reject(promise, thenable._result);
+                            if (thenable._state === REJECTED) {
+                                _reject(promise, thenable._result);
                             } else {
-                                lib$es6$promise$$internal$$subscribe(thenable, undefined, function(value) {
-                                    lib$es6$promise$$internal$$resolve(promise, value);
+                                subscribe(thenable, undefined, function(value) {
+                                    return _resolve(promise, value);
                                 }, function(reason) {
-                                    lib$es6$promise$$internal$$reject(promise, reason);
+                                    return _reject(promise, reason);
                                 });
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$handleMaybeThenable(promise, maybeThenable) {
-                        if (maybeThenable.constructor === promise.constructor) {
-                            lib$es6$promise$$internal$$handleOwnThenable(promise, maybeThenable);
+                    function handleMaybeThenable(promise, maybeThenable, then$$) {
+                        if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+                            handleOwnThenable(promise, maybeThenable);
                         } else {
-                            var then = lib$es6$promise$$internal$$getThen(maybeThenable);
-                            if (then === lib$es6$promise$$internal$$GET_THEN_ERROR) {
-                                lib$es6$promise$$internal$$reject(promise, lib$es6$promise$$internal$$GET_THEN_ERROR.error);
+                            if (then$$ === GET_THEN_ERROR) {
+                                _reject(promise, GET_THEN_ERROR.error);
                             } else {
-                                if (then === undefined) {
-                                    lib$es6$promise$$internal$$fulfill(promise, maybeThenable);
+                                if (then$$ === undefined) {
+                                    fulfill(promise, maybeThenable);
                                 } else {
-                                    if (lib$es6$promise$utils$$isFunction(then)) {
-                                        lib$es6$promise$$internal$$handleForeignThenable(promise, maybeThenable, then);
+                                    if (isFunction(then$$)) {
+                                        handleForeignThenable(promise, maybeThenable, then$$);
                                     } else {
-                                        lib$es6$promise$$internal$$fulfill(promise, maybeThenable);
+                                        fulfill(promise, maybeThenable);
                                     }
                                 }
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$resolve(promise, value) {
+                    function _resolve(promise, value) {
                         if (promise === value) {
-                            lib$es6$promise$$internal$$reject(promise, lib$es6$promise$$internal$$selfFulfillment());
+                            _reject(promise, selfFulfillment());
                         } else {
-                            if (lib$es6$promise$utils$$objectOrFunction(value)) {
-                                lib$es6$promise$$internal$$handleMaybeThenable(promise, value);
+                            if (objectOrFunction(value)) {
+                                handleMaybeThenable(promise, value, getThen(value));
                             } else {
-                                lib$es6$promise$$internal$$fulfill(promise, value);
+                                fulfill(promise, value);
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$publishRejection(promise) {
+                    function publishRejection(promise) {
                         if (promise._onerror) {
                             promise._onerror(promise._result);
                         }
-                        lib$es6$promise$$internal$$publish(promise);
+                        publish(promise);
                     }
-                    function lib$es6$promise$$internal$$fulfill(promise, value) {
-                        if (promise._state !== lib$es6$promise$$internal$$PENDING) {
+                    function fulfill(promise, value) {
+                        if (promise._state !== PENDING) {
                             return;
                         }
                         promise._result = value;
-                        promise._state = lib$es6$promise$$internal$$FULFILLED;
+                        promise._state = FULFILLED;
                         if (promise._subscribers.length !== 0) {
-                            lib$es6$promise$asap$$asap(lib$es6$promise$$internal$$publish, promise);
+                            asap(publish, promise);
                         }
                     }
-                    function lib$es6$promise$$internal$$reject(promise, reason) {
-                        if (promise._state !== lib$es6$promise$$internal$$PENDING) {
+                    function _reject(promise, reason) {
+                        if (promise._state !== PENDING) {
                             return;
                         }
-                        promise._state = lib$es6$promise$$internal$$REJECTED;
+                        promise._state = REJECTED;
                         promise._result = reason;
-                        lib$es6$promise$asap$$asap(lib$es6$promise$$internal$$publishRejection, promise);
+                        asap(publishRejection, promise);
                     }
-                    function lib$es6$promise$$internal$$subscribe(parent, child, onFulfillment, onRejection) {
-                        var subscribers = parent._subscribers;
-                        var length = subscribers.length;
+                    function subscribe(parent, child, onFulfillment, onRejection) {
+                        var _subscribers = parent._subscribers;
+                        var length = _subscribers.length;
                         parent._onerror = null;
-                        subscribers[length] = child;
-                        subscribers[length + lib$es6$promise$$internal$$FULFILLED] = onFulfillment;
-                        subscribers[length + lib$es6$promise$$internal$$REJECTED] = onRejection;
+                        _subscribers[length] = child;
+                        _subscribers[length + FULFILLED] = onFulfillment;
+                        _subscribers[length + REJECTED] = onRejection;
                         if (length === 0 && parent._state) {
-                            lib$es6$promise$asap$$asap(lib$es6$promise$$internal$$publish, parent);
+                            asap(publish, parent);
                         }
                     }
-                    function lib$es6$promise$$internal$$publish(promise) {
+                    function publish(promise) {
                         var subscribers = promise._subscribers;
                         var settled = promise._state;
                         if (subscribers.length === 0) {
                             return;
                         }
-                        var child, callback, detail = promise._result;
+                        var child = undefined, callback = undefined, detail = promise._result;
                         for (var i = 0; i < subscribers.length; i += 3) {
                             child = subscribers[i];
                             callback = subscribers[i + settled];
                             if (child) {
-                                lib$es6$promise$$internal$$invokeCallback(settled, child, callback, detail);
+                                invokeCallback(settled, child, callback, detail);
                             } else {
                                 callback(detail);
                             }
                         }
                         promise._subscribers.length = 0;
                     }
-                    function lib$es6$promise$$internal$$ErrorObject() {
+                    function ErrorObject() {
                         this.error = null;
                     }
-                    var lib$es6$promise$$internal$$TRY_CATCH_ERROR = new lib$es6$promise$$internal$$ErrorObject();
-                    function lib$es6$promise$$internal$$tryCatch(callback, detail) {
+                    var TRY_CATCH_ERROR = new ErrorObject();
+                    function tryCatch(callback, detail) {
                         try {
                             return callback(detail);
                         } catch (e) {
-                            lib$es6$promise$$internal$$TRY_CATCH_ERROR.error = e;
-                            return lib$es6$promise$$internal$$TRY_CATCH_ERROR;
+                            TRY_CATCH_ERROR.error = e;
+                            return TRY_CATCH_ERROR;
                         }
                     }
-                    function lib$es6$promise$$internal$$invokeCallback(settled, promise, callback, detail) {
-                        var hasCallback = lib$es6$promise$utils$$isFunction(callback), value, error, succeeded, failed;
+                    function invokeCallback(settled, promise, callback, detail) {
+                        var hasCallback = isFunction(callback), value = undefined, error = undefined, succeeded = undefined, failed = undefined;
                         if (hasCallback) {
-                            value = lib$es6$promise$$internal$$tryCatch(callback, detail);
-                            if (value === lib$es6$promise$$internal$$TRY_CATCH_ERROR) {
+                            value = tryCatch(callback, detail);
+                            if (value === TRY_CATCH_ERROR) {
                                 failed = true;
                                 error = value.error;
                                 value = null;
@@ -1408,218 +1435,190 @@
                                 succeeded = true;
                             }
                             if (promise === value) {
-                                lib$es6$promise$$internal$$reject(promise, lib$es6$promise$$internal$$cannotReturnOwn());
+                                _reject(promise, cannotReturnOwn());
                                 return;
                             }
                         } else {
                             value = detail;
                             succeeded = true;
                         }
-                        if (promise._state !== lib$es6$promise$$internal$$PENDING) {} else {
+                        if (promise._state !== PENDING) {} else {
                             if (hasCallback && succeeded) {
-                                lib$es6$promise$$internal$$resolve(promise, value);
+                                _resolve(promise, value);
                             } else {
                                 if (failed) {
-                                    lib$es6$promise$$internal$$reject(promise, error);
+                                    _reject(promise, error);
                                 } else {
-                                    if (settled === lib$es6$promise$$internal$$FULFILLED) {
-                                        lib$es6$promise$$internal$$fulfill(promise, value);
+                                    if (settled === FULFILLED) {
+                                        fulfill(promise, value);
                                     } else {
-                                        if (settled === lib$es6$promise$$internal$$REJECTED) {
-                                            lib$es6$promise$$internal$$reject(promise, value);
+                                        if (settled === REJECTED) {
+                                            _reject(promise, value);
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    function lib$es6$promise$$internal$$initializePromise(promise, resolver) {
+                    function initializePromise(promise, resolver) {
                         try {
                             resolver(function resolvePromise(value) {
-                                lib$es6$promise$$internal$$resolve(promise, value);
+                                _resolve(promise, value);
                             }, function rejectPromise(reason) {
-                                lib$es6$promise$$internal$$reject(promise, reason);
+                                _reject(promise, reason);
                             });
                         } catch (e) {
-                            lib$es6$promise$$internal$$reject(promise, e);
+                            _reject(promise, e);
                         }
                     }
-                    function lib$es6$promise$enumerator$$Enumerator(Constructor, input) {
-                        var enumerator = this;
-                        enumerator._instanceConstructor = Constructor;
-                        enumerator.promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        if (enumerator._validateInput(input)) {
-                            enumerator._input = input;
-                            enumerator.length = input.length;
-                            enumerator._remaining = input.length;
-                            enumerator._init();
-                            if (enumerator.length === 0) {
-                                lib$es6$promise$$internal$$fulfill(enumerator.promise, enumerator._result);
+                    var id = 0;
+                    function nextId() {
+                        return id++;
+                    }
+                    function makePromise(promise) {
+                        promise[PROMISE_ID] = id++;
+                        promise._state = undefined;
+                        promise._result = undefined;
+                        promise._subscribers = [];
+                    }
+                    function Enumerator(Constructor, input) {
+                        this._instanceConstructor = Constructor;
+                        this.promise = new Constructor(noop);
+                        if (!this.promise[PROMISE_ID]) {
+                            makePromise(this.promise);
+                        }
+                        if (isArray(input)) {
+                            this._input = input;
+                            this.length = input.length;
+                            this._remaining = input.length;
+                            this._result = new Array(this.length);
+                            if (this.length === 0) {
+                                fulfill(this.promise, this._result);
                             } else {
-                                enumerator.length = enumerator.length || 0;
-                                enumerator._enumerate();
-                                if (enumerator._remaining === 0) {
-                                    lib$es6$promise$$internal$$fulfill(enumerator.promise, enumerator._result);
+                                this.length = this.length || 0;
+                                this._enumerate();
+                                if (this._remaining === 0) {
+                                    fulfill(this.promise, this._result);
                                 }
                             }
                         } else {
-                            lib$es6$promise$$internal$$reject(enumerator.promise, enumerator._validationError());
+                            _reject(this.promise, validationError());
                         }
                     }
-                    lib$es6$promise$enumerator$$Enumerator.prototype._validateInput = function(input) {
-                        return lib$es6$promise$utils$$isArray(input);
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._validationError = function() {
+                    function validationError() {
                         return new Error('Array Methods must be provided an Array');
-                    };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._init = function() {
-                        this._result = new Array(this.length);
-                    };
-                    var lib$es6$promise$enumerator$$default = lib$es6$promise$enumerator$$Enumerator;
-                    lib$es6$promise$enumerator$$Enumerator.prototype._enumerate = function() {
-                        var enumerator = this;
-                        var length = enumerator.length;
-                        var promise = enumerator.promise;
-                        var input = enumerator._input;
-                        for (var i = 0; promise._state === lib$es6$promise$$internal$$PENDING && i < length; i++) {
-                            enumerator._eachEntry(input[i], i);
+                    }
+                    Enumerator.prototype._enumerate = function() {
+                        var length = this.length;
+                        var _input = this._input;
+                        for (var i = 0; this._state === PENDING && i < length; i++) {
+                            this._eachEntry(_input[i], i);
                         }
                     };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._eachEntry = function(entry, i) {
-                        var enumerator = this;
-                        var c = enumerator._instanceConstructor;
-                        if (lib$es6$promise$utils$$isMaybeThenable(entry)) {
-                            if (entry.constructor === c && entry._state !== lib$es6$promise$$internal$$PENDING) {
-                                entry._onerror = null;
-                                enumerator._settledAt(entry._state, i, entry._result);
+                    Enumerator.prototype._eachEntry = function(entry, i) {
+                        var c = this._instanceConstructor;
+                        var resolve$$ = c.resolve;
+                        if (resolve$$ === resolve) {
+                            var _then = getThen(entry);
+                            if (_then === then && entry._state !== PENDING) {
+                                this._settledAt(entry._state, i, entry._result);
                             } else {
-                                enumerator._willSettleAt(c.resolve(entry), i);
+                                if (typeof _then !== 'function') {
+                                    this._remaining--;
+                                    this._result[i] = entry;
+                                } else {
+                                    if (c === Promise) {
+                                        var promise = new c(noop);
+                                        handleMaybeThenable(promise, entry, _then);
+                                        this._willSettleAt(promise, i);
+                                    } else {
+                                        this._willSettleAt(new c(function(resolve$$) {
+                                            return resolve$$(entry);
+                                        }), i);
+                                    }
+                                }
                             }
                         } else {
-                            enumerator._remaining--;
-                            enumerator._result[i] = entry;
+                            this._willSettleAt(resolve$$(entry), i);
                         }
                     };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._settledAt = function(state, i, value) {
-                        var enumerator = this;
-                        var promise = enumerator.promise;
-                        if (promise._state === lib$es6$promise$$internal$$PENDING) {
-                            enumerator._remaining--;
-                            if (state === lib$es6$promise$$internal$$REJECTED) {
-                                lib$es6$promise$$internal$$reject(promise, value);
+                    Enumerator.prototype._settledAt = function(state, i, value) {
+                        var promise = this.promise;
+                        if (promise._state === PENDING) {
+                            this._remaining--;
+                            if (state === REJECTED) {
+                                _reject(promise, value);
                             } else {
-                                enumerator._result[i] = value;
+                                this._result[i] = value;
                             }
                         }
-                        if (enumerator._remaining === 0) {
-                            lib$es6$promise$$internal$$fulfill(promise, enumerator._result);
+                        if (this._remaining === 0) {
+                            fulfill(promise, this._result);
                         }
                     };
-                    lib$es6$promise$enumerator$$Enumerator.prototype._willSettleAt = function(promise, i) {
+                    Enumerator.prototype._willSettleAt = function(promise, i) {
                         var enumerator = this;
-                        lib$es6$promise$$internal$$subscribe(promise, undefined, function(value) {
-                            enumerator._settledAt(lib$es6$promise$$internal$$FULFILLED, i, value);
+                        subscribe(promise, undefined, function(value) {
+                            return enumerator._settledAt(FULFILLED, i, value);
                         }, function(reason) {
-                            enumerator._settledAt(lib$es6$promise$$internal$$REJECTED, i, reason);
+                            return enumerator._settledAt(REJECTED, i, reason);
                         });
                     };
-                    function lib$es6$promise$promise$all$$all(entries) {
-                        return new lib$es6$promise$enumerator$$default(this, entries).promise;
+                    function all(entries) {
+                        return new Enumerator(this, entries).promise;
                     }
-                    var lib$es6$promise$promise$all$$default = lib$es6$promise$promise$all$$all;
-                    function lib$es6$promise$promise$race$$race(entries) {
+                    function race(entries) {
                         var Constructor = this;
-                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        if (!lib$es6$promise$utils$$isArray(entries)) {
-                            lib$es6$promise$$internal$$reject(promise, new TypeError('You must pass an array to race.'));
-                            return promise;
+                        if (!isArray(entries)) {
+                            return new Constructor(function(_, reject) {
+                                return reject(new TypeError('You must pass an array to race.'));
+                            });
+                        } else {
+                            return new Constructor(function(resolve, reject) {
+                                var length = entries.length;
+                                for (var i = 0; i < length; i++) {
+                                    Constructor.resolve(entries[i]).then(resolve, reject);
+                                }
+                            });
                         }
-                        var length = entries.length;
-                        function onFulfillment(value) {
-                            lib$es6$promise$$internal$$resolve(promise, value);
-                        }
-                        function onRejection(reason) {
-                            lib$es6$promise$$internal$$reject(promise, reason);
-                        }
-                        for (var i = 0; promise._state === lib$es6$promise$$internal$$PENDING && i < length; i++) {
-                            lib$es6$promise$$internal$$subscribe(Constructor.resolve(entries[i]), undefined, onFulfillment, onRejection);
-                        }
+                    }
+                    function reject(reason) {
+                        var Constructor = this;
+                        var promise = new Constructor(noop);
+                        _reject(promise, reason);
                         return promise;
                     }
-                    var lib$es6$promise$promise$race$$default = lib$es6$promise$promise$race$$race;
-                    function lib$es6$promise$promise$resolve$$resolve(object) {
-                        var Constructor = this;
-                        if (object && typeof object === 'object' && object.constructor === Constructor) {
-                            return object;
-                        }
-                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        lib$es6$promise$$internal$$resolve(promise, object);
-                        return promise;
-                    }
-                    var lib$es6$promise$promise$resolve$$default = lib$es6$promise$promise$resolve$$resolve;
-                    function lib$es6$promise$promise$reject$$reject(reason) {
-                        var Constructor = this;
-                        var promise = new Constructor(lib$es6$promise$$internal$$noop);
-                        lib$es6$promise$$internal$$reject(promise, reason);
-                        return promise;
-                    }
-                    var lib$es6$promise$promise$reject$$default = lib$es6$promise$promise$reject$$reject;
-                    var lib$es6$promise$promise$$counter = 0;
-                    function lib$es6$promise$promise$$needsResolver() {
+                    function needsResolver() {
                         throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
                     }
-                    function lib$es6$promise$promise$$needsNew() {
+                    function needsNew() {
                         throw new TypeError('Failed to construct \'Promise\': Please use the \'new\' operator, this object constructor cannot be called as a function.');
                     }
-                    var lib$es6$promise$promise$$default = lib$es6$promise$promise$$Promise;
-                    function lib$es6$promise$promise$$Promise(resolver) {
-                        this._id = lib$es6$promise$promise$$counter++;
-                        this._state = undefined;
-                        this._result = undefined;
+                    function Promise(resolver) {
+                        this[PROMISE_ID] = nextId();
+                        this._result = this._state = undefined;
                         this._subscribers = [];
-                        if (lib$es6$promise$$internal$$noop !== resolver) {
-                            if (!lib$es6$promise$utils$$isFunction(resolver)) {
-                                lib$es6$promise$promise$$needsResolver();
-                            }
-                            if (!(this instanceof lib$es6$promise$promise$$Promise)) {
-                                lib$es6$promise$promise$$needsNew();
-                            }
-                            lib$es6$promise$$internal$$initializePromise(this, resolver);
+                        if (noop !== resolver) {
+                            typeof resolver !== 'function' && needsResolver();
+                            this instanceof Promise ? initializePromise(this, resolver) : needsNew();
                         }
                     }
-                    lib$es6$promise$promise$$Promise.all = lib$es6$promise$promise$all$$default;
-                    lib$es6$promise$promise$$Promise.race = lib$es6$promise$promise$race$$default;
-                    lib$es6$promise$promise$$Promise.resolve = lib$es6$promise$promise$resolve$$default;
-                    lib$es6$promise$promise$$Promise.reject = lib$es6$promise$promise$reject$$default;
-                    lib$es6$promise$promise$$Promise._setScheduler = lib$es6$promise$asap$$setScheduler;
-                    lib$es6$promise$promise$$Promise._setAsap = lib$es6$promise$asap$$setAsap;
-                    lib$es6$promise$promise$$Promise._asap = lib$es6$promise$asap$$asap;
-                    lib$es6$promise$promise$$Promise.prototype = {
-                        constructor: lib$es6$promise$promise$$Promise,
-                        then: function(onFulfillment, onRejection) {
-                            var parent = this;
-                            var state = parent._state;
-                            if (state === lib$es6$promise$$internal$$FULFILLED && !onFulfillment || state === lib$es6$promise$$internal$$REJECTED && !onRejection) {
-                                return this;
-                            }
-                            var child = new this.constructor(lib$es6$promise$$internal$$noop);
-                            var result = parent._result;
-                            if (state) {
-                                var callback = arguments[state - 1];
-                                lib$es6$promise$asap$$asap(function() {
-                                    lib$es6$promise$$internal$$invokeCallback(state, child, callback, result);
-                                });
-                            } else {
-                                lib$es6$promise$$internal$$subscribe(parent, child, onFulfillment, onRejection);
-                            }
-                            return child;
-                        },
-                        'catch': function(onRejection) {
+                    Promise.all = all;
+                    Promise.race = race;
+                    Promise.resolve = resolve;
+                    Promise.reject = reject;
+                    Promise._setScheduler = setScheduler;
+                    Promise._setAsap = setAsap;
+                    Promise._asap = asap;
+                    Promise.prototype = {
+                        constructor: Promise,
+                        then: then,
+                        catch: function _catch(onRejection) {
                             return this.then(null, onRejection);
                         }
                     };
-                    function lib$es6$promise$polyfill$$polyfill() {
-                        var local;
+                    function polyfill() {
+                        var local = undefined;
                         if (typeof global !== 'undefined') {
                             local = global;
                         } else {
@@ -1634,31 +1633,21 @@
                             }
                         }
                         var P = local.Promise;
-                        if (P && Object.prototype.toString.call(P.resolve()) === '[object Promise]' && !P.cast) {
-                            return;
-                        }
-                        local.Promise = lib$es6$promise$promise$$default;
-                    }
-                    var lib$es6$promise$polyfill$$default = lib$es6$promise$polyfill$$polyfill;
-                    var lib$es6$promise$umd$$ES6Promise = {
-                        Promise: lib$es6$promise$promise$$default,
-                        polyfill: lib$es6$promise$polyfill$$default
-                    };
-                    if (typeof define === 'function' && define['amd']) {
-                        define(function() {
-                            return lib$es6$promise$umd$$ES6Promise;
-                        });
-                    } else {
-                        if (typeof module !== 'undefined' && module['exports']) {
-                            module['exports'] = lib$es6$promise$umd$$ES6Promise;
-                        } else {
-                            if (typeof this !== 'undefined') {
-                                this['ES6Promise'] = lib$es6$promise$umd$$ES6Promise;
+                        if (P) {
+                            var promiseToString = null;
+                            try {
+                                promiseToString = Object.prototype.toString.call(P.resolve());
+                            } catch (e) {}
+                            if (promiseToString === '[object Promise]' && !P.cast) {
+                                return;
                             }
                         }
+                        local.Promise = Promise;
                     }
-                    lib$es6$promise$polyfill$$default();
-                }).call(this);
+                    Promise.polyfill = polyfill;
+                    Promise.Promise = Promise;
+                    return Promise;
+                });
             }).call(this, _dereq_('_process'), typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {});
         }, {
             _process: 35
