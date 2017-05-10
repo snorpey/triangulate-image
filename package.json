@@ -53,7 +53,7 @@
     "mocha-phantomjs-core": "^2.0.0",
     "phantomjs": "^2.1.7",
     "rimraf": "^2.4.3",
-    "uglify-js": "^2.7.2",
+    "uglify-js": "^3.0.3",
     "uglifyify": "^3.0.1"
   }
 }
