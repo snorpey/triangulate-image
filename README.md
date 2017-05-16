@@ -1,4 +1,5 @@
 [![build status](https://travis-ci.org/snorpey/triangulate-image.svg?branch=master)](https://travis-ci.org/snorpey/triangulate-image)
+[![greenkeeper badge](https://badges.greenkeeper.io/snorpey/triangulate-image.svg)](https://greenkeeper.io/)
 
 triangulate-image
 ===
