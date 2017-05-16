@@ -3,6 +3,8 @@
 triangulate-image
 ===
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/triangulate-image.svg)](https://greenkeeper.io/)
+
 installation
 ---
 
