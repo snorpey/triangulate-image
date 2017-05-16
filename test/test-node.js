@@ -2,9 +2,9 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
-var libxmljs = require('libxmljs');
 var Canvas = require('canvas-browserify');
 var expect = require('expect.js');
+var sax = require( 'sax' );
 
 var Image = Canvas.Image;
 
@@ -357,18 +357,26 @@ describe( 'node tests for triangulate-image', function () {
 							expect( markup.indexOf( '<?xml' ) ).to.be( 0 );
 							expect( markup.indexOf( '<svg ' ) ).not.to.be( -1 );
 
-							var isValid = false;
+							var isValid = true;
+							var xmlParser = sax.parser( true );
 
-							try {
-								libxmljs.parseXml( markup );
-								isValid = true;
-							} catch ( err ) {
+							xmlParser.onerror = function ( err ) {
+								isValid = false;
+								check( err );
+							};
+
+							xmlParser.onend = function () {
+								check();
+							};
+
+							xmlParser
+								.write( markup )
+								.close();
+
+							function check ( err ) {
+								expect( isValid ).to.be( true );
 								done( err );
 							}
-
-							expect( isValid ).to.be( true );
-							
-							done();
 						}, done );
 				} );
 			} );
@@ -504,18 +512,40 @@ describe( 'node tests for triangulate-image', function () {
 					expect( markup.indexOf( '<?xml' ) ).to.be( 0 );
 					expect( markup.indexOf( '<svg ' ) ).not.to.be( -1 );
 
-					var isValid = false;
+					// var isValid = false;
 
-					try {
-						libxmljs.parseXml( markup );
-						isValid = true;
-					} catch ( err ) {
+					// try {
+					// 	// libxmljs.parseXml( markup );
+					// 	var document = new xmldoc.XmlDocument( markup );
+					// 	isValid = true;
+					// } catch ( err ) {
+					// 	done( err );
+					// }
+
+					// expect( isValid ).to.be( true );
+					
+					// done();
+					
+					var isValid = true;
+					var xmlParser = sax.parser( true );
+
+					xmlParser.onerror = function ( err ) {
+						isValid = false;
+						check( err );
+					};
+
+					xmlParser.onend = function () {
+						check();
+					};
+
+					xmlParser
+						.write( markup )
+						.close();
+
+					function check ( err ) {
+						expect( isValid ).to.be( true );
 						done( err );
 					}
-
-					expect( isValid ).to.be( true );
-					
-					done();
 				} );
 			} );
 		} );
