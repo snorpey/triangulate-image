@@ -1,6 +1,6 @@
 {
   "name": "triangulate-image",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Converts images in to triangular polygons.",
   "author": "Georg Fischer <snorpey@gmail.com.com>",
   "license": "MIT",
