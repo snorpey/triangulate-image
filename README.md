@@ -7,10 +7,9 @@ triangulate-image
 installation
 ---
 
-* [triangulate-image.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.min.js) 27kb, (9kb gzipped)
-* [triangulate-image.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image.js) 78kb
-* [triangulate-image-with-polyfills.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-with-polyfills.min.js) 29kb, (9kb gzipped)
-* [triangulate-image-with-polyfills.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-with-polyfills.js) 86kb
+* [triangulate-image-browser.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-browser.min.js) 32kb, (9kb gzipped)
+* [triangulate-image-browser.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-browser.js) 85kb
+* [triangulate-image-browser-with-polyfills.min.js](https://raw.githubusercontent.com/snorpey/triangulate-image/master/dist/triangulate-image-browser-with-polyfills.min.js) 40kb, (12kb gzipped)
 * [triangulate-image-master.zip](https://github.com/snorpey/triangulate-image/archive/master.zip)
 
 ```npm install triangulate-image```
