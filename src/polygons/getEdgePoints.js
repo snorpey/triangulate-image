@@ -1,12 +1,12 @@
 // most parts taken from http://jsdo.it/akm2/xoYx
 // (starting line 293++)
-export default function ( imageData, threshold ) {
+export default ( imageData, threshold ) => {
 	// only check every 2nd pixel in imageData to save some time.
-	var multiplier = 2;
-	var width = imageData.width;
-	var height = imageData.height;
-	var data = imageData.data;
-	var points = [ ];
+	const multiplier = 2;
+	const width = imageData.width;
+	const height = imageData.height;
+	const data = imageData.data;
+	const points = [ ];
 	var x, y, row, col, sx, sy, step, sum, total;
 
 	for ( y = 0; y < height; y += multiplier ) {

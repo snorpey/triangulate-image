@@ -2,17 +2,17 @@ import stream from 'stream';
 
 let readableStream = stream.Readable
 
-export default function ( polygons, size ) {
+export default ( polygons, size ) => {
 	var rs = new readableStream();
 	var polygonStr;
 
-	rs._read = function () {
+	rs._read = () => {
 		rs.push( `<?xml version="1.0" standalone="yes"?>
 ` );
 		rs.push( `<svg width="${size.width}" height="${size.height}" xmlns="http://www.w3.org/2000/svg" version="1.1" >` );
 
-		polygons.forEach( function ( polygon, index ) {
-			let { a, b, c } = polygon;
+		polygons.forEach( ( polygon, index ) => {
+			const { a, b, c } = polygon;
 
 			polygonStr = `<polygon points="${a.x},${a.y} ${b.x},${b.y} ${c.x},${c.y}"`;
 

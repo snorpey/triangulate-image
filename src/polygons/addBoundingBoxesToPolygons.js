@@ -1,11 +1,11 @@
 import getBoundingBox from '../util/getBoundingBox';
 
-export default function ( polygons, colorData, params ) {
-	polygons.forEach( function ( polygon ) {
+export default ( polygons, colorData, params ) => {
+	polygons.forEach( polygon => {
 		polygon.boundingBox = getBoundingBox( [ polygon.a, polygon.b, polygon.c ] );
 	} );
 
-	return polygons.filter( function ( polygon ) {
+	return polygons.filter( polygon => {
 		return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
 	} );
 }

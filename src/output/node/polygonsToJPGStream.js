@@ -1,21 +1,21 @@
 // https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
-import Canvas from 'canvas-browserify';
+import Canvas from '../../util/canvas.js';
 import drawPolygonsOnContext from '../../util/drawPolygonsOnContext';
 
-export default function ( polygons, size, options ) {	
+export default ( polygons, size, options ) => {
 	options = options || { };
 	
-	let dpr = options.dpr || 1;
+	const dpr = options.dpr || 1;
 
-	let streamParams = {
+	const streamParams = {
 		bufsize: options.bufsize || 4096,
 		quality: options.quality || 75,
 		progressive: options.progressive || false
 	};
 
-	let backgroundColor = options.backgroundColor || '#ffffff';
-	let canvas = new Canvas( size.width * dpr, size.height * dpr );
-	let ctx = canvas.getContext( '2d' );
+	const backgroundColor = options.backgroundColor || '#ffffff';
+	const canvas = new Canvas( size.width * dpr, size.height * dpr );
+	const ctx = canvas.getContext( '2d' );
 
 	ctx.fillStyle = backgroundColor;
 	ctx.fillRect( 0, 0, size.width * dpr, size.height * dpr );

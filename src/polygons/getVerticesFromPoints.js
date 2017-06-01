@@ -10,22 +10,22 @@ function addVertex ( x, y, hash ) {
 	resultKey = null;
 }
 
-export default function ( points, maxPointCount, accuracy, width, height ) {
+export default ( points, maxPointCount, accuracy, width, height ) => {
 	// using hash for all points to make sure we have a set of unique vertices.
-	let resultHash = { };
+	const resultHash = { };
 
 	// use 25% of max point count to create a background grid.
 	// this avoids having too many "big" triangles in areas of the image with low contrast 
 	// next to very small ones in areas with high contrast
 	// for every other row, start the x value at > 0, so the grid doesn't look too regular
-	let gridPointCount = Math.max( ~~( maxPointCount * ( 1 - accuracy ) ), 5 );
+	const gridPointCount = Math.max( ~~( maxPointCount * ( 1 - accuracy ) ), 5 );
 
 	// http://stackoverflow.com/a/4107092/229189
-	let gridColumns = Math.round( Math.sqrt( gridPointCount ) );
-	let gridRows = Math.round( Math.ceil( gridPointCount / gridColumns ) );
+	const gridColumns = Math.round( Math.sqrt( gridPointCount ) );
+	const gridRows = Math.round( Math.ceil( gridPointCount / gridColumns ) );
 	
-	let xIncrement = ~~( width / gridColumns );
-	let yIncrement = ~~( height / gridRows );
+	const xIncrement = ~~( width / gridColumns );
+	const yIncrement = ~~( height / gridRows );
 
 	let rowIndex = 0;
 	let startX = 0;
@@ -58,9 +58,9 @@ export default function ( points, maxPointCount, accuracy, width, height ) {
 	addVertex( 0, height - 1, resultHash );
 
 	// add points from all edge points
-	let remainingPointCount = maxPointCount - Object.keys( resultHash ).length;
-	let edgePointCount = points.length;
-	let increment = ~~( edgePointCount / remainingPointCount );
+	const remainingPointCount = maxPointCount - Object.keys( resultHash ).length;
+	const edgePointCount = points.length;
+	const increment = ~~( edgePointCount / remainingPointCount );
 
 	if ( maxPointCount > 0 && increment > 0 ) {
 		let i = 0;
@@ -72,5 +72,7 @@ export default function ( points, maxPointCount, accuracy, width, height ) {
 
 	points = null;
 
-	return Object.keys( resultHash ).map( function ( key ) { return resultHash[key] } );
+	return Object.keys( resultHash ).map( key => {
+		return resultHash[key];
+	} );
 }

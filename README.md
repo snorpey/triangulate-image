@@ -658,15 +658,15 @@ license
 
 third party code
 ---
-some parts of the code were taken from the [triangulation image generator](http://jsdo.it/akm2/xoYx) by [akm2](http://codepen.io/akm2) (MIT license).
-
-most of the folder structure and the npm script setup were taken from [nonalnawson](https://github.com/nolanlawson)'s [hello javascript](https://github.com/nolanlawson/hello-javascript) repo (Apache-2.0 license).
+* some parts of the code were taken from the [triangulation image generator](http://jsdo.it/akm2/xoYx) by [akm2](http://codepen.io/akm2) (MIT license).
+* some code was taken from [stackblur-canvas](https://github.com/flozz/StackBlur) by [flozz](https://github.com/flozz) and [quasimondo](https://github.com/quasimondo), MIT license
+* most of the folder structure and the npm script setup were taken from [nonalnawson](https://github.com/nolanlawson)'s [hello javascript](https://github.com/nolanlawson/hello-javascript) repo (Apache-2.0 license).
 
 dependencies:
 
 * [delaunay js](https://github.com/ironwallaby/delaunay) by [ironwallaby](https://github.com/ironwallaby), public domain
-* [canvas-browserify](https://github.com/dominictarr/canvas-browserify) by [dominictarr](https://github.com/dominictarr), MIT license
-* [stackblur-canvas](https://github.com/flozz/StackBlur) by [flozz](https://github.com/flozz) and [quasimondo](https://github.com/quasimondo), MIT license
+* [sobel](https://github.com/miguelmota/sobel) by [miguelmota](https://github.com/miguelmota), MIT license
+* [node-canvas](https://github.com/Automattic/node-canvas) by [automattic](https://github.com/Automattic), MIT license
 
 more information
 ---

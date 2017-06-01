@@ -1,4 +1,4 @@
-export default function ( imageData ) {
+export default imageData => {
 	return (
 		imageData && 
 		typeof imageData.width === 'number' &&
