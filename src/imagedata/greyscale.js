@@ -1,5 +1,5 @@
-export default function ( imageData ) {
-	let len = imageData.data.length;
+export default imageData => {
+	const len = imageData.data.length;
 	let brightness;
 
 	for ( let i = 0; i < len; i += 4 ) {

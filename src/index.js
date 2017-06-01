@@ -10,6 +10,7 @@ import polygonsToPNGStream from './output/node/polygonsToPNGStream';
 import polygonsToJPGStream from './output/node/polygonsToJPGStream';
 
 import imageDataToPolygons from './polygons/imageDataToPolygons';
+import objectAssign from './util/object-assign.js';
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -29,13 +30,13 @@ export default function ( params ) {
 	let inputFn;
 	let outputFn;
 	
-	let api = {
+	const api = {
 		getParams,
 		getInput,
 		getOutput
 	};
 
-	let inputMethods = {
+	const inputMethods = {
 		fromBuffer,
 		fromBufferSync,
 		fromImageData,
@@ -43,7 +44,7 @@ export default function ( params ) {
 		fromStream
 	};
 
-	let outputMethods = {
+	const outputMethods = {
 		toBuffer,
 		toBufferSync,
 		toData,
@@ -65,20 +66,20 @@ export default function ( params ) {
 	}
 
 	function getInput () {
-		var result = Object.assign( { }, api );
+		let result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
-			Object.assign( result, inputMethods );
+			objectAssign( result, inputMethods );
 		}
 
 		return result;
 	}
 
 	function getOutput () {
-		var result = Object.assign( { }, api );
+		let result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
-			Object.assign( result, outputMethods );
+			objectAssign( result, outputMethods );
 		}
 
 		return result;
@@ -112,7 +113,7 @@ export default function ( params ) {
 			if ( isInputSync ) {
 				return fn( inputParams );
 			} else {
-				return new Promise( function ( resolve, reject ) {
+				return new Promise( ( resolve, reject ) => {
 					if ( canResolve ) {
 						fn( inputParams, resolve, reject )
 					} else {
@@ -142,9 +143,9 @@ export default function ( params ) {
 			if ( isOutputSync ) {
 				return fn( polygons, size, outputParams );
 			} else {
-				return new Promise( function ( resolve, reject ) {
+				return new Promise( ( resolve, reject ) => {
 					try {
-						let outputData = fn( polygons, size, outputParams );
+						const outputData = fn( polygons, size, outputParams );
 						resolve( outputData );
 					} catch ( err ) {
 						reject( err );
@@ -166,20 +167,20 @@ export default function ( params ) {
 
 	function getResult () {
 		if ( isInputSync && isOutputSync ) {
-			let imageData = inputFn( params );
-			let polygonData = imageDataToPolygons( imageData, params );
-			let outputData = outputFn( polygonData, imageData );
+			const imageData = inputFn( params );
+			const polygonData = imageDataToPolygons( imageData, params );
+			const outputData = outputFn( polygonData, imageData );
 
 			return outputData;
 		} else {
-			return new Promise( function ( resolve, reject ) {
+			return new Promise( ( resolve, reject ) => {
 				var imageData;
 				makeInput()
-					.then( function ( imgData ) {
+					.then( imgData => {
 						imageData = imgData;
 						return makePolygons( imageData, params );
 					}, reject )
-					.then( function ( polygonData ) {
+					.then( polygonData => {
 						return makeOutput( polygonData, imageData );
 					}, reject )
 					.then( resolve, reject );
@@ -188,10 +189,10 @@ export default function ( params ) {
 	}
 
 	function makeInput ( inputParams ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			if ( isInputSync ) {
 				try {
-					let imageData = inputFn( inputParams );
+					const imageData = inputFn( inputParams );
 					resolve( imageData );
 				} catch ( err ) {
 					reject( err );
@@ -204,9 +205,9 @@ export default function ( params ) {
 	}
 
 	function makePolygons ( imageData, params ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			try {
-				var polygons = imageDataToPolygons( imageData, params );
+				const polygons = imageDataToPolygons( imageData, params );
 				resolve( polygons );
 			} catch( err ) {
 				reject( err );
@@ -215,21 +216,18 @@ export default function ( params ) {
 	}
 
 	function makeOutput ( polygonData, imageData ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			if ( isOutputSync ) {
 				try {
-					let outputData = outputFn( polygonData, imageData );
+					const outputData = outputFn( polygonData, imageData );
 					resolve( outputData );
 				} catch ( err ) {
 					reject( err );
 				}
 			} else {
 				outputFn( polygonData, imageData )
-					.then( function( outputData ) {
-						if ( outputFn === toSVG ) {
-							console.log( 'SUUUP' );
-						}
-						resolve(outputData)
+					.then( outputData => {
+						resolve( outputData )
 					}, reject );
 			}
 		} );

@@ -8,7 +8,7 @@ var sax = require( 'sax' );
 
 var Image = Canvas.Image;
 
-var triangulate = require('../dist-node/index.js');
+var triangulate = require('../dist/triangulate-image-node.js');
 
 var imagePath = '../examples/img/lincoln.jpg';
 

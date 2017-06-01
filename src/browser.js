@@ -5,9 +5,12 @@ import polygonsToDataURL from './output/polygonsToDataURL';
 import polygonsToSVG from './output/polygonsToSVG';
 
 import imageDataToPolygons from './polygons/imageDataToPolygons';
+import objectAssign from './util/object-assign.js';
 
-import work from 'webworkify';
-import triangulationWorker from './workers/triangulationWorker'
+// PROMISE_POLYFILL_HERE
+
+// import work from 'webworkify';
+// import triangulationWorker from './workers/triangulationWorker'
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -24,25 +27,25 @@ export default function ( params ) {
 	let isInputSync = false;
 	let isOutputSync = false;
 
-	let worker = work( triangulationWorker );
+	const worker = new Worker( 'workers/triangulationWorker.js' );
 
 	let inputFn;
 	let outputFn;
 	
-	let api = {
+	const api = {
 		getParams,
 		getInput,
 		getOutput
 	};
 
-	let inputMethods = {
+	const inputMethods = {
 		fromImage,
 		fromImageSync,
 		fromImageData,
 		fromImageDataSync
 	};
 
-	let outputMethods = {
+	const outputMethods = {
 		toData,
 		toDataSync,
 		toDataURL,
@@ -58,20 +61,20 @@ export default function ( params ) {
 	}
 
 	function getInput () {
-		var result = Object.assign( { }, api );
+		let result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
-			Object.assign( result, inputMethods );
+			objectAssign( result, inputMethods );
 		}
 
 		return result;
 	}
 
 	function getOutput () {
-		var result = Object.assign( { }, api );
+		let result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
-			Object.assign( result, outputMethods );
+			objectAssign( result, outputMethods );
 		}
 
 		return result;
@@ -79,11 +82,11 @@ export default function ( params ) {
 
 	function fromImage ( inputParams ) { return setInput( fromImageToImageData, inputParams ); }
 	function fromImageSync ( inputParams ) { return setInput( fromImageToImageData, inputParams, true ); }
-	function fromImageData ( inputParams ) { return setInput( function ( id ) { return id; }, inputParams ); }
-	function fromImageDataSync ( inputParams ) { return setInput( function ( id ) { return id; }, inputParams, true ); }
+	function fromImageData ( inputParams ) { return setInput( i => i, inputParams ); }
+	function fromImageDataSync ( inputParams ) { return setInput( i => i, inputParams, true ); }
 
-	function toData ( outputParams ) { return setOutput( function ( p ) { return p; }, outputParams ); }
-	function toDataSync ( outputParams ) { return setOutput( function ( p ) { return p; }, outputParams, true ); }
+	function toData ( outputParams ) { return setOutput( i => i, outputParams ); }
+	function toDataSync ( outputParams ) { return setOutput( i => i, outputParams, true ); }
 	function toDataURL ( outputParams ) { return setOutput( polygonsToDataURL, outputParams ); }
 	function toDataURLSync ( outputParams ) { return setOutput( polygonsToDataURL, outputParams, true ); }
 	function toImageData ( outputParams ) { return setOutput( polygonsToImageData, outputParams ); }
@@ -98,7 +101,7 @@ export default function ( params ) {
 			if ( isInputSync ) {
 				return fn( inputParams );
 			} else {
-				return new Promise( function ( resolve, reject ) {
+				return new Promise( ( resolve, reject ) => {
 					try {
 						let imageData = fn( inputParams );
 						resolve( imageData );
@@ -119,13 +122,13 @@ export default function ( params ) {
 	function setOutput ( fn, outputpParams, isSync ) {
 		isOutputSync = !! isSync;
 
-		outputFn = function ( polygons, size ) {
+		outputFn = ( polygons, size ) => {
 			if ( isOutputSync ) {
 				return fn( polygons, size, outputpParams );
 			} else {
-				return new Promise( function ( resolve, reject ) {
+				return new Promise( ( resolve, reject ) => {
 					try {
-						let outputData = fn( polygons, size, outputpParams );
+						const outputData = fn( polygons, size, outputpParams );
 						resolve( outputData );
 					} catch ( err ) {
 						reject( err );
@@ -147,23 +150,24 @@ export default function ( params ) {
 
 	function getResult () {
 		if ( isInputSync && isOutputSync ) {
-			let imageData = inputFn( params );
-			let polygonData = imageDataToPolygons( imageData, params );
-			let outputData = outputFn( polygonData, imageData );
+			const imageData = inputFn( params );
+			const polygonData = imageDataToPolygons( imageData, params );
+			const outputData = outputFn( polygonData, imageData );
 
 			return outputData;
 		} else {
-			return new Promise( function ( resolve, reject ) {
-				var imageData;
+			return new Promise( ( resolve, reject ) => {
+				let imageData;
+				
 				makeInput()
-					.then( function ( imgData ) {
+					.then( imgData => {
 						imageData = imgData;
 						return makePolygonsInWorker( imageData, params );
 					}, reject )
-					.then( function ( polygonData ) {
+					.then( polygonData => {
 						return makeOutput( polygonData, imageData );
 					}, reject )
-					.then( function ( outputData ) {
+					.then( outputData => {
 						resolve( outputData );
 					}, reject );
 			} );
@@ -171,10 +175,10 @@ export default function ( params ) {
 	}
 
 	function makeInput ( inputParams ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			if ( isInputSync ) {
 				try {
-					let imageData = inputFn( inputParams );
+					const imageData = inputFn( inputParams );
 					resolve( imageData );
 				} catch ( err ) {
 					reject( err );
@@ -187,10 +191,10 @@ export default function ( params ) {
 	}
 
 	function makePolygonsInWorker ( imageData, params ) {
-		return new Promise( function ( resolve, reject ) {
-			worker.addEventListener( 'message', function ( event ) {
+		return new Promise( ( resolve, reject ) => {
+			worker.addEventListener( 'message', event => {
 				if ( event.data && event.data.polygonJSONStr ) {
-					let polygonData = JSON.parse( event.data.polygonJSONStr );
+					const polygonData = JSON.parse( event.data.polygonJSONStr );
 					
 					resolve( polygonData );
 				} else {
@@ -214,10 +218,10 @@ export default function ( params ) {
 	}
 
 	function makeOutput ( polygonData, imageData ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			if ( isOutputSync ) {
 				try {
-					let outputData = outputFn( polygonData, imageData );
+					const outputData = outputFn( polygonData, imageData );
 					resolve( outputData );
 				} catch ( e ) {
 					reject( e );

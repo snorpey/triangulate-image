@@ -5,7 +5,7 @@ import defaultParams from './defaultParams';
 
 let allowedLineJoins = [ 'miter', 'round', 'bevel' ];
 
-export default function ( params ) {
+export default params => {
 	
 	params = clone( params );
 
@@ -79,11 +79,15 @@ export default function ( params ) {
 		params.transparentColor = defaultParams.transparentColor;
 	}
 
-	/** "transparentColor=true" is meaningless */
-	if ( typeof params.transparentColor === true ) {	params.transparentColor = false;	}
+	// "transparentColor=true" is meaningless
+	if ( typeof params.transparentColor === true ) {
+		params.transparentColor = false;
+	}
 
-	/** Transform `transparentColor` string to RGBA color object */
-	if ( typeof params.transparentColor === 'string' ) {	params.transparentColor = toColor(params.transparentColor);	}
+	// Transform `transparentColor` string to RGBA color object
+	if ( typeof params.transparentColor === 'string' ) {
+		params.transparentColor = toColor( params.transparentColor );
+	}
 
 	return params;
 }

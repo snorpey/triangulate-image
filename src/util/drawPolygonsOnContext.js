@@ -1,5 +1,6 @@
 import toRGBA from './toRGBA';
-export default function ( ctx, polygons, size, dpr ) {
+
+export default ( ctx, polygons, size, dpr ) => {
 	dpr = dpr || 1;
 
 	polygons.forEach( function ( polygon, index ) {
@@ -11,17 +12,17 @@ export default function ( ctx, polygons, size, dpr ) {
 		
 		// http://weblogs.asp.net/dwahlin/rendering-linear-gradients-using-the-html5-canvas
 		if ( polygon.gradient ) {
-			let gradient = ctx.createLinearGradient(
+			const gradient = ctx.createLinearGradient(
 				polygon.gradient.x1 * dpr,
 				polygon.gradient.y1 * dpr,
 				polygon.gradient.x2 * dpr,
 				polygon.gradient.y2 * dpr
 			);
 
-			let lastColorIndex = polygon.gradient.colors.length - 1;
+			const lastColorIndex = polygon.gradient.colors.length - 1;
 			
-			polygon.gradient.colors.forEach( function ( color, index ) {
-				let rgb = toRGBA(color);
+			polygon.gradient.colors.forEach( ( color, index ) => {
+				const rgb = toRGBA( color );
 				gradient.addColorStop( index / lastColorIndex, rgb );
 			} );
 
@@ -35,7 +36,6 @@ export default function ( ctx, polygons, size, dpr ) {
 				ctx.stroke();
 			}
 		} else {
-
 			if ( polygon.fill ) {
 				ctx.fillStyle = polygon.fill;
 				ctx.fill();

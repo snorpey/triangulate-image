@@ -3,11 +3,11 @@ import distance from '../util/distance';
 import getColorByPos from '../util/getColorByPos';
 
 export default function ( polygons, colorData, params ) {
-	polygons.forEach( function ( polygon, polygonIndex ) {
+	polygons.forEach( polygon => {
 		let data = { };
 
-		'abc'.split( '' ).forEach( function ( key ) {
-			let color = getColorByPos( polygon[key], colorData, params.transparentColor );
+		'abc'.split( '' ).forEach( key => {
+			const color = getColorByPos( polygon[key], colorData, params.transparentColor );
 			
 			data[key] = {
 				key: key,
@@ -18,7 +18,7 @@ export default function ( polygons, colorData, params ) {
 
 			data[key].luminance = luminance( data[key].color );
 
-			let otherKeys = 'abc'.replace( key, '' ).split( '' );
+			const otherKeys = 'abc'.replace( key, '' ).split( '' );
 
 			data[key].median = {
 				x: ( polygon[otherKeys[0]].x + polygon[otherKeys[1]].x ) / 2,
@@ -30,23 +30,23 @@ export default function ( polygons, colorData, params ) {
 		} );
 
 		// sort by axis of most difference in luminance
-		let pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort ( function ( u, v ) {
+		const pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort( ( u, v ) => {
 			return Math.abs( u.luminance - u.medianLuminance ) - Math.abs( v.luminance - v.medianLuminance );
 		} );
 
-		let pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0];
-		let startPoint = pointsByDeltaInLuminance[0];
-		let endPoint = pointWithMostDeltaInLuminance.median;
+		const pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0];
+		const startPoint = pointsByDeltaInLuminance[0];
+		const endPoint = pointWithMostDeltaInLuminance.median;
 
-		let gradienStopPositions = [ startPoint ];
+		const gradienStopPositions = [ startPoint ];
 
-		let startToEndDistance = distance( startPoint, endPoint );
+		const startToEndDistance = distance( startPoint, endPoint );
 
 		for ( let i = 1, len = params.gradientStops - 2; i < len; i++ ) {
-			let pointDistance = i * ( startToEndDistance / params.gradientStops );
-			let pointPercent = pointDistance / startToEndDistance;
+			const pointDistance = i * ( startToEndDistance / params.gradientStops );
+			const pointPercent = pointDistance / startToEndDistance;
 			
-			let point = {
+			const point = {
 				x: startPoint.x + pointPercent * ( endPoint.x - startPoint.x ), 
 				y: startPoint.y + pointPercent * ( endPoint.y - startPoint.y )
 			};
@@ -61,7 +61,9 @@ export default function ( polygons, colorData, params ) {
 			y1: pointWithMostDeltaInLuminance.y,
 			x2: pointWithMostDeltaInLuminance.median.x,
 			y2: pointWithMostDeltaInLuminance.median.y,
-			colors: gradienStopPositions.map( function ( pos ) { return getColorByPos( pos, colorData, params.transparentColor); } )
+			colors: gradienStopPositions.map( pos => {
+				return getColorByPos( pos, colorData, params.transparentColor );
+			} )
 		};
 
 		if ( params.stroke ) {

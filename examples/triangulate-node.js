@@ -1,5 +1,5 @@
 var fs = require('fs');
-var triangulate = require('../dist-node/index.js');
+var triangulate = require('../dist/triangulate-image-node.js');
 var imagePath = 'img/lincoln.jpg';
 
 var params = {
@@ -209,7 +209,7 @@ function fromBufferToDataSync () {
 			throw err;
 		}
 		
-		var data = JSON.stringify( triangulate( params ).fromBuffer( buffer ).toData(), null, '  ' );
+		var data = JSON.stringify( triangulate( params ).fromBufferSync( buffer ).toDataSync(), null, '  ' );
 
 		fs.writeFile( __dirname + '/node-output/fromBufferToDataSync.json', data, function ( err ) {
 			if ( err ) {

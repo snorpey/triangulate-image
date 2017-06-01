@@ -1,10 +1,10 @@
-export default function ( points ) {
+export default points => {
 	let xMin = Infinity;
 	let xMax = -Infinity;
 	let yMin = Infinity;
 	let yMax = -Infinity;
 
-	points.forEach( function ( p ) {
+	points.forEach( p => {
 		if ( p.x < xMin ) {
 			xMin = p.x;
 		}
