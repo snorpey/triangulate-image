@@ -14,8 +14,6 @@ installation
 
 ```npm install triangulate-image```
 
-```bower install triangulate-image```
-
 ```jspm install triangulate-image```
 
 what is it?
