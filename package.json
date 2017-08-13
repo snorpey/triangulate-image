@@ -25,7 +25,7 @@
   "dependencies": {
     "canvas": "^1.6.5",
     "delaunay-fast": "github:ironwallaby/delaunay#2d7110e",
-    "sobel": "^0.0.7"
+    "sobel": "^0.0.9"
   },
   "devDependencies": {
     "commander": "^2.9.0",
