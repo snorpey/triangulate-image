@@ -2,7 +2,7 @@
   "name": "triangulate-image",
   "version": "0.5.1",
   "description": "Converts images in to triangular polygons.",
-  "author": "Georg Fischer <snorpey@gmail.com.com>",
+  "author": "Georg Fischer <hi@snorpey.com>",
   "license": "MIT",
   "repository": "https://github.com/snorpey/triangulate-image.git",
   "main": "dist/triangulate-image-node.js",
