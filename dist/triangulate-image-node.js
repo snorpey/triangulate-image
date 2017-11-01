@@ -4,7 +4,7 @@
 	(global.triangulate = factory(global.stream));
 }(this, (function (stream) { 'use strict';
 
-stream = 'default' in stream ? stream['default'] : stream;
+stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
 var clamp = function ( value, min, max ) {
 	return value < min ? min : value > max ? max : value;
@@ -22,6 +22,8 @@ var clone = function (obj) {
 	return result;
 };
 
+// var Canvas = require( 'canvas' );;
+// import Canvas from './browser.js';
 var Canvas = require( 'canvas' );
 
 var makeCanvasAndContext = function ( size, options, dpr, format ) {
@@ -958,7 +960,6 @@ var stackblur = function ( imageData, top_x, top_y, width, height, radius ) {
 		pr, pg, pb, pa, rbs;
 
 	var div = radius + radius + 1;
-	var w4 = width << 2;
 	var widthMinus1  = width - 1;
 	var heightMinus1 = height - 1;
 	var radiusPlus1  = radius + 1;
