@@ -1,8 +1,8 @@
 {
   "name": "triangulate-image",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Converts images in to triangular polygons.",
-  "author": "Georg Fischer <snorpey@gmail.com.com>",
+  "author": "Georg Fischer <hi@snorpey.com>",
   "license": "MIT",
   "repository": "https://github.com/snorpey/triangulate-image.git",
   "main": "dist/triangulate-image-node.js",
@@ -23,25 +23,25 @@
     "test-browser-min": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.min.html"
   },
   "dependencies": {
-    "canvas": "^1.6.5",
+    "canvas": "^1.6.7",
     "delaunay-fast": "github:ironwallaby/delaunay#2d7110e",
-    "sobel": "^0.0.7"
+    "sobel": "^0.0.10"
   },
   "devDependencies": {
     "commander": "^2.9.0",
     "es6-promise": "^4.1.0",
     "expect.js": "^0.3.1",
-    "mocha": "^3.4.1",
+    "mocha": "^4.0.1",
     "mocha-phantomjs-core": "^2.1.1",
-    "phantomjs": "^2.1.7",
     "object-assign": "^4.1.1",
-    "rollup": "^0.45.2",
-    "rollup-plugin-buble": "^0.15.0",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "phantomjs": "^2.1.7",
+    "rollup": "^0.50.0",
+    "rollup-plugin-buble": "^0.16.0",
+    "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-replace": "^2.0.0",
+    "sax": "^1.2.2",
     "uglify-es": "^3.0.14",
-    "uglify-js": "^3.0.14",
-    "sax": "^1.2.2"
+    "uglify-js": "^3.0.14"
   }
 }
