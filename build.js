@@ -79,7 +79,7 @@ function createES6Bundle ( filePath ) {
 
 function processES6File ( filePath, format = 'es', moduleName ) {
 	const rollupOptions = {
-		entry: filePath,
+		input: filePath,
 		plugins: [
 			replace( stringsToReplace[env] || { } ),
 			nodeResolve(),
@@ -96,16 +96,19 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
-				bundleOpts.moduleName = moduleName;
+				bundleOpts.name = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );
 		} );
 }
 
 function processWorkerFile ( filePath, format = 'es' ) {
 	const rollupOptions = {
-		entry: filePath,
+		input: filePath,
 		plugins: [
 			replace( stringsToReplace[env] || { } ),
 			nodeResolve(),
@@ -122,10 +125,13 @@ function processWorkerFile ( filePath, format = 'es' ) {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
-				bundleOpts.moduleName = moduleName;
+				bundleOpts.name = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );
 		} );
 }
 
