@@ -665,12 +665,11 @@ function triangulate(vertices) {
 }
 });
 
+var delaunay_1 = delaunay.Triangle;
 var delaunay_2 = delaunay.triangulate;
 
 var sobel = createCommonjsModule(function (module, exports) {
 (function(root) {
-  'use strict';
-
   function Sobel(imageData) {
     if (!(this instanceof Sobel)) {
       return new Sobel(imageData);
@@ -801,6 +800,8 @@ var sobel = createCommonjsModule(function (module, exports) {
 
 })(commonjsGlobal);
 });
+
+var sobel_1 = sobel.Sobel;
 
 var isImageData = function (imageData) {
 	return (
