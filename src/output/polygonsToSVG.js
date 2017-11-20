@@ -42,10 +42,10 @@ export default ( polygons, size ) => {
 				polygonStr += ` stroke="url(#gradient-${index})" stroke-width="${polygon.strokeWidth}" stroke-linejoin="${polygon.lineJoin}"`;
 			}
 
-		} else {
+		} else {
 			if ( polygon.fill ) {
 				polygonStr += ` fill="${polygon.fill}"`;
-			} else {
+			} else {
 				polygonStr += ` fill="transparent"`;
 			}
 

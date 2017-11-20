@@ -5,7 +5,7 @@ import drawPolygonsOnContext from '../../util/drawPolygonsOnContext';
 export default ( polygons, size, options ) => {
 	options = options || { };
 	
-	const dpr = options.dpr || 1;
+	const dpr = options.dpr || 1;
 
 	const streamParams = {
 		bufsize: options.bufsize || 4096,

@@ -1,6 +1,6 @@
 {
   "name": "triangulate-image",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Converts images in to triangular polygons.",
   "author": "Georg Fischer <hi@snorpey.com>",
   "license": "MIT",
@@ -35,8 +35,8 @@
     "mocha-phantomjs-core": "^2.1.1",
     "object-assign": "^4.1.1",
     "phantomjs": "^2.1.7",
-    "rollup": "^0.50.0",
-    "rollup-plugin-buble": "^0.16.0",
+    "rollup": "^0.51.8",
+    "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^2.0.0",
