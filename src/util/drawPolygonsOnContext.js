@@ -35,7 +35,7 @@ export default ( ctx, polygons, size, dpr ) => {
 				ctx.lineJoin = polygon.lineJoin;
 				ctx.stroke();
 			}
-		} else {
+		} else {
 			if ( polygon.fill ) {
 				ctx.fillStyle = polygon.fill;
 				ctx.fill();

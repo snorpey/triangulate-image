@@ -18,7 +18,7 @@ export default ( polygons, size ) => {
 
 			if ( polygon.fill ) {
 				polygonStr += ` fill="${polygon.fill}"`;
-			} else {
+			} else {
 				polygonStr += ` fill="transparent"`;
 			}
 

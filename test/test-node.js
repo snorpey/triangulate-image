@@ -410,7 +410,7 @@ describe( 'node tests for triangulate-image', function () {
 			it ( 'should be able to handle an imageData object', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
 					var imageData = bufferToImageData( buffer );			
-					expect( function () { triangulate().fromImageDataSync( imageData ).toSVGSync(); } ).not.to.throwError();
+					expect( function () { triangulate().fromImageDataSync( imageData ).toSVGSync(); } ).not.to.throwError();
 					done();
 				} );
 			} );

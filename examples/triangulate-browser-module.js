@@ -20,7 +20,7 @@ var params = {
 	gradientStops: 2
 };
 
-var dpr = devicePixelRatio || 1;
+var dpr = devicePixelRatio || 1;
 
 
 loadImage( imagePath, function ( img ) {

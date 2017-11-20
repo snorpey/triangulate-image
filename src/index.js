@@ -114,7 +114,7 @@ export default function ( params ) {
 				return fn( inputParams );
 			} else {
 				return new Promise( ( resolve, reject ) => {
-					if ( canResolve ) {
+					if ( canResolve ) {
 						fn( inputParams, resolve, reject )
 					} else {
 						try {

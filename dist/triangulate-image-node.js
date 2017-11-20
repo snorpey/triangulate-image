@@ -16,7 +16,7 @@ var clone = function (obj) {
 	if ( typeof obj !== 'undefined' ) {
 		try {
 			result = JSON.parse( JSON.stringify( obj ) );
-		} catch ( e ) { }
+		} catch ( e ) { }
 	}
 	
 	return result;
@@ -269,7 +269,7 @@ var drawPolygonsOnContext = function ( ctx, polygons, size, dpr ) {
 				ctx.lineJoin = polygon.lineJoin;
 				ctx.stroke();
 			}
-		} else {
+		} else {
 			if ( polygon.fill ) {
 				ctx.fillStyle = polygon.fill;
 				ctx.fill();
@@ -365,10 +365,10 @@ var polygonsToSVG = function ( polygons, size ) {
 				polygonStr += " stroke=\"url(#gradient-" + index + ")\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"";
 			}
 
-		} else {
+		} else {
 			if ( polygon.fill ) {
 				polygonStr += " fill=\"" + (polygon.fill) + "\"";
-			} else {
+			} else {
 				polygonStr += " fill=\"transparent\"";
 			}
 
@@ -409,7 +409,7 @@ var polygonsToSVGStream = function ( polygons, size ) {
 
 			if ( polygon.fill ) {
 				polygonStr += " fill=\"" + (polygon.fill) + "\"";
-			} else {
+			} else {
 				polygonStr += " fill=\"transparent\"";
 			}
 
@@ -450,7 +450,7 @@ var polygonsToPNGStream = function ( polygons, size, options ) {
 var polygonsToJPGStream = function ( polygons, size, options ) {
 	options = options || { };
 	
-	var dpr = options.dpr || 1;
+	var dpr = options.dpr || 1;
 
 	var streamParams = {
 		bufsize: options.bufsize || 4096,
@@ -1250,7 +1250,7 @@ function addVertex ( x, y, hash ) {
 
 var getVerticesFromPoints = function ( points, maxPointCount, accuracy, width, height ) {
 	// using hash for all points to make sure we have a set of unique vertices.
-	var resultHash = { };
+	var resultHash = { };
 
 	// use 25% of max point count to create a background grid.
 	// this avoids having too many "big" triangles in areas of the image with low contrast 
@@ -1271,7 +1271,7 @@ var getVerticesFromPoints = function ( points, maxPointCount, accuracy, width, h
 	var x = 0;
 	var y = 0;
 
-	for ( y = 0; y < height; y+= yIncrement ) {
+	for ( y = 0; y < height; y+= yIncrement ) {
 		rowIndex++;
 
 		startX = rowIndex % 2 === 0 ? ~~( xIncrement / 2 ) : 0; 
@@ -1681,7 +1681,7 @@ var index = function ( params ) {
 				return fn( inputParams );
 			} else {
 				return new Promise( function ( resolve, reject ) {
-					if ( canResolve ) {
+					if ( canResolve ) {
 						fn( inputParams, resolve, reject );
 					} else {
 						try {

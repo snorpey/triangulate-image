@@ -12,7 +12,7 @@ function addVertex ( x, y, hash ) {
 
 export default ( points, maxPointCount, accuracy, width, height ) => {
 	// using hash for all points to make sure we have a set of unique vertices.
-	const resultHash = { };
+	const resultHash = { };
 
 	// use 25% of max point count to create a background grid.
 	// this avoids having too many "big" triangles in areas of the image with low contrast 
@@ -33,7 +33,7 @@ export default ( points, maxPointCount, accuracy, width, height ) => {
 	let x = 0;
 	let y = 0;
 
-	for ( y = 0; y < height; y+= yIncrement ) {
+	for ( y = 0; y < height; y+= yIncrement ) {
 		rowIndex++;
 
 		startX = rowIndex % 2 === 0 ? ~~( xIncrement / 2 ) : 0; 

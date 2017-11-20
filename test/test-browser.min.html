@@ -395,7 +395,7 @@ describe( 'browser tests for triangulate-image', function () {
 			it ( 'should be able to handle an imageData object', function ( done ) {
 				loadImage( done, function ( img ) {
 					var imageData = imageToImageData( img );			
-					expect( function () { triangulate().fromImageDataSync( imageData ).toSVGSync(); } ).not.to.throwError();
+					expect( function () { triangulate().fromImageDataSync( imageData ).toSVGSync(); } ).not.to.throwError();
 					done();
 				} );
 			} );

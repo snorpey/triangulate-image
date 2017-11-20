@@ -27,7 +27,7 @@ onmessage = msg => {
 	} else {
 		if ( msg.data.imageData ) {
 			self.postMessage( { err: 'Parameters are missing.' } );
-		} else {
+		} else {
 			self.postMessage( { err: 'ImageData is missing.' } );
 		}
 	}
