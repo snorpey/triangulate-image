@@ -6,11 +6,11 @@
 
 stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
-var clamp = function ( value, min, max ) {
+function clamp ( value, min, max ) {
 	return value < min ? min : value > max ? max : value;
-};
+}
 
-var clone = function (obj) {
+function clone (obj) {
 	var result = false;
 	
 	if ( typeof obj !== 'undefined' ) {
@@ -20,13 +20,13 @@ var clone = function (obj) {
 	}
 	
 	return result;
-};
+}
 
 // var Canvas = require( 'canvas' );;
 // import Canvas from './browser.js';
 var Canvas = require( 'canvas' );
 
-var makeCanvasAndContext = function ( size, options, dpr, format ) {
+function makeCanvasAndContext ( size, options, dpr, format ) {
 	var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
 	var canvas = new Canvas( size.width * dpr, size.height * dpr, format );
 	var ctx = canvas.getContext( '2d' );
@@ -41,14 +41,14 @@ var makeCanvasAndContext = function ( size, options, dpr, format ) {
 		canvas: canvas,
 		ctx: ctx
 	};
-};
+}
 
 /**
  * Transform CSS color definition to RGBA
  * @param  {String} color CSS color (name,HSL,RGB,HEX..)
  * @return {Object}       RGBA color object
  */
-var toColor = function (color) {
+function toColor (color) {
 	var size = 1;		// single pixel
 	var ctx = makeCanvasAndContext( { width: size, height: size }, { }, 1, true ).ctx;
 	ctx.fillStyle = color;
@@ -63,7 +63,7 @@ var toColor = function (color) {
 		b: data[2],
 		a: data[3] / 255		// For alpha we scale to 0..1 float
 	};
-};
+}
 
 var defaultParams = {
 	accuracy: 0.7,
@@ -79,7 +79,7 @@ var defaultParams = {
 
 var allowedLineJoins = [ 'miter', 'round', 'bevel' ];
 
-var sanitizeInput = function (params) {
+function sanitizeInput (params) {
 	
 	params = clone( params );
 
@@ -164,12 +164,12 @@ var sanitizeInput = function (params) {
 	}
 
 	return params;
-};
+}
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
 var Image = Canvas.Image;
 
-var fromBufferToImageData = function (buffer) {
+function fromBufferToImageData (buffer) {
 	if ( buffer instanceof Buffer ) {
 		var image = new Image;
 		image.src = buffer;
@@ -184,13 +184,13 @@ var fromBufferToImageData = function (buffer) {
 		throw new Error( "Can't work with the buffer object provided." );
 		return;
 	}
-};
+}
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
 var Readable = stream.Readable;
 var Image$1 = Canvas.Image;
 
-var fromStreamToImageData = function ( stream$$1, resolve, reject ) {
+function fromStreamToImageData ( stream$$1, resolve, reject ) {
 	if ( stream$$1 instanceof Readable ) {
 		var bufferContent = [ ];
 		
@@ -218,7 +218,7 @@ var fromStreamToImageData = function ( stream$$1, resolve, reject ) {
 	} else {
 		reject( new Error( "Can't work with the buffer object provided." ) );
 	}
-};
+}
 
 // import objectAssign from 'object-assign'
 var objectAssign = Object.assign;
@@ -229,12 +229,12 @@ var objectAssign = Object.assign;
  * @return {String}       	 rgba css string
  */
 
-var toRGBA = function (colorObj) {
+function toRGBA (colorObj) {
 	var c = objectAssign( { a: 1 }, colorObj );	// rgb-to-rgba:  alpha is optionally set to 1
 	return ("rgba(" + (c.r) + ", " + (c.g) + ", " + (c.b) + ", " + (c.a) + ")")
-};
+}
 
-var drawPolygonsOnContext = function ( ctx, polygons, size, dpr ) {
+function drawPolygonsOnContext ( ctx, polygons, size, dpr ) {
 	dpr = dpr || 1;
 
 	polygons.forEach( function ( polygon, index ) {
@@ -287,12 +287,12 @@ var drawPolygonsOnContext = function ( ctx, polygons, size, dpr ) {
 	} );
 
 	return ctx;
-};
+}
 
 // https://github.com/Automattic/node-canvas#pdf-support
 var allowedFormats = [ 'svg', 'pdf' ];
 
-var polygonsToBuffer = function ( polygons, size, options ) {
+function polygonsToBuffer ( polygons, size, options ) {
 	var dpr = options && options.dpr ? options.dpr : 1;
 	var format = options && options.format ? options.format : false;
 	
@@ -303,29 +303,29 @@ var polygonsToBuffer = function ( polygons, size, options ) {
 	drawPolygonsOnContext( canvasData.ctx, polygons, size );
 
 	return canvasData.canvas.toBuffer();
-};
+}
 
-var polygonsToImageData = function ( polygons, size, options ) {
+function polygonsToImageData ( polygons, size, options ) {
 	var dpr = options && options.dpr ? options.dpr : 1;	
 	var ctx = makeCanvasAndContext( size, options, dpr, true ).ctx;
 	
 	drawPolygonsOnContext( ctx, polygons, size, dpr );
 
 	return ctx.getImageData( 0, 0, size.width * dpr, size.height * dpr );
-};
+}
 
-var polygonsToDataURL = function ( polygons, size, options ) {
+function polygonsToDataURL ( polygons, size, options ) {
 	var dpr = options && options.dpr ? options.dpr : 1;	
 	var canvasData = makeCanvasAndContext( size, options, dpr );
 
 	drawPolygonsOnContext( canvasData.ctx, polygons, size, dpr );
 
 	return canvasData.canvas.toDataURL();
-};
+}
 
 // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon
-var polygonsToSVG = function ( polygons, size ) {
+function polygonsToSVG ( polygons, size ) {
 	var defStr = '';
 
 	if ( polygons.length && polygons[0].gradient ) {
@@ -388,11 +388,11 @@ var polygonsToSVG = function ( polygons, size ) {
 	var svg = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<svg width=\"" + (size.width) + "\" height=\"" + (size.height) + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >\n\t" + defStr + "\n\t" + polygonStr + "\n</svg>";
 
 	return svg;
-};
+}
 
 var readableStream = stream.Readable;
 
-var polygonsToSVGStream = function ( polygons, size ) {
+function polygonsToSVGStream ( polygons, size ) {
 	var rs = new readableStream();
 	var polygonStr;
 
@@ -426,10 +426,10 @@ var polygonsToSVGStream = function ( polygons, size ) {
 	};
 	
 	return rs;
-};
+}
 
 // https://github.com/Automattic/node-canvas#canvaspngstream
-var polygonsToPNGStream = function ( polygons, size, options ) {
+function polygonsToPNGStream ( polygons, size, options ) {
 	var dpr = options && options.dpr ? options.dpr : 1;
 	var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
 	var canvas = new Canvas( size.width * dpr, size.height * dpr );
@@ -444,10 +444,10 @@ var polygonsToPNGStream = function ( polygons, size, options ) {
 	drawPolygonsOnContext( ctx, polygons, size, dpr );
 
 	return canvas.pngStream();
-};
+}
 
 // https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
-var polygonsToJPGStream = function ( polygons, size, options ) {
+function polygonsToJPGStream ( polygons, size, options ) {
 	options = options || { };
 	
 	var dpr = options.dpr || 1;
@@ -469,7 +469,7 @@ var polygonsToJPGStream = function ( polygons, size, options ) {
 	drawPolygonsOnContext( ctx, polygons, size, dpr );
 
 	return canvas.jpegStream( streamParams );
-};
+}
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -803,7 +803,7 @@ var sobel = createCommonjsModule(function (module, exports) {
 
 var sobel_1 = sobel.Sobel;
 
-var isImageData = function (imageData) {
+function isImageData (imageData) {
 	return (
 		imageData && 
 		typeof imageData.width === 'number' &&
@@ -812,9 +812,9 @@ var isImageData = function (imageData) {
 		typeof imageData.data.length === 'number' &&
 		typeof imageData.data === 'object'
 	);
-};
+}
 
-var copyImageData = function (imageData) {
+function copyImageData (imageData) {
 	if ( isImageData ( imageData ) ) {
 		if ( typeof Uint8ClampedArray === 'undefined' ) {
 			if ( typeof window === 'undefined' ) {
@@ -855,7 +855,7 @@ var copyImageData = function (imageData) {
 		throw new Error( 'Given imageData object is not useable.' );
 		return;
 	}
-};
+}
 
 // http://stackoverflow.com/a/11918126/229189
 function copyImageDataWithCanvas ( imageData ) {
@@ -952,7 +952,7 @@ function BlurStack () {
 	this.next = null;
 }
 
-var stackblur = function ( imageData, top_x, top_y, width, height, radius ) {
+function stackblur ( imageData, top_x, top_y, width, height, radius ) {
 	var pixels = imageData.data;
 
 	var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum,
@@ -1178,9 +1178,9 @@ var stackblur = function ( imageData, top_x, top_y, width, height, radius ) {
 	}
 
 	return imageData;
-};
+}
 
-var greyscale = function (imageData) {
+function greyscale (imageData) {
 	var len = imageData.data.length;
 	var brightness;
 
@@ -1193,11 +1193,11 @@ var greyscale = function (imageData) {
 	}
 		
 	return imageData;
-};
+}
 
 // most parts taken from http://jsdo.it/akm2/xoYx
 // (starting line 293++)
-var getEdgePoints = function ( imageData, threshold ) {
+function getEdgePoints ( imageData, threshold ) {
 	// only check every 2nd pixel in imageData to save some time.
 	var multiplier = 2;
 	var width = imageData.width;
@@ -1237,7 +1237,7 @@ var getEdgePoints = function ( imageData, threshold ) {
 	}
 
 	return points;
-};
+}
 
 function addVertex ( x, y, hash ) {
 	var resultKey = x + '|' + y;
@@ -1249,7 +1249,7 @@ function addVertex ( x, y, hash ) {
 	resultKey = null;
 }
 
-var getVerticesFromPoints = function ( points, maxPointCount, accuracy, width, height ) {
+function getVerticesFromPoints ( points, maxPointCount, accuracy, width, height ) {
 	// using hash for all points to make sure we have a set of unique vertices.
 	var resultHash = { };
 
@@ -1314,9 +1314,9 @@ var getVerticesFromPoints = function ( points, maxPointCount, accuracy, width, h
 	return Object.keys( resultHash ).map( function (key) {
 		return resultHash[key];
 	} );
-};
+}
 
-var getBoundingBox = function (points) {
+function getBoundingBox (points) {
 	var xMin = Infinity;
 	var xMax = -Infinity;
 	var yMin = Infinity;
@@ -1346,9 +1346,9 @@ var getBoundingBox = function (points) {
 		width: xMax - xMin,
 		height: yMax - yMin
 	};
-};
+}
 
-var addBoundingBoxesToPolygons = function ( polygons, colorData, params ) {
+function addBoundingBoxesToPolygons ( polygons, colorData, params ) {
 	polygons.forEach( function (polygon) {
 		polygon.boundingBox = getBoundingBox( [ polygon.a, polygon.b, polygon.c ] );
 	} );
@@ -1356,7 +1356,7 @@ var addBoundingBoxesToPolygons = function ( polygons, colorData, params ) {
 	return polygons.filter( function (polygon) {
 		return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
 	} );
-};
+}
 
 /**
  * Get color object by position
@@ -1365,7 +1365,7 @@ var addBoundingBoxesToPolygons = function ( polygons, colorData, params ) {
  * @param  {Object} [transparentColor] (optional) RGBA color object. Used to set specific color to transparent pixels
  * @return {Object}             RGBA color object
  */
-var getColorByPos = function ( pos, colorData, transparentColor ) {
+function getColorByPos ( pos, colorData, transparentColor ) {
 	var x = clamp( pos.x, 1, colorData.width - 2 );
 	var y = clamp( pos.y, 1, colorData.height - 2 );
 	var index = ( ( x | 0 ) + ( y | 0 ) * colorData.width ) << 2;
@@ -1383,30 +1383,30 @@ var getColorByPos = function ( pos, colorData, transparentColor ) {
 		b: colorData.data[index + 2],
 		a: alpha
 	};
-};
+}
 
 /**
  * Get polygon's center point
  * @param  {Object} polygon Polygon object
  * @return {Object}         Point coordinates {x,y}
  */
-var polygonCenter = function (polygon) {
+function polygonCenter (polygon) {
 	return {
 		x: ( polygon.a.x + polygon.b.x + polygon.c.x ) * 0.33333,
 		y: ( polygon.a.y + polygon.b.y + polygon.c.y ) * 0.33333
 	};
-};
+}
 
 /**
  * Is color transparent ?
  * @param  {Object} color Color object
  * @return {Boolean}      Is transparent?
  */
-var isTransparent = function (color) {
+function isTransparent (color) {
 	return color.a === 0;
-};
+}
 
-var addColorToPolygons = function ( polygons, colorData, params ) {
+function addColorToPolygons ( polygons, colorData, params ) {
 	var fill = params.fill;
 	var stroke = params.stroke;
 	var strokeWidth = params.strokeWidth;
@@ -1442,26 +1442,26 @@ var addColorToPolygons = function ( polygons, colorData, params ) {
 	} );
 
 	return polygons;
-};
+}
 
 //  http://stackoverflow.com/a/9733420/229189
-var luminance = function (color) {
+function luminance (color) {
 	var a = [ color.r, color.g, color.b ].map( function (v) {
 		v /= 255;
 		return ( v <= 0.03928 ) ? v / 12.92 : Math.pow( ( ( v + 0.055 ) / 1.055 ), 2.4 );
 	} );
 
 	return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-};
+}
 
-var distance = function ( a, b ) {
+function distance ( a, b ) {
 	var dx = b.x - a.x;
 	var dy = b.y - a.y;
 
 	return Math.sqrt( ( dx * dx ) + ( dy * dy ) );
-};
+}
 
-var addGradientsToPolygons = function ( polygons, colorData, params ) {
+function addGradientsToPolygons ( polygons, colorData, params ) {
 	polygons.forEach( function (polygon) {
 		var data = { };
 
@@ -1534,7 +1534,7 @@ var addGradientsToPolygons = function ( polygons, colorData, params ) {
 	} );
 
 	return polygons;
-};
+}
 
 /**
  * Filter polygons with transparent color
@@ -1542,14 +1542,14 @@ var addGradientsToPolygons = function ( polygons, colorData, params ) {
  * @param  {Object} colorData  Color data
  * @return {Array}             Filtered polygons array
  */
-var filterTransparentPolygons = function ( polygons, colorData ) {
+function filterTransparentPolygons ( polygons, colorData ) {
 	return polygons.filter( function (polygon) {
 		var color = getColorByPos( polygonCenter( polygon ), colorData );
 		return ! isTransparent( color );
 	});
-};
+}
 
-var imageDataToPolygons = function ( imageData, params ) {
+function imageDataToPolygons ( imageData, params ) {
 	if ( isImageData( imageData ) ) {
 		var imageSize = { width: imageData.width, height: imageData.height };
 		var tmpImageData = copyImageData( imageData );
@@ -1578,7 +1578,7 @@ var imageDataToPolygons = function ( imageData, params ) {
 		throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
 		return;
 	}
-};
+}
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -1589,7 +1589,7 @@ var imageDataToPolygons = function ( imageData, params ) {
 // 
 // etc...
 
-var index = function ( params ) {
+function index ( params ) {
 	params = sanitizeInput( params );
 
 	var isInputSync = false;
@@ -1802,7 +1802,7 @@ var index = function ( params ) {
 	}
 
 	return getInput();
-};
+}
 
 return index;
 
