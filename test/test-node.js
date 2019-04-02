@@ -2,11 +2,9 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
-var Canvas = require('canvas');
+var { createCanvas, Image } = require('canvas');
 var expect = require('expect.js');
 var sax = require( 'sax' );
-
-var Image = Canvas.Image;
 
 var triangulate = require('../dist/triangulate-image-node.js');
 
@@ -597,8 +595,10 @@ describe( 'node tests for triangulate-image', function () {
 			it ( 'should return a JPGStream', function ( done ) {
 				loadImageBuffer( done, function ( buffer ) {
 					var jpgStream = triangulate().fromBufferSync( buffer ).toJPGStream();
+					var checkInstance = createCanvas( 300, 150 ).createJPEGStream();
 					
-					expect( jpgStream instanceof Canvas.JPEGStream ).to.be( true );
+					expect( jpgStream instanceof stream.Readable ).to.be( true );
+
 					done();
 				} );
 			} );
@@ -629,7 +629,7 @@ describe( 'node tests for triangulate-image', function () {
 				loadImageBuffer( done, function ( buffer ) {
 					var pngStream = triangulate().fromBufferSync( buffer ).toPNGStream();
 					
-					assert.equal( pngStream instanceof Canvas.PNGStream, true );
+					assert.equal( pngStream instanceof stream.Readable, true );
 					done();
 				} );
 			} );
@@ -768,7 +768,8 @@ function bufferToImageData ( buffer ) {
 	var img = new Image();
 	img.src = buffer;
 
-	var canvas = new Canvas( img.width, img.height );
+	// var canvas = new Canvas( img.width, img.height );
+	var canvas = createCanvas( img.width, img.height );
 	var ctx = canvas.getContext( '2d' );
 	ctx.drawImage( img, 0, 0 );
 

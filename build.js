@@ -39,7 +39,7 @@ var mainFilePath = isBrowser ? 'browser.js' : 'index.js';
 
 var stringsToReplace = {
 	browser: {
-		"const Canvas = require( 'canvas' );": "import Canvas from './browser.js'",
+		"import Canvas from './node-canvas.js'": "import Canvas from './browser.js'",
 		"// PROMISE_POLYFILL_HERE": ''
 	},
 	node: {
@@ -66,7 +66,7 @@ createES6Bundle( globalPath + mainFilePath )
 	} );
 
 function createES6Bundle ( filePath ) {
-	const format = ( es5Build || bundleUMD ) ? 'umd' : 'es';
+	const format = ( es5Build || bundleUMD ) ? 'umd' : 'es';	
 
 	return processES6File( filePath, format, moduleName )
 		.then( ( fileContent ) => {
@@ -114,7 +114,7 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 
 			return bundle.generate( bundleOpts )
 				.then( bundleData => {
-					return bundleData.code;
+					return bundleData.output[0].code;
 				} );
 		} );
 }
