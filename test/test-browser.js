@@ -9,7 +9,6 @@ var defaultParams = {
 	threshold: 50
 };
 
-// var imagePath = '../examples/img/lincoln.jpg';
 var imagePath = 'http://localhost:9876/base/img/lincoln.jpg';
 
 describe( 'browser tests for triangulate-image', () => {
@@ -29,7 +28,7 @@ describe( 'browser tests for triangulate-image', () => {
 	} );
 
 	it ( 'should have a getParams method', () => {
-			expect( triangulate().getParams ).to.be.a( 'function' );
+		expect( triangulate().getParams ).to.be.a( 'function' );
 	} );
 
 // getParams()
