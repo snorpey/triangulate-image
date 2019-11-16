@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('stream')) :
 	typeof define === 'function' && define.amd ? define(['stream'], factory) :
 	(global = global || self, global.triangulate = factory(global.stream));
-}(this, function (stream) { 'use strict';
+}(this, (function (stream) { 'use strict';
 
 	stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
@@ -245,7 +245,6 @@
 			return ctx.getImageData( 0, 0, canvas.width, canvas.height );
 		} else {
 			throw new Error( "Can't work with the buffer object provided." );
-			return;
 		}
 	}
 
@@ -362,7 +361,7 @@
 		
 		var canvasData = makeCanvasAndContext( size, options, dpr, format );
 		
-		drawPolygonsOnContext( canvasData.ctx, polygons, size );
+		drawPolygonsOnContext( canvasData.ctx, polygons);
 
 		return canvasData.canvas.toBuffer();
 	}
@@ -534,8 +533,6 @@
 
 		return canvas.jpegStream( streamParams );
 	}
-
-	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 	function createCommonjsModule(fn, module) {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -852,13 +849,13 @@
 	  }
 
 	  {
-	    if (module.exports) {
+	    if ( module.exports) {
 	      exports = module.exports = Sobel;
 	    }
 	    exports.Sobel = Sobel;
 	  }
 
-	})(commonjsGlobal);
+	})();
 	});
 	var sobel_1 = sobel.Sobel;
 
@@ -878,7 +875,6 @@
 			if ( typeof Uint8ClampedArray === 'undefined' ) {
 				if ( typeof window === 'undefined' ) {
 					throw new Error( "Can't copy imageData in webworker without Uint8ClampedArray support." );
-					return imageData;
 				} else {
 					return copyImageDataWithCanvas( imageData );
 				}
@@ -901,7 +897,6 @@
 					} catch ( err ) {
 						if ( typeof window === 'undefined' ) {
 							throw new Error( "Can't copy imageData in webworker without proper ImageData() support." );
-							result = imageData;
 						} else {
 							result = copyImageDataWithCanvas( imageData );
 						}
@@ -912,7 +907,6 @@
 			}
 		} else {
 			throw new Error( 'Given imageData object is not useable.' );
-			return;
 		}
 	}
 
@@ -1635,7 +1629,6 @@
 			return polygons;
 		} else {
 			throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
-			return;
 		}
 	}
 
@@ -1865,4 +1858,4 @@
 
 	return index;
 
-}));
+})));
