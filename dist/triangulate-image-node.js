@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('stream')) :
 	typeof define === 'function' && define.amd ? define(['stream'], factory) :
 	(global = global || self, global.triangulate = factory(global.stream));
-}(this, (function (stream) { 'use strict';
+}(this, function (stream) { 'use strict';
 
 	stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
@@ -245,6 +245,7 @@
 			return ctx.getImageData( 0, 0, canvas.width, canvas.height );
 		} else {
 			throw new Error( "Can't work with the buffer object provided." );
+			return;
 		}
 	}
 
@@ -317,8 +318,9 @@
 				var lastColorIndex = polygon.gradient.colors.length - 1;
 				
 				polygon.gradient.colors.forEach( function ( color, index ) {
-					var rgb = toRGBA( color );
-					gradient.addColorStop( index / lastColorIndex, rgb );
+					var rgba = toRGBA( color );
+					console.log( color );
+					gradient.addColorStop( index / lastColorIndex, rgba );
 				} );
 
 				ctx.fillStyle = gradient;
@@ -332,12 +334,12 @@
 				}
 			} else {
 				if ( polygon.fill ) {
-					ctx.fillStyle = polygon.fill;
+					ctx.fillStyle = toRGBA( polygon.fill );
 					ctx.fill();
 				}
 
 				if ( polygon.strokeColor ) {
-					ctx.strokeStyle = polygon.strokeColor;
+					ctx.strokeStyle = toRGBA( polygon.strokeColor );
 					ctx.lineWidth = polygon.strokeWidth * dpr;
 					ctx.lineJoin = polygon.lineJoin;
 					ctx.stroke();
@@ -361,7 +363,7 @@
 		
 		var canvasData = makeCanvasAndContext( size, options, dpr, format );
 		
-		drawPolygonsOnContext( canvasData.ctx, polygons);
+		drawPolygonsOnContext( canvasData.ctx, polygons, size );
 
 		return canvasData.canvas.toBuffer();
 	}
@@ -382,6 +384,19 @@
 		drawPolygonsOnContext( canvasData.ctx, polygons, size, dpr );
 
 		return canvasData.canvas.toDataURL();
+	}
+
+	function componentToHex ( c ) {
+		var hex = c.toString( 16 );
+		return hex.length == 1 ? '0' + hex : hex;
+	}
+
+	function toHex ( ref ) {
+		var r = ref.r;
+		var g = ref.g;
+		var b = ref.b;
+
+		return '#' + componentToHex( r ) + componentToHex( g ) + componentToHex( b );
 	}
 
 	// http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
@@ -414,9 +429,10 @@
 				var lastColorIndex = polygon.gradient.colors.length - 1;
 				
 				polygon.gradient.colors.forEach( function ( color, index ) {
-					var rgb = toRGBA( color );
+					var hex = toHex( color );
+					var opacityStr = color.a < 1 ? ' stop-opacity="' + color.a + '"' : '';
 					var offset = ( ( index / lastColorIndex ) * 100 ).toFixed( 3 );
-					defStr += "\n\t\t\t\t\t<stop offset=\"" + offset + "%\" stop-color=\"" + rgb + "\"/>\n\t\t\t\t";
+					defStr += "\n\t\t\t\t\t<stop offset=\"" + offset + "%\" stop-color=\"" + hex + "\"" + opacityStr + "/>\n\t\t\t\t";
 				} );
 		
 				defStr += "</linearGradient>";
@@ -428,13 +444,18 @@
 
 			} else {
 				if ( polygon.fill ) {
-					polygonStr += " fill=\"" + (polygon.fill) + "\"";
+					var hexColor = toHex( polygon.fill );
+					var opacityStr = polygon.fill.a < 1 ? (" fill-opacity=\"" + (polygon.fill.a) + "\"") : '';
+					polygonStr += " fill=\"" + hexColor + "\"" + opacityStr;
 				} else {
 					polygonStr += " fill=\"transparent\"";
 				}
 
 				if ( polygon.strokeColor ) {
-					polygonStr += " stroke=\"" + (polygon.strokeColor) + "\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"";
+					var hexColor$1 = toHex( polygon.strokeColor );
+					var opacityStr$1 = polygon.strokeColor.a < 1 ? (" stroke-opacity=\"" + (polygon.strokeColor.a) + "\"") : '';
+
+					polygonStr += " stroke=\"" + hexColor$1 + "\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"" + opacityStr$1;
 				}
 			}
 
@@ -533,6 +554,8 @@
 
 		return canvas.jpegStream( streamParams );
 	}
+
+	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 	function createCommonjsModule(fn, module) {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -849,13 +872,13 @@
 	  }
 
 	  {
-	    if ( module.exports) {
+	    if (module.exports) {
 	      exports = module.exports = Sobel;
 	    }
 	    exports.Sobel = Sobel;
 	  }
 
-	})();
+	})(commonjsGlobal);
 	});
 	var sobel_1 = sobel.Sobel;
 
@@ -875,6 +898,7 @@
 			if ( typeof Uint8ClampedArray === 'undefined' ) {
 				if ( typeof window === 'undefined' ) {
 					throw new Error( "Can't copy imageData in webworker without Uint8ClampedArray support." );
+					return imageData;
 				} else {
 					return copyImageDataWithCanvas( imageData );
 				}
@@ -897,6 +921,7 @@
 					} catch ( err ) {
 						if ( typeof window === 'undefined' ) {
 							throw new Error( "Can't copy imageData in webworker without proper ImageData() support." );
+							result = imageData;
 						} else {
 							result = copyImageDataWithCanvas( imageData );
 						}
@@ -907,6 +932,7 @@
 			}
 		} else {
 			throw new Error( 'Given imageData object is not useable.' );
+			return;
 		}
 	}
 
@@ -1459,14 +1485,66 @@
 		return color.a === 0;
 	}
 
+	// https://gist.githubusercontent.com/oriadam/396a4beaaad465ca921618f2f2444d49/raw/76b0de6caffaac59f8af2b4dfa0e0b6397cf447d/colorValues.js
+	// return array of [r,g,b,a] from any valid color. if failed returns undefined
+	function strToColorArr ( color ) {
+		if ( typeof color === 'string' ) {
+			var result = [ 0, 0, 0, 0 ];
+			
+			if ( color[0] === '#' )	{
+				// convert #RGB and #RGBA to #RRGGBB and #RRGGBBAA
+				if ( color.length < 7 ) {
+					color = "#" + (color[1]) + (color[1]) + (color[2]) + (color[2]) + (color[3]) + (color[3]) + (color.length > 4 ? color[4] + color[4] : '');
+				}
+
+				result = [
+					parseInt(color.substr( 1, 2 ), 16),
+					parseInt(color.substr( 3, 2 ), 16),
+					parseInt(color.substr( 5, 2 ), 16),
+					color.length > 7 ? parseInt( color.substr( 7, 2 ), 16 ) / 255 : 1
+				];
+			}
+
+			if ( color.indexOf('rgb') === 0 ) {
+				// convert 'rgb(R,G,B)' to 'rgb(R,G,B)A' which looks awful but will pass the regxep below
+				if ( ! color.includes( 'rgba' ) ) {
+					color += ',1';
+				}
+
+				result = color
+					.match( /[\.\d]+/g )
+					.map( function (a) { return +a; } );
+			}
+			
+			return result;
+		} else {
+			return;
+		}
+
+	}
+
+	function strToColor ( str ) {
+		var color = strToColorArr( str );
+
+		if ( color ) {
+			var r = color[0];
+			var g = color[1];
+			var b = color[2];
+			var a = color[3];
+			return { r: r, g: g, b: b, a: a };
+		} else {
+			return;
+		}
+	}
+
 	function addColorToPolygons ( polygons, colorData, params ) {
 		var fill = params.fill;
 		var stroke = params.stroke;
 		var strokeWidth = params.strokeWidth;
 		var lineJoin = params.lineJoin;
 		var transparentColor = params.transparentColor;
-		var fillColor = typeof fill === 'string' ? fill : false;
-		var strokeColor = typeof stroke === 'string' ? stroke : false;
+		var fillColor = fill ? strToColor( fill ) : false;
+		var strokeColor = stroke ? strToColor( stroke ) : false;
 
 		/**
 		 * Color override logic
@@ -1475,9 +1553,9 @@
 		 * @return {String}          CSS formatted color (rgba,..)
 		 */
 		var getColor = function ( color, override ) {
-			var t = ( isTransparent(color) && transparentColor );	// Color is transparent, and transparentColor override is defined
+			var t = ( isTransparent( color ) && transparentColor );	// Color is transparent, and transparentColor override is defined
 			var c = t ? transparentColor : color;
-			return ( override && !t ) ? override : toRGBA( c );		// Priority: transparentColor -> override -> supplied color
+			return ( override && !t ) ? override : c;		// Priority: transparentColor -> override -> supplied color
 		};
 
 		polygons.forEach( function (polygon) {
@@ -1629,6 +1707,7 @@
 			return polygons;
 		} else {
 			throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
+			return;
 		}
 	}
 
@@ -1858,4 +1937,4 @@
 
 	return index;
 
-})));
+}));

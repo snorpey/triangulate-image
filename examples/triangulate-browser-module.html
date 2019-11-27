@@ -20,34 +20,6 @@
 		<h1>toData</h1>
 		<div id="data-container"></div>
 
-		<script src="https://unpkg.com/systemjs"></script>
-		<script>
-		
-		// setting up systemjs. this allows us to load es6 modules
-		SystemJS.config( {
-			map: {
-				'plugin-traceur': 'https://unpkg.com/systemjs-plugin-traceur',
-				'traceur': 'https://unpkg.com/traceur/bin/traceur.js',
-				'traceur-runtime': 'https://unpkg.com/traceur/bin/traceur-runtime.js'
-			},
-			meta: {
-				'traceur': {
-					format: 'global',
-					exports: 'traceur'
-				},
-				'traceur-runtime': {
-					format: 'global',
-					exports: '$traceurRuntime'
-				}
-			},
-			transpiler: 'plugin-traceur',
-			transpilerRuntime: false,
-			baseURL: '.'
-		} );
-
-		// check out this file to see how to consume glitch-canvas as an es6 module
-		// (requires browsers that support ES6, even in web workers)
-		SystemJS.import( './triangulate-browser-module.js' );
-		</script>
+		<script src="triangulate-browser-module.js" type="module"></script>
 	</body>
 </html>
