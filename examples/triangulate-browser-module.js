@@ -16,7 +16,7 @@ var params = {
 	lineJoin: 'miter',
 	vertexCount: 700,
 	threshold: 50,
-	gradients: true,
+	gradients: false,
 	gradientStops: 2
 };
 

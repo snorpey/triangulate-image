@@ -1,4 +1,4 @@
-import toRGBA from '../util/toRGBA';
+import toHex from '../util/toHex.js';
 // http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 // https://developer.mozilla.org/en-US/docs/SVG/Element/polygon
 export default ( polygons, size ) => {
@@ -28,10 +28,11 @@ export default ( polygons, size ) => {
 			const lastColorIndex = polygon.gradient.colors.length - 1;
 			
 			polygon.gradient.colors.forEach( ( color, index ) => {
-				const rgb = toRGBA( color );
+				const hex = toHex( color );
+				const opacityStr = color.a < 1 ? ' stop-opacity="' + color.a + '"' : '';
 				const offset = ( ( index / lastColorIndex ) * 100 ).toFixed( 3 );
 				defStr += `
-					<stop offset="${offset}%" stop-color="${rgb}"/>
+					<stop offset="${offset}%" stop-color="${hex}"${opacityStr}/>
 				`;
 			} );
 	
@@ -44,13 +45,18 @@ export default ( polygons, size ) => {
 
 		} else {
 			if ( polygon.fill ) {
-				polygonStr += ` fill="${polygon.fill}"`;
+				const hexColor = toHex( polygon.fill );
+				const opacityStr = polygon.fill.a < 1 ? ` fill-opacity="${polygon.fill.a}"` : '';
+				polygonStr += ` fill="${hexColor}"${opacityStr}`;
 			} else {
 				polygonStr += ` fill="transparent"`;
 			}
 
 			if ( polygon.strokeColor ) {
-				polygonStr += ` stroke="${polygon.strokeColor}" stroke-width="${polygon.strokeWidth}" stroke-linejoin="${polygon.lineJoin}"`;
+				const hexColor = toHex( polygon.strokeColor );
+				const opacityStr = polygon.strokeColor.a < 1 ? ` stroke-opacity="${polygon.strokeColor.a}"` : '';
+
+				polygonStr += ` stroke="${hexColor}" stroke-width="${polygon.strokeWidth}" stroke-linejoin="${polygon.lineJoin}"${opacityStr}`;
 			}
 		}
 

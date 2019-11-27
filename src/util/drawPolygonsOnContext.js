@@ -22,8 +22,9 @@ export default ( ctx, polygons, size, dpr ) => {
 			const lastColorIndex = polygon.gradient.colors.length - 1;
 			
 			polygon.gradient.colors.forEach( ( color, index ) => {
-				const rgb = toRGBA( color );
-				gradient.addColorStop( index / lastColorIndex, rgb );
+				const rgba = toRGBA( color );
+				console.log( color );
+				gradient.addColorStop( index / lastColorIndex, rgba );
 			} );
 
 			ctx.fillStyle = gradient;
@@ -37,12 +38,12 @@ export default ( ctx, polygons, size, dpr ) => {
 			}
 		} else {
 			if ( polygon.fill ) {
-				ctx.fillStyle = polygon.fill;
+				ctx.fillStyle = toRGBA( polygon.fill );
 				ctx.fill();
 			}
 
 			if ( polygon.strokeColor ) {
-				ctx.strokeStyle = polygon.strokeColor;
+				ctx.strokeStyle = toRGBA( polygon.strokeColor );
 				ctx.lineWidth = polygon.strokeWidth * dpr;
 				ctx.lineJoin = polygon.lineJoin;
 				ctx.stroke();
