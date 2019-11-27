@@ -2,6 +2,10 @@
 
 all notable changes to this project will be documented in this file.
 
+## 0.6.0 - 2019-11-27
+
+- svg export uses hex colors instead of `rgba` to improve compatibility with svg editors
+
 ## 0.5.0 - 2017-06-01
 
 - move build system to [rollup](http://rollupjs.org/)
