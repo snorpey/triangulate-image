@@ -345,7 +345,8 @@ describe( 'browser tests for triangulate-image', () => {
 
 		describe( '#fromImageSync()', function () {
 			it ( 'should accept a loaded image as parameter', function ( done ) {
-				// loadImage( done, function ( img ) {
+				this.timeout( 30000 );
+				
 				loadImage()
 					.then( img => {
 						expect( function () {
@@ -372,7 +373,8 @@ describe( 'browser tests for triangulate-image', () => {
 		
 		describe( '#fromImageDataSync()', function () {
 			it ( 'should be able to handle an imageData object', function ( done ) {
-				// loadImage( done, function ( img ) {
+				this.timeout( 30000 );
+
 				loadImage()
 					.then( img => {
 						var imageData = imageToImageData( img );			
@@ -402,7 +404,8 @@ describe( 'browser tests for triangulate-image', () => {
 
 		describe( '#toDataSync()', function () {
 			it ( 'should return valid polygon data', function ( done ) {
-				// loadImage( done, function ( img ) {
+				this.timeout( 30000 );
+
 				loadImage()
 					.then( img => {
 						var data = triangulate().fromImageSync( img ).toDataSync();
@@ -434,7 +437,8 @@ describe( 'browser tests for triangulate-image', () => {
 
 		describe( '#toDataURLSync()', function () {
 			it ( 'should return a dataURL', function ( done ) {
-				// loadImage( done, function ( img ) {
+				this.timeout( 30000 );
+
 				loadImage()
 					.then( img => {
 						var url = triangulate().fromImageSync( img ).toDataURLSync();
@@ -455,7 +459,8 @@ describe( 'browser tests for triangulate-image', () => {
 
 		describe( '#toImageDataSync()', function () {
 			it ( 'should return an imageData object', function ( done ) {
-				// loadImage( done, function ( img ) {
+				this.timeout( 30000 );
+
 				loadImage()
 					.then( img => {
 						var imageData = triangulate().fromImageSync( img ).toImageDataSync();
@@ -479,6 +484,8 @@ describe( 'browser tests for triangulate-image', () => {
 
 		describe( '#toSVGSync()', function () {
 			it ( 'should return valid SVG markup', function ( done ) {
+				this.timeout( 30000 );
+
 				loadImage()
 					.then( img => {
 						var markup = triangulate().fromImageSync( img ).toSVGSync();
