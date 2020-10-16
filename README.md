@@ -79,7 +79,7 @@ triangulate()
 // the parameters listed are the default params
 
 var triangulationParams = {
-	accuracy: 0.7,    		// float beteween 0 and 1
+	accuracy: 0.7,    		// float between 0 and 1
 	blur: 40,         		// positive integer
 	threshold: 50,    		// integer between 1 and 100
 	vertexCount: 700, 		// positive integer
