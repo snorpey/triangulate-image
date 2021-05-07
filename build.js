@@ -1,11 +1,11 @@
 var fs = require( 'fs' );
 var { rollup } = require( 'rollup' );
-var buble = require( 'rollup-plugin-buble' );
+var buble = require( '@rollup/plugin-buble' );
 var UglifyJS = require( 'uglify-js' );
-var UglifyES = require( 'uglify-es' );
-var replace = require( 'rollup-plugin-replace' );
-var commonjs = require( 'rollup-plugin-commonjs' );
-var nodeResolve = require( 'rollup-plugin-node-resolve' );
+// var UglifyJS = require( 'uglify-es' );
+var replace = require( '@rollup/plugin-replace' );
+var commonjs = require( '@rollup/plugin-commonjs' );
+var { nodeResolve } = require( '@rollup/plugin-node-resolve' );
 
 var program = require( 'commander' );
 var version = require('./package.json').version;
@@ -84,7 +84,8 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 	if ( stringsToReplace[env] && Object.keys( stringsToReplace[env] ).length ) {
 		const replaceOptions = {
 			values: stringsToReplace[env],
-			delimiters: [ '', '' ]
+			delimiters: [ '', '' ],
+			preventAssignment: true
 		};
 
 		rollupPlugins.push( replace( replaceOptions ) );
@@ -160,11 +161,11 @@ function saveFile ( filePath, fileContent ) {
 function compressFileContent ( fileContent ) {
 	let res;
 
-	if ( es5Build ) {
+	// if ( es5Build ) {
 		res = UglifyJS.minify( fileContent );
-	} else {
-		res = UglifyES.minify( fileContent );
-	}
+	// } else {
+	// 	res = UglifyJS.minify( fileContent );
+	// }
 
 	if ( res.error ) {
 		console.log( res.error );

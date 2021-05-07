@@ -1,10 +1,12 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('stream')) :
 	typeof define === 'function' && define.amd ? define(['stream'], factory) :
-	(global = global || self, global.triangulate = factory(global.stream));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.triangulate = factory(global.stream));
 }(this, (function (stream) { 'use strict';
 
-	stream = stream && Object.prototype.hasOwnProperty.call(stream, 'default') ? stream['default'] : stream;
+	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+	var stream__default = /*#__PURE__*/_interopDefaultLegacy(stream);
 
 	function clamp ( value, min, max ) {
 		return value < min ? min : value > max ? max : value;
@@ -24,7 +26,7 @@
 
 	var ref = require('canvas');
 	var createCanvas = ref.createCanvas;
-	var Image = ref.Image;
+	var Image$2 = ref.Image;
 
 	var Canvas = function Canvas ( width, height ) {
 		if ( width === void 0 ) width = 300;
@@ -84,9 +86,7 @@
 
 	Object.defineProperties( Canvas.prototype, prototypeAccessors );
 
-	Canvas.Image = Image;
-
-	// var Canvas = require( 'canvas' );;
+	Canvas.Image = Image$2;
 
 	function makeCanvasAndContext ( size, options, dpr, format ) {
 		var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
@@ -248,8 +248,8 @@
 		}
 	}
 
-	var Readable = stream.Readable;
-	var Image$2 = Canvas.Image;
+	var Readable = stream__default['default'].Readable;
+	var Image = Canvas.Image;
 
 	function fromStreamToImageData ( stream, resolve, reject ) {
 		if ( stream instanceof Readable ) {
@@ -262,7 +262,7 @@
 			stream.on( 'end', function () {
 				try {
 					var buffer = Buffer.concat( bufferContent );
-					var image = new Image$2;
+					var image = new Image;
 					image.src = buffer;
 
 					var canvas = new Canvas( image.width, image.height );
@@ -471,7 +471,7 @@
 		return svg;
 	}
 
-	var readableStream = stream.Readable;
+	var readableStream = stream__default['default'].Readable;
 
 	function polygonsToSVGStream ( polygons, size ) {
 		var rs = new readableStream();
@@ -554,11 +554,9 @@
 		return canvas.jpegStream( streamParams );
 	}
 
-	function createCommonjsModule(fn, module) {
-		return module = { exports: {} }, fn(module, module.exports), module.exports;
-	}
+	var delaunay = {exports: {}};
 
-	var delaunay = createCommonjsModule(function (module) {
+	(function (module) {
 	function Triangle(a, b, c) {
 	  this.a = a;
 	  this.b = b;
@@ -740,11 +738,11 @@
 	        triangulate: triangulate
 	    };
 	}
-	});
-	var delaunay_1 = delaunay.Triangle;
-	var delaunay_2 = delaunay.triangulate;
+	}(delaunay));
 
-	var sobel = createCommonjsModule(function (module, exports) {
+	var sobel = {exports: {}};
+
+	(function (module, exports) {
 	(function(root) {
 
 	  function Sobel(imageData) {
@@ -869,15 +867,16 @@
 	  }
 
 	  {
-	    if ( module.exports) {
+	    if (module.exports) {
 	      exports = module.exports = Sobel;
 	    }
 	    exports.Sobel = Sobel;
 	  }
 
 	})();
-	});
-	var sobel_1 = sobel.Sobel;
+	}(sobel, sobel.exports));
+
+	var Sobel = sobel.exports;
 
 	function isImageData (imageData) {
 		return (
@@ -1681,10 +1680,10 @@
 			var colorImageData = copyImageData( imageData );
 			var blurredImageData = stackblur( tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur );
 			var greyscaleImageData = greyscale( blurredImageData );
-			var edgesImageData = sobel( greyscaleImageData ).toImageData();
+			var edgesImageData = Sobel( greyscaleImageData ).toImageData();
 			var edgePoints = getEdgePoints( edgesImageData, params.threshold );
 			var edgeVertices = getVerticesFromPoints( edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height );
-			var polygons = delaunay_2( edgeVertices );
+			var polygons = delaunay.exports.triangulate( edgeVertices );
 			
 			polygons = addBoundingBoxesToPolygons( polygons );
 			
