@@ -121,7 +121,6 @@ export default function ( params ) {
 							let imageData = fn( inputParams );
 							resolve( imageData );
 						} catch ( err ) {
-							console.log( 'ERROR', err );
 							reject( err );
 						}
 					}

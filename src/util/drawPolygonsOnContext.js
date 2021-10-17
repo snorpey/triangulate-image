@@ -23,7 +23,6 @@ export default ( ctx, polygons, size, dpr ) => {
 			
 			polygon.gradient.colors.forEach( ( color, index ) => {
 				const rgba = toRGBA( color );
-				console.log( color );
 				gradient.addColorStop( index / lastColorIndex, rgba );
 			} );
 
