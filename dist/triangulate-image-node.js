@@ -318,7 +318,6 @@
 				
 				polygon.gradient.colors.forEach( function ( color, index ) {
 					var rgba = toRGBA( color );
-					console.log( color );
 					gradient.addColorStop( index / lastColorIndex, rgba );
 				} );
 
@@ -1812,7 +1811,6 @@
 								var imageData = fn( inputParams );
 								resolve( imageData );
 							} catch ( err ) {
-								console.log( 'ERROR', err );
 								reject( err );
 							}
 						}
