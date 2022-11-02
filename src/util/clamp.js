@@ -1,3 +1,3 @@
-export default ( value, min, max ) => {
+export default (value, min, max) => {
 	return value < min ? min : value > max ? max : value;
-}
+};

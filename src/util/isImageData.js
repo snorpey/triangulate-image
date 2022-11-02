@@ -1,6 +1,6 @@
 export default imageData => {
 	return (
-		imageData && 
+		imageData &&
 		typeof imageData.width === 'number' &&
 		typeof imageData.height === 'number' &&
 		imageData.data &&

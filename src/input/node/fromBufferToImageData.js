@@ -4,18 +4,18 @@ import Canvas from '../../util/canvas.js';
 const Image = Canvas.Image;
 
 export default buffer => {
-	if ( buffer instanceof Buffer ) {
-		const image = new Image;
+	if (buffer instanceof Buffer) {
+		const image = new Image();
 		image.src = buffer;
 
-		const canvas = new Canvas( image.width, image.height );
-		const ctx = canvas.getContext( '2d' );
+		const canvas = new Canvas(image.width, image.height);
+		const ctx = canvas.getContext('2d');
 
-		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+		ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-		return ctx.getImageData( 0, 0, canvas.width, canvas.height );
+		return ctx.getImageData(0, 0, canvas.width, canvas.height);
 	} else {
-		throw new Error( "Can't work with the buffer object provided." );
+		throw new Error("Can't work with the buffer object provided.");
 		return;
 	}
 };

@@ -6,6 +6,6 @@ import objectAssign from './object-assign.js';
  */
 
 export default colorObj => {
-	const c = objectAssign( { a: 1 }, colorObj );	// rgb-to-rgba:  alpha is optionally set to 1
-	return `rgba(${c.r}, ${c.g}, ${c.b}, ${c.a})`
-}
+	const c = objectAssign({ a: 1 }, colorObj); // rgb-to-rgba:  alpha is optionally set to 1
+	return `rgba(${c.r}, ${c.g}, ${c.b}, ${c.a})`;
+};

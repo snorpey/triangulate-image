@@ -11,33 +11,48 @@ import addColorToPolygons from './addColorToPolygons';
 import addGradientsToPolygons from './addGradientsToPolygons';
 import filterTransparentPolygons from './filterTransparentPolygons';
 
-export default ( imageData, params ) => {
-	if ( isImageData( imageData ) ) {
+export default (imageData, params) => {
+	if (isImageData(imageData)) {
 		const imageSize = { width: imageData.width, height: imageData.height };
-		const tmpImageData = copyImageData( imageData );
-		const colorImageData = copyImageData( imageData );
-		const blurredImageData = stackblur( tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur );
-		const greyscaleImageData = greyscale( blurredImageData );
-		const edgesImageData = Sobel( greyscaleImageData ).toImageData();
-		const edgePoints = getEdgePoints( edgesImageData, params.threshold );
-		const edgeVertices = getVerticesFromPoints( edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height );
-		let polygons = delaunay( edgeVertices );
-		
-		polygons = addBoundingBoxesToPolygons( polygons );
-		
-		if ( ! params.transparentColor ) {
-			polygons = filterTransparentPolygons( polygons, colorImageData );
+		const tmpImageData = copyImageData(imageData);
+		const colorImageData = copyImageData(imageData);
+		const blurredImageData = stackblur(
+			tmpImageData,
+			0,
+			0,
+			imageSize.width,
+			imageSize.height,
+			params.blur
+		);
+		const greyscaleImageData = greyscale(blurredImageData);
+		const edgesImageData = Sobel(greyscaleImageData).toImageData();
+		const edgePoints = getEdgePoints(edgesImageData, params.threshold);
+		const edgeVertices = getVerticesFromPoints(
+			edgePoints,
+			params.vertexCount,
+			params.accuracy,
+			imageSize.width,
+			imageSize.height
+		);
+		let polygons = delaunay(edgeVertices);
+
+		polygons = addBoundingBoxesToPolygons(polygons);
+
+		if (!params.transparentColor) {
+			polygons = filterTransparentPolygons(polygons, colorImageData);
 		}
-		
-		if ( params.fill === true && params.gradients === true ) {
-			polygons = addGradientsToPolygons( polygons, colorImageData, params );
+
+		if (params.fill === true && params.gradients === true) {
+			polygons = addGradientsToPolygons(polygons, colorImageData, params);
 		} else {
-			polygons = addColorToPolygons( polygons, colorImageData, params );
+			polygons = addColorToPolygons(polygons, colorImageData, params);
 		}
 
 		return polygons;
 	} else {
-		throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
+		throw new Error(
+			"Can't work with the imageData provided. It seems to be corrupt."
+		);
 		return;
 	}
 };

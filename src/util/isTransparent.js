@@ -5,4 +5,4 @@
  */
 export default color => {
 	return color.a === 0;
-}
+};

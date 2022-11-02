@@ -8,9 +8,9 @@ import isTransparent from '../util/isTransparent';
  * @param  {Object} colorData  Color data
  * @return {Array}             Filtered polygons array
  */
-export default ( polygons, colorData ) => {
-	return polygons.filter( polygon => {
-		const color = getColorByPos( polygonCenter( polygon ), colorData );
-		return ! isTransparent( color );
+export default (polygons, colorData) => {
+	return polygons.filter(polygon => {
+		const color = getColorByPos(polygonCenter(polygon), colorData);
+		return !isTransparent(color);
 	});
-}
+};

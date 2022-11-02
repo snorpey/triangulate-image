@@ -8,19 +8,19 @@
 
 	var stream__default = /*#__PURE__*/_interopDefaultLegacy(stream);
 
-	function clamp ( value, min, max ) {
+	function clamp (value, min, max) {
 		return value < min ? min : value > max ? max : value;
 	}
 
 	function clone (obj) {
 		var result = false;
-		
-		if ( typeof obj !== 'undefined' ) {
+
+		if (typeof obj !== 'undefined') {
 			try {
-				result = JSON.parse( JSON.stringify( obj ) );
-			} catch ( e ) { }
+				result = JSON.parse(JSON.stringify(obj));
+			} catch (e) {}
 		}
-		
+
 		return result;
 	}
 
@@ -28,14 +28,14 @@
 	var createCanvas = ref.createCanvas;
 	var Image$2 = ref.Image;
 
-	var Canvas = function Canvas ( width, height ) {
+	var Canvas = function Canvas(width, height) {
 		if ( width === void 0 ) width = 300;
 		if ( height === void 0 ) height = 150;
 
-		this.canvasEl = createCanvas( width, height );
+		this.canvasEl = createCanvas(width, height);
 		this.canvasEl.width = width;
 		this.canvasEl.height = height;
-		this.ctx = this.canvasEl.getContext( '2d' );
+		this.ctx = this.canvasEl.getContext('2d');
 	};
 
 	var prototypeAccessors = { width: { configurable: true },height: { configurable: true } };
@@ -44,35 +44,35 @@
 		return this.ctx;
 	};
 
-	Canvas.prototype.toDataURL = function toDataURL ( type, encoderOptions, cb ) {
-		if ( typeof cb === 'function' ) {
-			cb( this.canvasEl.toDataURL( type, encoderOptions ) );
+	Canvas.prototype.toDataURL = function toDataURL (type, encoderOptions, cb) {
+		if (typeof cb === 'function') {
+			cb(this.canvasEl.toDataURL(type, encoderOptions));
 		} else {
-			return this.canvasEl.toDataURL( type, encoderOptions );
+			return this.canvasEl.toDataURL(type, encoderOptions);
 		}
 	};
 
-	Canvas.prototype.toBuffer = function toBuffer ( params ) {
-		return this.canvasEl.toBuffer( params );
+	Canvas.prototype.toBuffer = function toBuffer (params) {
+		return this.canvasEl.toBuffer(params);
 	};
 
-	Canvas.prototype.pngStream = function pngStream ( params ) {
-		return this.canvasEl.createPNGStream( params );
+	Canvas.prototype.pngStream = function pngStream (params) {
+		return this.canvasEl.createPNGStream(params);
 	};
 
-	Canvas.prototype.jpgStream = function jpgStream ( params ) {
-		return this.canvasEl.createJPEGStream( params );
+	Canvas.prototype.jpgStream = function jpgStream (params) {
+		return this.canvasEl.createJPEGStream(params);
 	};
 
-	Canvas.prototype.jpegStream = function jpegStream ( params ) {
-		return this.canvasEl.createJPEGStream( params );
+	Canvas.prototype.jpegStream = function jpegStream (params) {
+		return this.canvasEl.createJPEGStream(params);
 	};
-		
+
 	prototypeAccessors.width.get = function () {
 		return this.canvasEl.width;
 	};
-		
-	prototypeAccessors.width.set = function ( newWidth ) {
+
+	prototypeAccessors.width.set = function (newWidth) {
 		this.canvasEl.width = newWidth;
 	};
 
@@ -80,7 +80,7 @@
 		return this.canvasEl.height;
 	};
 
-	prototypeAccessors.height.set = function ( newHeight ) {
+	prototypeAccessors.height.set = function (newHeight) {
 		this.canvasEl.height = newHeight;
 	};
 
@@ -88,20 +88,21 @@
 
 	Canvas.Image = Image$2;
 
-	function makeCanvasAndContext ( size, options, dpr, format ) {
-		var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
-		var canvas = new Canvas( size.width * dpr, size.height * dpr, format );
-		var ctx = canvas.getContext( '2d' );
+	function makeCanvasAndContext (size, options, dpr, format) {
+		var backgroundColor =
+			options && options.backgroundColor ? options.backgroundColor : false;
+		var canvas = new Canvas(size.width * dpr, size.height * dpr, format);
+		var ctx = canvas.getContext('2d');
 
-		if ( backgroundColor ) {
+		if (backgroundColor) {
 			ctx.fillStyle = backgroundColor;
-			ctx.fillRect( 0, 0, size.width * dpr, size.height * dpr );
+			ctx.fillRect(0, 0, size.width * dpr, size.height * dpr);
 			ctx.fillStyle = 'transparent';
 		}
 
 		return {
 			canvas: canvas,
-			ctx: ctx
+			ctx: ctx,
 		};
 	}
 
@@ -111,19 +112,24 @@
 	 * @return {Object}       RGBA color object
 	 */
 	function toColor (color) {
-		var size = 1;		// single pixel
-		var ctx = makeCanvasAndContext( { width: size, height: size }, { }, 1, true ).ctx;
+		var size = 1; // single pixel
+		var ctx = makeCanvasAndContext(
+			{ width: size, height: size },
+			{},
+			1,
+			true
+		).ctx;
 		ctx.fillStyle = color;
-		ctx.fillRect( 0, 0, size, size );
-		
+		ctx.fillRect(0, 0, size, size);
+
 		// Read the pixel, and get RGBA values
-		var data = ctx.getImageData( 0, 0, size, size ).data;
-		
+		var data = ctx.getImageData(0, 0, size, size).data;
+
 		return {
 			r: data[0],
 			g: data[1],
 			b: data[2],
-			a: data[3] / 255		// For alpha we scale to 0..1 float
+			a: data[3] / 255, // For alpha we scale to 0..1 float
 		};
 	}
 
@@ -136,93 +142,101 @@
 		lineJoin: 'miter',
 		vertexCount: 700,
 		threshold: 50,
-		transparentColor: false
+		transparentColor: false,
 	};
 
-	var allowedLineJoins = [ 'miter', 'round', 'bevel' ];
+	var allowedLineJoins = ['miter', 'round', 'bevel'];
 
 	function sanitizeInput (params) {
-		
-		params = clone( params );
+		params = clone(params);
 
-		if ( typeof params !== 'object' ) {
-			params = { };
+		if (typeof params !== 'object') {
+			params = {};
 		}
 
-		if ( typeof params.accuracy !== 'number' || isNaN( params.accuracy ) ) {
+		if (typeof params.accuracy !== 'number' || isNaN(params.accuracy)) {
 			params.accuracy = defaultParams.accuracy;
 		} else {
-			params.accuracy = clamp( params.accuracy, 0, 1 );
+			params.accuracy = clamp(params.accuracy, 0, 1);
 		}
 
-		if ( typeof params.blur !== 'number' || isNaN( params.blur ) ) {
-			params.blur = defaultParams.blur;	
+		if (typeof params.blur !== 'number' || isNaN(params.blur)) {
+			params.blur = defaultParams.blur;
 		}
 
-		if ( params.blur <= 0 ) {
+		if (params.blur <= 0) {
 			params.blur = 1;
 		}
 
-		if ( typeof params.fill !== 'string' && typeof params.fill !== 'boolean' ) {
+		if (typeof params.fill !== 'string' && typeof params.fill !== 'boolean') {
 			params.fill = defaultParams.fill;
 		}
 
-		if ( typeof params.stroke !== 'string' && typeof params.stroke !== 'boolean' ) {
+		if (
+			typeof params.stroke !== 'string' &&
+			typeof params.stroke !== 'boolean'
+		) {
 			params.stroke = defaultParams.stroke;
 		}
 
-		if ( typeof params.strokeWidth !== 'number' || isNaN( params.strokeWidth ) ) {
+		if (typeof params.strokeWidth !== 'number' || isNaN(params.strokeWidth)) {
 			params.strokeWidth = defaultParams.strokeWidth;
 		}
 
-		if ( typeof params.threshold !== 'number' || isNaN( params.threshold ) ) {
+		if (typeof params.threshold !== 'number' || isNaN(params.threshold)) {
 			params.threshold = defaultParams.threshold;
 		} else {
-			params.threshold = clamp( params.threshold, 1, 100 );
+			params.threshold = clamp(params.threshold, 1, 100);
 		}
 
-		if ( typeof params.lineJoin !== 'string' || allowedLineJoins.indexOf( params.lineJoin ) === -1 ) {
+		if (
+			typeof params.lineJoin !== 'string' ||
+			allowedLineJoins.indexOf(params.lineJoin) === -1
+		) {
 			params.lineJoin = defaultParams.lineJoin;
 		}
 
-		if ( params.gradients && params.fill ) {
+		if (params.gradients && params.fill) {
 			params.gradients = true;
 		} else {
 			params.gradients = false;
 		}
 
-		if ( params.gradients ) {
+		if (params.gradients) {
 			if (
 				typeof params.gradientStops !== 'number' ||
-				isNaN( params.gradientStops ) ||
+				isNaN(params.gradientStops) ||
 				params.gradientStops < 2
 			) {
 				params.gradientStops = 2;
 			}
 
-			params.gradientStops = Math.round( params.gradientStops );
+			params.gradientStops = Math.round(params.gradientStops);
 		}
 
-		if ( typeof params.vertexCount !== 'number' || isNaN( params.vertexCount ) ) {
+		if (typeof params.vertexCount !== 'number' || isNaN(params.vertexCount)) {
 			params.vertexCount = defaultParams.vertexCount;
 		}
 
-		if ( params.vertexCount <= 0 ) {
+		if (params.vertexCount <= 0) {
 			params.vertexCount = 1;
 		}
 
-		if ( typeof params.transparentColor !== 'string' && typeof params.transparentColor !== 'boolean' ) {
+		if (
+			typeof params.transparentColor !== 'string' &&
+			typeof params.transparentColor !== 'boolean'
+		) {
 			params.transparentColor = defaultParams.transparentColor;
 		}
 
 		// "transparentColor=true" is meaningless
-		if ( typeof params.transparentColor === true ) {
+		if (typeof params.transparentColor === true) {
 			params.transparentColor = false;
 		}
 
 		// Transform `transparentColor` string to RGBA color object
-		if ( typeof params.transparentColor === 'string' ) {
-			params.transparentColor = toColor( params.transparentColor );
+		if (typeof params.transparentColor === 'string') {
+			params.transparentColor = toColor(params.transparentColor);
 		}
 
 		return params;
@@ -233,51 +247,50 @@
 	var Image$1 = Canvas.Image;
 
 	function fromBufferToImageData (buffer) {
-		if ( buffer instanceof Buffer ) {
-			var image = new Image$1;
+		if (buffer instanceof Buffer) {
+			var image = new Image$1();
 			image.src = buffer;
 
-			var canvas = new Canvas( image.width, image.height );
-			var ctx = canvas.getContext( '2d' );
+			var canvas = new Canvas(image.width, image.height);
+			var ctx = canvas.getContext('2d');
 
-			ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+			ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-			return ctx.getImageData( 0, 0, canvas.width, canvas.height );
+			return ctx.getImageData(0, 0, canvas.width, canvas.height);
 		} else {
-			throw new Error( "Can't work with the buffer object provided." );
+			throw new Error("Can't work with the buffer object provided.");
 		}
 	}
 
 	var Readable = stream__default['default'].Readable;
 	var Image = Canvas.Image;
 
-	function fromStreamToImageData ( stream, resolve, reject ) {
-		if ( stream instanceof Readable ) {
-			var bufferContent = [ ];
-			
-			stream.on( 'data', function (chunk) {
-				bufferContent.push( chunk );
-			} );
-			
-			stream.on( 'end', function () {
+	function fromStreamToImageData (stream, resolve, reject) {
+		if (stream instanceof Readable) {
+			var bufferContent = [];
+
+			stream.on('data', function (chunk) {
+				bufferContent.push(chunk);
+			});
+
+			stream.on('end', function () {
 				try {
-					var buffer = Buffer.concat( bufferContent );
-					var image = new Image;
+					var buffer = Buffer.concat(bufferContent);
+					var image = new Image();
 					image.src = buffer;
 
-					var canvas = new Canvas( image.width, image.height );
-					var ctx = canvas.getContext( '2d' );
+					var canvas = new Canvas(image.width, image.height);
+					var ctx = canvas.getContext('2d');
 
-					ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
+					ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-					resolve( ctx.getImageData( 0, 0, canvas.width, canvas.height ) );
-				} catch ( err ) {
-					reject( err );
+					resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
+				} catch (err) {
+					reject(err);
 				}
-			} );
-
+			});
 		} else {
-			reject( new Error( "Can't work with the buffer object provided." ) );
+			reject(new Error("Can't work with the buffer object provided."));
 		}
 	}
 
@@ -291,22 +304,22 @@
 	 */
 
 	function toRGBA (colorObj) {
-		var c = objectAssign( { a: 1 }, colorObj );	// rgb-to-rgba:  alpha is optionally set to 1
-		return ("rgba(" + (c.r) + ", " + (c.g) + ", " + (c.b) + ", " + (c.a) + ")")
+		var c = objectAssign({ a: 1 }, colorObj); // rgb-to-rgba:  alpha is optionally set to 1
+		return ("rgba(" + (c.r) + ", " + (c.g) + ", " + (c.b) + ", " + (c.a) + ")");
 	}
 
-	function drawPolygonsOnContext ( ctx, polygons, size, dpr ) {
+	function drawPolygonsOnContext (ctx, polygons, size, dpr) {
 		dpr = dpr || 1;
 
-		polygons.forEach( function ( polygon, index ) {
+		polygons.forEach(function (polygon, index) {
 			ctx.beginPath();
-			ctx.moveTo( polygon.a.x * dpr, polygon.a.y * dpr );
-			ctx.lineTo( polygon.b.x * dpr, polygon.b.y * dpr );
-			ctx.lineTo( polygon.c.x * dpr, polygon.c.y * dpr );
-			ctx.lineTo( polygon.a.x * dpr, polygon.a.y * dpr );
-			
+			ctx.moveTo(polygon.a.x * dpr, polygon.a.y * dpr);
+			ctx.lineTo(polygon.b.x * dpr, polygon.b.y * dpr);
+			ctx.lineTo(polygon.c.x * dpr, polygon.c.y * dpr);
+			ctx.lineTo(polygon.a.x * dpr, polygon.a.y * dpr);
+
 			// http://weblogs.asp.net/dwahlin/rendering-linear-gradients-using-the-html5-canvas
-			if ( polygon.gradient ) {
+			if (polygon.gradient) {
 				var gradient = ctx.createLinearGradient(
 					polygon.gradient.x1 * dpr,
 					polygon.gradient.y1 * dpr,
@@ -315,29 +328,29 @@
 				);
 
 				var lastColorIndex = polygon.gradient.colors.length - 1;
-				
-				polygon.gradient.colors.forEach( function ( color, index ) {
-					var rgba = toRGBA( color );
-					gradient.addColorStop( index / lastColorIndex, rgba );
-				} );
+
+				polygon.gradient.colors.forEach(function (color, index) {
+					var rgba = toRGBA(color);
+					gradient.addColorStop(index / lastColorIndex, rgba);
+				});
 
 				ctx.fillStyle = gradient;
 				ctx.fill();
 
-				if ( polygon.strokeWidth > 0 ) {
+				if (polygon.strokeWidth > 0) {
 					ctx.strokeStyle = gradient;
 					ctx.lineWidth = polygon.strokeWidth * dpr;
 					ctx.lineJoin = polygon.lineJoin;
 					ctx.stroke();
 				}
 			} else {
-				if ( polygon.fill ) {
-					ctx.fillStyle = toRGBA( polygon.fill );
+				if (polygon.fill) {
+					ctx.fillStyle = toRGBA(polygon.fill);
 					ctx.fill();
 				}
 
-				if ( polygon.strokeColor ) {
-					ctx.strokeStyle = toRGBA( polygon.strokeColor );
+				if (polygon.strokeColor) {
+					ctx.strokeStyle = toRGBA(polygon.strokeColor);
 					ctx.lineWidth = polygon.strokeWidth * dpr;
 					ctx.lineJoin = polygon.lineJoin;
 					ctx.stroke();
@@ -345,123 +358,140 @@
 			}
 
 			ctx.closePath();
-		} );
+		});
 
 		return ctx;
 	}
 
 	// https://github.com/Automattic/node-canvas#pdf-support
-	var allowedFormats = [ 'svg', 'pdf' ];
+	var allowedFormats = ['svg', 'pdf'];
 
-	function polygonsToBuffer ( polygons, size, options ) {
+	function polygonsToBuffer (polygons, size, options) {
 		var dpr = options && options.dpr ? options.dpr : 1;
 		var format = options && options.format ? options.format : false;
-		
-		format = allowedFormats.indexOf( format ) === -1 ? undefined : format;
-		
-		var canvasData = makeCanvasAndContext( size, options, dpr, format );
-		
-		drawPolygonsOnContext( canvasData.ctx, polygons);
+
+		format = allowedFormats.indexOf(format) === -1 ? undefined : format;
+
+		var canvasData = makeCanvasAndContext(size, options, dpr, format);
+
+		drawPolygonsOnContext(canvasData.ctx, polygons);
 
 		return canvasData.canvas.toBuffer();
 	}
 
-	function polygonsToImageData ( polygons, size, options ) {
-		var dpr = options && options.dpr ? options.dpr : 1;	
-		var ctx = makeCanvasAndContext( size, options, dpr, true ).ctx;
-		
-		drawPolygonsOnContext( ctx, polygons, size, dpr );
+	function polygonsToImageData (polygons, size, options) {
+		var dpr = options && options.dpr ? options.dpr : 1;
+		var ctx = makeCanvasAndContext(size, options, dpr, true).ctx;
 
-		return ctx.getImageData( 0, 0, size.width * dpr, size.height * dpr );
+		drawPolygonsOnContext(ctx, polygons, size, dpr);
+
+		return ctx.getImageData(0, 0, size.width * dpr, size.height * dpr);
 	}
 
-	function polygonsToDataURL ( polygons, size, options ) {
-		var dpr = options && options.dpr ? options.dpr : 1;	
-		var canvasData = makeCanvasAndContext( size, options, dpr );
+	function polygonsToDataURL (polygons, size, options) {
+		var dpr = options && options.dpr ? options.dpr : 1;
+		var canvasData = makeCanvasAndContext(size, options, dpr);
 
-		drawPolygonsOnContext( canvasData.ctx, polygons, size, dpr );
+		drawPolygonsOnContext(canvasData.ctx, polygons, size, dpr);
 
 		return canvasData.canvas.toDataURL();
 	}
 
-	function componentToHex ( c ) {
-		var hex = c.toString( 16 );
+	function componentToHex(c) {
+		var hex = c.toString(16);
 		return hex.length == 1 ? '0' + hex : hex;
 	}
 
-	function toHex ( ref ) {
+	function toHex(ref) {
 		var r = ref.r;
 		var g = ref.g;
 		var b = ref.b;
 
-		return '#' + componentToHex( r ) + componentToHex( g ) + componentToHex( b );
+		return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 	}
 
 	// http://stackoverflow.com/questions/6918597/convert-canvas-or-control-points-to-svg
 	// https://developer.mozilla.org/en-US/docs/SVG/Element/polygon
-	function polygonsToSVG ( polygons, size ) {
+	function polygonsToSVG (polygons, size) {
 		var defStr = '';
 
-		if ( polygons.length && polygons[0].gradient ) {
+		if (polygons.length && polygons[0].gradient) {
 			defStr = '<defs>';
 		}
 
 		var polygonStr = '';
 
-		polygons.forEach( function ( polygon, index ) {
+		polygons.forEach(function (polygon, index) {
 			var a = polygon.a;
 			var b = polygon.b;
 			var c = polygon.c;
 
 			polygonStr += "<polygon points=\"" + (a.x) + "," + (a.y) + " " + (b.x) + "," + (b.y) + " " + (c.x) + "," + (c.y) + "\"";
 
-			if ( polygon.gradient ) {
+			if (polygon.gradient) {
 				var bb = polygon.boundingBox;
-				var x1 = ( ( polygon.gradient.x1 - bb.x ) / bb.width * 100 ).toFixed( 3 );
-				var y1 = ( ( polygon.gradient.y1 - bb.y ) / bb.height * 100 ).toFixed( 3 );
-				var x2 = ( ( polygon.gradient.x2 - bb.x ) / bb.width * 100 ).toFixed( 3 );
-				var y2 = ( ( polygon.gradient.y2 - bb.y ) / bb.height * 100 ).toFixed( 3 );
+				var x1 = (
+					((polygon.gradient.x1 - bb.x) / bb.width) *
+					100
+				).toFixed(3);
+				var y1 = (
+					((polygon.gradient.y1 - bb.y) / bb.height) *
+					100
+				).toFixed(3);
+				var x2 = (
+					((polygon.gradient.x2 - bb.x) / bb.width) *
+					100
+				).toFixed(3);
+				var y2 = (
+					((polygon.gradient.y2 - bb.y) / bb.height) *
+					100
+				).toFixed(3);
 
 				defStr += "\n\t<linearGradient id=\"gradient-" + index + "\" x1=\"" + x1 + "%\" y1=\"" + y1 + "%\" x2=\"" + x2 + "%\" y2=\"" + y2 + "%\">";
 
 				var lastColorIndex = polygon.gradient.colors.length - 1;
-				
-				polygon.gradient.colors.forEach( function ( color, index ) {
-					var hex = toHex( color );
-					var opacityStr = color.a < 1 ? ' stop-opacity="' + color.a + '"' : '';
-					var offset = ( ( index / lastColorIndex ) * 100 ).toFixed( 3 );
+
+				polygon.gradient.colors.forEach(function (color, index) {
+					var hex = toHex(color);
+					var opacityStr =
+						color.a < 1 ? ' stop-opacity="' + color.a + '"' : '';
+					var offset = ((index / lastColorIndex) * 100).toFixed(3);
 					defStr += "\n\t\t\t\t\t<stop offset=\"" + offset + "%\" stop-color=\"" + hex + "\"" + opacityStr + "/>\n\t\t\t\t";
-				} );
-		
+				});
+
 				defStr += "</linearGradient>";
 				polygonStr += " fill=\"url(#gradient-" + index + ")\"";
 
-				if ( polygon.strokeWidth > 0 ) {
+				if (polygon.strokeWidth > 0) {
 					polygonStr += " stroke=\"url(#gradient-" + index + ")\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"";
 				}
-
 			} else {
-				if ( polygon.fill ) {
-					var hexColor = toHex( polygon.fill );
-					var opacityStr = polygon.fill.a < 1 ? (" fill-opacity=\"" + (polygon.fill.a) + "\"") : '';
+				if (polygon.fill) {
+					var hexColor = toHex(polygon.fill);
+					var opacityStr =
+						polygon.fill.a < 1
+							? (" fill-opacity=\"" + (polygon.fill.a) + "\"")
+							: '';
 					polygonStr += " fill=\"" + hexColor + "\"" + opacityStr;
 				} else {
 					polygonStr += " fill=\"transparent\"";
 				}
 
-				if ( polygon.strokeColor ) {
-					var hexColor$1 = toHex( polygon.strokeColor );
-					var opacityStr$1 = polygon.strokeColor.a < 1 ? (" stroke-opacity=\"" + (polygon.strokeColor.a) + "\"") : '';
+				if (polygon.strokeColor) {
+					var hexColor$1 = toHex(polygon.strokeColor);
+					var opacityStr$1 =
+						polygon.strokeColor.a < 1
+							? (" stroke-opacity=\"" + (polygon.strokeColor.a) + "\"")
+							: '';
 
 					polygonStr += " stroke=\"" + hexColor$1 + "\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"" + opacityStr$1;
 				}
 			}
 
-
 			polygonStr += "/>\n\t";
-		} );
+		});
 
-		if ( defStr.length ) {
+		if (defStr.length) {
 			defStr += "\n\t\t</defs>";
 		}
 
@@ -472,85 +502,88 @@
 
 	var readableStream = stream__default['default'].Readable;
 
-	function polygonsToSVGStream ( polygons, size ) {
+	function polygonsToSVGStream (polygons, size) {
 		var rs = new readableStream();
 		var polygonStr;
 
 		rs._read = function () {
-			rs.push( "<?xml version=\"1.0\" standalone=\"yes\"?>\n" );
-			rs.push( ("<svg width=\"" + (size.width) + "\" height=\"" + (size.height) + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >") );
+			rs.push("<?xml version=\"1.0\" standalone=\"yes\"?>\n");
+			rs.push(
+				("<svg width=\"" + (size.width) + "\" height=\"" + (size.height) + "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >")
+			);
 
-			polygons.forEach( function ( polygon, index ) {
+			polygons.forEach(function (polygon, index) {
 				var a = polygon.a;
 				var b = polygon.b;
 				var c = polygon.c;
 
 				polygonStr = "<polygon points=\"" + (a.x) + "," + (a.y) + " " + (b.x) + "," + (b.y) + " " + (c.x) + "," + (c.y) + "\"";
 
-				if ( polygon.fill ) {
+				if (polygon.fill) {
 					polygonStr += " fill=\"" + (polygon.fill) + "\"";
 				} else {
 					polygonStr += " fill=\"transparent\"";
 				}
 
-				if ( polygon.strokeColor ) {
-					polygonStr += " stroke=\"" + (polygon.strokeColor) + "\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"";	
+				if (polygon.strokeColor) {
+					polygonStr += " stroke=\"" + (polygon.strokeColor) + "\" stroke-width=\"" + (polygon.strokeWidth) + "\" stroke-linejoin=\"" + (polygon.lineJoin) + "\"";
 				}
 
 				polygonStr += "/>\n\t\t";
-				rs.push( polygonStr );
-			} );
+				rs.push(polygonStr);
+			});
 
-			rs.push( "\n\t</svg>" );
-			rs.push( null );
+			rs.push("\n\t</svg>");
+			rs.push(null);
 		};
-		
+
 		return rs;
 	}
 
 	// https://github.com/Automattic/node-canvas#canvaspngstream
 
-	function polygonsToPNGStream ( polygons, size, options ) {
+	function polygonsToPNGStream (polygons, size, options) {
 		var dpr = options && options.dpr ? options.dpr : 1;
-		var backgroundColor = options && options.backgroundColor ? options.backgroundColor : false;
-		var canvas = new Canvas( size.width * dpr, size.height * dpr );
-		var ctx = canvas.getContext( '2d' );
+		var backgroundColor =
+			options && options.backgroundColor ? options.backgroundColor : false;
+		var canvas = new Canvas(size.width * dpr, size.height * dpr);
+		var ctx = canvas.getContext('2d');
 
-		if ( backgroundColor ) {
+		if (backgroundColor) {
 			ctx.fillStyle = backgroundColor;
-			ctx.fillRect( 0, 0, size.width * dpr, size.height * dpr );
+			ctx.fillRect(0, 0, size.width * dpr, size.height * dpr);
 			ctx.fillStyle = 'transparent';
 		}
-		
-		drawPolygonsOnContext( ctx, polygons, size, dpr );
+
+		drawPolygonsOnContext(ctx, polygons, size, dpr);
 
 		return canvas.pngStream();
 	}
 
 	// https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
 
-	function polygonsToJPGStream ( polygons, size, options ) {
-		options = options || { };
-		
+	function polygonsToJPGStream (polygons, size, options) {
+		options = options || {};
+
 		var dpr = options.dpr || 1;
 
 		var streamParams = {
 			bufsize: options.bufsize || 4096,
 			quality: options.quality || 75,
-			progressive: options.progressive || false
+			progressive: options.progressive || false,
 		};
 
 		var backgroundColor = options.backgroundColor || '#ffffff';
-		var canvas = new Canvas( size.width * dpr, size.height * dpr );
-		var ctx = canvas.getContext( '2d' );
+		var canvas = new Canvas(size.width * dpr, size.height * dpr);
+		var ctx = canvas.getContext('2d');
 
 		ctx.fillStyle = backgroundColor;
-		ctx.fillRect( 0, 0, size.width * dpr, size.height * dpr );
+		ctx.fillRect(0, 0, size.width * dpr, size.height * dpr);
 		ctx.fillStyle = 'transparent';
 
-		drawPolygonsOnContext( ctx, polygons, size, dpr );
+		drawPolygonsOnContext(ctx, polygons, size, dpr);
 
-		return canvas.jpegStream( streamParams );
+		return canvas.jpegStream(streamParams);
 	}
 
 	var delaunay = {exports: {}};
@@ -879,7 +912,7 @@
 
 	function isImageData (imageData) {
 		return (
-			imageData && 
+			imageData &&
 			typeof imageData.width === 'number' &&
 			typeof imageData.height === 'number' &&
 			imageData.data &&
@@ -979,43 +1012,41 @@
 	    */
 
 	var mul_table = [
-	    512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512,
-	    454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512,
-	    482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456,
-	    437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512,
-	    497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328,
-	    320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456,
-	    446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335,
-	    329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512,
-	    505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405,
-	    399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328,
-	    324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271,
-	    268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456,
-	    451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388,
-	    385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335,
-	    332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292,
-	    289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
-
+		512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292,
+		512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292,
+		273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259,
+		496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292,
+		282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373,
+		364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259,
+		507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381,
+		374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292,
+		287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461,
+		454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373,
+		368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309,
+		305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259,
+		257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442,
+		437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381,
+		377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332,
+		329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292,
+		289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259 ];
 
 	var shg_table = [
-	    9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17,
-	    17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
-	    19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20,
-	    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21,
-	    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,
-	    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22,
-	    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
-	    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23,
-	    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-	    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-	    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-	    23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-	    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-	    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-	    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-	    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
+		9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17,
+		17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19,
+		19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+		20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,
+		21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22,
+		22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+		22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23,
+		23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
+		23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
+		23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+		24, 24, 24, 24, 24, 24, 24, 24 ];
 
-	function BlurStack () {
+	function BlurStack() {
 		this.r = 0;
 		this.g = 0;
 		this.b = 0;
@@ -1023,29 +1054,49 @@
 		this.next = null;
 	}
 
-	function stackblur ( imageData, top_x, top_y, width, height, radius ) {
+	function stackblur (imageData, top_x, top_y, width, height, radius) {
 		var pixels = imageData.data;
 
-		var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum,
-			r_out_sum, g_out_sum, b_out_sum, a_out_sum,
-			r_in_sum, g_in_sum, b_in_sum, a_in_sum,
-			pr, pg, pb, pa, rbs;
+		var x,
+			y,
+			i,
+			p,
+			yp,
+			yi,
+			yw,
+			r_sum,
+			g_sum,
+			b_sum,
+			a_sum,
+			r_out_sum,
+			g_out_sum,
+			b_out_sum,
+			a_out_sum,
+			r_in_sum,
+			g_in_sum,
+			b_in_sum,
+			a_in_sum,
+			pr,
+			pg,
+			pb,
+			pa,
+			rbs;
 
 		var div = radius + radius + 1;
-		var widthMinus1  = width - 1;
+		var widthMinus1 = width - 1;
 		var heightMinus1 = height - 1;
-		var radiusPlus1  = radius + 1;
-		var sumFactor = radiusPlus1 * ( radiusPlus1 + 1 ) / 2;
+		var radiusPlus1 = radius + 1;
+		var sumFactor = (radiusPlus1 * (radiusPlus1 + 1)) / 2;
 
 		var stackStart = new BlurStack();
 		var stack = stackStart;
-		
-		for ( i = 1; i < div; i++ ) {
+
+		for (i = 1; i < div; i++) {
 			stack = stack.next = new BlurStack();
 			if (i == radiusPlus1) { var stackEnd = stack; }
 		}
 		stack.next = stackStart;
-		
+
 		var stackIn = null;
 		var stackOut = null;
 
@@ -1054,13 +1105,21 @@
 		var mul_sum = mul_table[radius];
 		var shg_sum = shg_table[radius];
 
-		for ( y = 0; y < height; y++ ) {
-			r_in_sum = g_in_sum = b_in_sum = a_in_sum = r_sum = g_sum = b_sum = a_sum = 0;
+		for (y = 0; y < height; y++) {
+			r_in_sum =
+				g_in_sum =
+				b_in_sum =
+				a_in_sum =
+				r_sum =
+				g_sum =
+				b_sum =
+				a_sum =
+					0;
 
-			r_out_sum = radiusPlus1 * ( pr = pixels[yi] );
-			g_out_sum = radiusPlus1 * ( pg = pixels[yi+1] );
-			b_out_sum = radiusPlus1 * ( pb = pixels[yi+2] );
-			a_out_sum = radiusPlus1 * ( pa = pixels[yi+3] );
+			r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+			g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+			b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+			a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
 
 			r_sum += sumFactor * pr;
 			g_sum += sumFactor * pg;
@@ -1069,7 +1128,7 @@
 
 			stack = stackStart;
 
-			for ( i = 0; i < radiusPlus1; i++ ) {
+			for (i = 0; i < radiusPlus1; i++) {
 				stack.r = pr;
 				stack.g = pg;
 				stack.b = pb;
@@ -1077,12 +1136,12 @@
 				stack = stack.next;
 			}
 
-			for ( i = 1; i < radiusPlus1; i++ ) {
-				p = yi + ( ( widthMinus1 < i ? widthMinus1 : i ) << 2 );
-				r_sum += ( stack.r = ( pr = pixels[p] ) ) * ( rbs = radiusPlus1 - i );
-				g_sum += ( stack.g = ( pg = pixels[p+1] ) ) * rbs;
-				b_sum += ( stack.b = ( pb = pixels[p+2] ) ) * rbs;
-				a_sum += ( stack.a = ( pa = pixels[p+3] ) ) * rbs;
+			for (i = 1; i < radiusPlus1; i++) {
+				p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+				r_sum += (stack.r = pr = pixels[p]) * (rbs = radiusPlus1 - i);
+				g_sum += (stack.g = pg = pixels[p + 1]) * rbs;
+				b_sum += (stack.b = pb = pixels[p + 2]) * rbs;
+				a_sum += (stack.a = pa = pixels[p + 3]) * rbs;
 
 				r_in_sum += pr;
 				g_in_sum += pg;
@@ -1092,20 +1151,19 @@
 				stack = stack.next;
 			}
 
-
 			stackIn = stackStart;
 			stackOut = stackEnd;
 
 			for (x = 0; x < width; x++) {
-				pixels[yi+3] = pa = (a_sum * mul_sum) >> shg_sum;
-				
+				pixels[yi + 3] = pa = (a_sum * mul_sum) >> shg_sum;
+
 				if (pa != 0) {
 					pa = 255 / pa;
-					pixels[yi]   = ( ( r_sum * mul_sum ) >> shg_sum ) * pa;
-					pixels[yi+1] = ( ( g_sum * mul_sum ) >> shg_sum ) * pa;
-					pixels[yi+2] = ( ( b_sum * mul_sum ) >> shg_sum ) * pa;
+					pixels[yi] = ((r_sum * mul_sum) >> shg_sum) * pa;
+					pixels[yi + 1] = ((g_sum * mul_sum) >> shg_sum) * pa;
+					pixels[yi + 2] = ((b_sum * mul_sum) >> shg_sum) * pa;
 				} else {
-					pixels[yi] = pixels[yi+1] = pixels[yi+2] = 0;
+					pixels[yi] = pixels[yi + 1] = pixels[yi + 2] = 0;
 				}
 
 				r_sum -= r_out_sum;
@@ -1118,12 +1176,14 @@
 				b_out_sum -= stackIn.b;
 				a_out_sum -= stackIn.a;
 
-				p =  ( yw + ( ( p = x + radius + 1 ) < widthMinus1 ? p : widthMinus1 ) ) << 2;
+				p =
+					(yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) <<
+					2;
 
-				r_in_sum += ( stackIn.r = pixels[p] );
-				g_in_sum += ( stackIn.g = pixels[p+1] );
-				b_in_sum += ( stackIn.b = pixels[p+2] );
-				a_in_sum += ( stackIn.a = pixels[p+3] );
+				r_in_sum += stackIn.r = pixels[p];
+				g_in_sum += stackIn.g = pixels[p + 1];
+				b_in_sum += stackIn.b = pixels[p + 2];
+				a_in_sum += stackIn.a = pixels[p + 3];
 
 				r_sum += r_in_sum;
 				g_sum += g_in_sum;
@@ -1132,10 +1192,10 @@
 
 				stackIn = stackIn.next;
 
-				r_out_sum += ( pr = stackOut.r );
-				g_out_sum += ( pg = stackOut.g );
-				b_out_sum += ( pb = stackOut.b );
-				a_out_sum += ( pa = stackOut.a );
+				r_out_sum += pr = stackOut.r;
+				g_out_sum += pg = stackOut.g;
+				b_out_sum += pb = stackOut.b;
+				a_out_sum += pa = stackOut.a;
 
 				r_in_sum -= pr;
 				g_in_sum -= pg;
@@ -1149,15 +1209,22 @@
 			yw += width;
 		}
 
-
-		for ( x = 0; x < width; x++ ) {
-			g_in_sum = b_in_sum = a_in_sum = r_in_sum = g_sum = b_sum = a_sum = r_sum = 0;
+		for (x = 0; x < width; x++) {
+			g_in_sum =
+				b_in_sum =
+				a_in_sum =
+				r_in_sum =
+				g_sum =
+				b_sum =
+				a_sum =
+				r_sum =
+					0;
 
 			yi = x << 2;
-			r_out_sum = radiusPlus1 * ( pr = pixels[yi] );
-			g_out_sum = radiusPlus1 * ( pg = pixels[yi+1] );
-			b_out_sum = radiusPlus1 * ( pb = pixels[yi+2] );
-			a_out_sum = radiusPlus1 * ( pa = pixels[yi+3] );
+			r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+			g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+			b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+			a_out_sum = radiusPlus1 * (pa = pixels[yi + 3]);
 
 			r_sum += sumFactor * pr;
 			g_sum += sumFactor * pg;
@@ -1166,7 +1233,7 @@
 
 			stack = stackStart;
 
-			for ( i = 0; i < radiusPlus1; i++) {
+			for (i = 0; i < radiusPlus1; i++) {
 				stack.r = pr;
 				stack.g = pg;
 				stack.b = pb;
@@ -1176,13 +1243,13 @@
 
 			yp = width;
 
-			for ( i = 1; i <= radius; i++ ) {
-				yi = ( yp + x ) << 2;
+			for (i = 1; i <= radius; i++) {
+				yi = (yp + x) << 2;
 
-				r_sum += ( stack.r = ( pr = pixels[yi] ) ) * (rbs = radiusPlus1 - i);
-				g_sum += ( stack.g = ( pg = pixels[yi+1] ) ) * rbs;
-				b_sum += ( stack.b = ( pb = pixels[yi+2] ) ) * rbs;
-				a_sum += ( stack.a = ( pa = pixels[yi+3] ) ) * rbs;
+				r_sum += (stack.r = pr = pixels[yi]) * (rbs = radiusPlus1 - i);
+				g_sum += (stack.g = pg = pixels[yi + 1]) * rbs;
+				b_sum += (stack.b = pb = pixels[yi + 2]) * rbs;
+				a_sum += (stack.a = pa = pixels[yi + 3]) * rbs;
 
 				r_in_sum += pr;
 				g_in_sum += pg;
@@ -1191,7 +1258,7 @@
 
 				stack = stack.next;
 
-				if ( i < heightMinus1 ) {
+				if (i < heightMinus1) {
 					yp += width;
 				}
 			}
@@ -1200,17 +1267,17 @@
 			stackIn = stackStart;
 			stackOut = stackEnd;
 
-			for ( y = 0; y < height; y++ ) {
+			for (y = 0; y < height; y++) {
 				p = yi << 2;
-				pixels[p+3] = pa = ( a_sum * mul_sum ) >> shg_sum;
-				
-				if ( pa > 0 ) {
+				pixels[p + 3] = pa = (a_sum * mul_sum) >> shg_sum;
+
+				if (pa > 0) {
 					pa = 255 / pa;
-					pixels[p]   = ( ( r_sum * mul_sum ) >> shg_sum) * pa;
-					pixels[p+1] = ( ( g_sum * mul_sum ) >> shg_sum) * pa;
-					pixels[p+2] = ( ( b_sum * mul_sum ) >> shg_sum) * pa;
+					pixels[p] = ((r_sum * mul_sum) >> shg_sum) * pa;
+					pixels[p + 1] = ((g_sum * mul_sum) >> shg_sum) * pa;
+					pixels[p + 2] = ((b_sum * mul_sum) >> shg_sum) * pa;
 				} else {
-					pixels[p] = pixels[p+1] = pixels[p+2] = 0;
+					pixels[p] = pixels[p + 1] = pixels[p + 2] = 0;
 				}
 
 				r_sum -= r_out_sum;
@@ -1223,19 +1290,23 @@
 				b_out_sum -= stackIn.b;
 				a_out_sum -= stackIn.a;
 
-				p = ( x + ( ( ( p = y + radiusPlus1 ) < heightMinus1 ? p : heightMinus1 ) * width ) ) << 2;
+				p =
+					(x +
+						((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) *
+							width) <<
+					2;
 
-				r_sum += ( r_in_sum += ( stackIn.r = pixels[p] ) );
-				g_sum += ( g_in_sum += ( stackIn.g = pixels[p+1] ) );
-				b_sum += ( b_in_sum += ( stackIn.b = pixels[p+2] ) );
-				a_sum += ( a_in_sum += ( stackIn.a = pixels[p+3] ) );
+				r_sum += r_in_sum += stackIn.r = pixels[p];
+				g_sum += g_in_sum += stackIn.g = pixels[p + 1];
+				b_sum += b_in_sum += stackIn.b = pixels[p + 2];
+				a_sum += a_in_sum += stackIn.a = pixels[p + 3];
 
 				stackIn = stackIn.next;
 
-				r_out_sum += ( pr = stackOut.r );
-				g_out_sum += ( pg = stackOut.g );
-				b_out_sum += ( pb = stackOut.b );
-				a_out_sum += ( pa = stackOut.a );
+				r_out_sum += pr = stackOut.r;
+				g_out_sum += pg = stackOut.g;
+				b_out_sum += pb = stackOut.b;
+				a_out_sum += pa = stackOut.a;
 
 				r_in_sum -= pr;
 				g_in_sum -= pg;
@@ -1268,41 +1339,41 @@
 
 	// most parts taken from http://jsdo.it/akm2/xoYx
 	// (starting line 293++)
-	function getEdgePoints ( imageData, threshold ) {
+	function getEdgePoints (imageData, threshold) {
 		// only check every 2nd pixel in imageData to save some time.
 		var multiplier = 2;
 		var width = imageData.width;
 		var height = imageData.height;
 		var data = imageData.data;
-		var points = [ ];
+		var points = [];
 		var x, y, row, col, sx, sy, step, sum, total;
 
-		for ( y = 0; y < height; y += multiplier ) {
-			for ( x = 0; x < width; x += multiplier ) {
+		for (y = 0; y < height; y += multiplier) {
+			for (x = 0; x < width; x += multiplier) {
 				sum = total = 0;
 
-				for ( row = -1; row <= 1; row++ ) {
+				for (row = -1; row <= 1; row++) {
 					sy = y + row;
 					step = sy * width;
 
-					if ( sy >= 0 && sy < height ) {
-						for ( col = -1; col <= 1; col++ ) {
+					if (sy >= 0 && sy < height) {
+						for (col = -1; col <= 1; col++) {
 							sx = x + col;
 
-							if ( sx >= 0 && sx < width ) {
-								sum += data[( sx + step ) << 2];
+							if (sx >= 0 && sx < width) {
+								sum += data[(sx + step) << 2];
 								total++;
 							}
 						}
 					}
 				}
 
-				if ( total ) {
+				if (total) {
 					sum /= total;
 				}
 
-				if ( sum > threshold ) {
-					points.push( { x: x, y: y } );
+				if (sum > threshold) {
+					points.push({ x: x, y: y });
 				}
 			}
 		}
@@ -1310,32 +1381,32 @@
 		return points;
 	}
 
-	function addVertex ( x, y, hash ) {
+	function addVertex(x, y, hash) {
 		var resultKey = x + '|' + y;
 
-		if ( ! hash[resultKey] ) {
+		if (!hash[resultKey]) {
 			hash[resultKey] = { x: x, y: y };
 		}
 
 		resultKey = null;
 	}
 
-	function getVerticesFromPoints ( points, maxPointCount, accuracy, width, height ) {
+	function getVerticesFromPoints (points, maxPointCount, accuracy, width, height) {
 		// using hash for all points to make sure we have a set of unique vertices.
-		var resultHash = { };
+		var resultHash = {};
 
 		// use 25% of max point count to create a background grid.
-		// this avoids having too many "big" triangles in areas of the image with low contrast 
+		// this avoids having too many "big" triangles in areas of the image with low contrast
 		// next to very small ones in areas with high contrast
 		// for every other row, start the x value at > 0, so the grid doesn't look too regular
-		var gridPointCount = Math.max( ~~( maxPointCount * ( 1 - accuracy ) ), 5 );
+		var gridPointCount = Math.max(~~(maxPointCount * (1 - accuracy)), 5);
 
 		// http://stackoverflow.com/a/4107092/229189
-		var gridColumns = Math.round( Math.sqrt( gridPointCount ) );
-		var gridRows = Math.round( Math.ceil( gridPointCount / gridColumns ) );
-		
-		var xIncrement = ~~( width / gridColumns );
-		var yIncrement = ~~( height / gridRows );
+		var gridColumns = Math.round(Math.sqrt(gridPointCount));
+		var gridRows = Math.round(Math.ceil(gridPointCount / gridColumns));
+
+		var xIncrement = ~~(width / gridColumns);
+		var yIncrement = ~~(height / gridRows);
 
 		var rowIndex = 0;
 		var startX = 0;
@@ -1343,48 +1414,48 @@
 		var x = 0;
 		var y = 0;
 
-		for ( y = 0; y < height; y+= yIncrement ) {
+		for (y = 0; y < height; y += yIncrement) {
 			rowIndex++;
 
-			startX = rowIndex % 2 === 0 ? ~~( xIncrement / 2 ) : 0; 
+			startX = rowIndex % 2 === 0 ? ~~(xIncrement / 2) : 0;
 
-			for ( x = startX; x < width; x += xIncrement ) {
-				if ( x < width && y < height ) {
+			for (x = startX; x < width; x += xIncrement) {
+				if (x < width && y < height) {
 					// "distorting" the grid a little bit so that the
 					// background vertices don't appear to be on a straight line (which looks boring)
 					addVertex(
-						~~( x + ( Math.cos( y ) * ( yIncrement ) ) ),
-						~~( y + ( Math.sin( x ) * ( xIncrement ) ) ),
+						~~(x + Math.cos(y) * yIncrement),
+						~~(y + Math.sin(x) * xIncrement),
 						resultHash
 					);
 				}
 			}
 		}
-		
+
 		// add points in the corners
-		addVertex( 0, 0, resultHash );
-		addVertex( width - 1, 0, resultHash );
-		addVertex( width - 1, height - 1, resultHash );
-		addVertex( 0, height - 1, resultHash );
+		addVertex(0, 0, resultHash);
+		addVertex(width - 1, 0, resultHash);
+		addVertex(width - 1, height - 1, resultHash);
+		addVertex(0, height - 1, resultHash);
 
 		// add points from all edge points
-		var remainingPointCount = maxPointCount - Object.keys( resultHash ).length;
+		var remainingPointCount = maxPointCount - Object.keys(resultHash).length;
 		var edgePointCount = points.length;
-		var increment = ~~( edgePointCount / remainingPointCount );
+		var increment = ~~(edgePointCount / remainingPointCount);
 
-		if ( maxPointCount > 0 && increment > 0 ) {
+		if (maxPointCount > 0 && increment > 0) {
 			var i = 0;
 
-			for ( i = 0; i < edgePointCount; i += increment ) {
-				addVertex( points[i].x, points[i].y, resultHash );
+			for (i = 0; i < edgePointCount; i += increment) {
+				addVertex(points[i].x, points[i].y, resultHash);
 			}
 		}
 
 		points = null;
 
-		return Object.keys( resultHash ).map( function (key) {
+		return Object.keys(resultHash).map(function (key) {
 			return resultHash[key];
-		} );
+		});
 	}
 
 	function getBoundingBox (points) {
@@ -1393,40 +1464,40 @@
 		var yMin = Infinity;
 		var yMax = -Infinity;
 
-		points.forEach( function (p) {
-			if ( p.x < xMin ) {
+		points.forEach(function (p) {
+			if (p.x < xMin) {
 				xMin = p.x;
 			}
 
-			if ( p.y < yMin ) {
+			if (p.y < yMin) {
 				yMin = p.y;
 			}
 
-			if ( p.x > xMax ) {
+			if (p.x > xMax) {
 				xMax = p.x;
 			}
 
-			if ( p.y > yMax ) {
+			if (p.y > yMax) {
 				yMax = p.y;
 			}
-		} );
+		});
 
 		return {
 			x: xMin,
 			y: yMin,
 			width: xMax - xMin,
-			height: yMax - yMin
+			height: yMax - yMin,
 		};
 	}
 
-	function addBoundingBoxesToPolygons ( polygons, colorData, params ) {
-		polygons.forEach( function (polygon) {
-			polygon.boundingBox = getBoundingBox( [ polygon.a, polygon.b, polygon.c ] );
-		} );
+	function addBoundingBoxesToPolygons (polygons, colorData, params) {
+		polygons.forEach(function (polygon) {
+			polygon.boundingBox = getBoundingBox([polygon.a, polygon.b, polygon.c]);
+		});
 
-		return polygons.filter( function (polygon) {
+		return polygons.filter(function (polygon) {
 			return polygon.boundingBox.width > 0 && polygon.boundingBox.height > 0;
-		} );
+		});
 	}
 
 	/**
@@ -1436,24 +1507,26 @@
 	 * @param  {Object} [transparentColor] (optional) RGBA color object. Used to set specific color to transparent pixels
 	 * @return {Object}             RGBA color object
 	 */
-	function getColorByPos ( pos, colorData, transparentColor ) {
-		var x = clamp( pos.x, 1, colorData.width - 2 );
-		var y = clamp( pos.y, 1, colorData.height - 2 );
-		var index = ( ( x | 0 ) + ( y | 0 ) * colorData.width ) << 2;
+	function getColorByPos (pos, colorData, transparentColor) {
+		var x = clamp(pos.x, 1, colorData.width - 2);
+		var y = clamp(pos.y, 1, colorData.height - 2);
+		var index = ((x | 0) + (y | 0) * colorData.width) << 2;
 
-		if ( index >= colorData.data.length ) {
+		if (index >= colorData.data.length) {
 			index = colorData.data.length - 5;
 		}
 
 		var alpha = colorData.data[index + 3] / 255;
 
 		// Return RGBA color object
-		return ( transparentColor && alpha === 0 ) ? transparentColor : {
-			r: colorData.data[index],
-			g: colorData.data[index + 1],
-			b: colorData.data[index + 2],
-			a: alpha
-		};
+		return transparentColor && alpha === 0
+			? transparentColor
+			: {
+					r: colorData.data[index],
+					g: colorData.data[index + 1],
+					b: colorData.data[index + 2],
+					a: alpha,
+			  };
 	}
 
 	/**
@@ -1463,8 +1536,8 @@
 	 */
 	function polygonCenter (polygon) {
 		return {
-			x: ( polygon.a.x + polygon.b.x + polygon.c.x ) * 0.33333,
-			y: ( polygon.a.y + polygon.b.y + polygon.c.y ) * 0.33333
+			x: (polygon.a.x + polygon.b.x + polygon.c.x) * 0.33333,
+			y: (polygon.a.y + polygon.b.y + polygon.c.y) * 0.33333,
 		};
 	}
 
@@ -1479,46 +1552,42 @@
 
 	// https://gist.githubusercontent.com/oriadam/396a4beaaad465ca921618f2f2444d49/raw/76b0de6caffaac59f8af2b4dfa0e0b6397cf447d/colorValues.js
 	// return array of [r,g,b,a] from any valid color. if failed returns undefined
-	function strToColorArr ( color ) {
-		if ( typeof color === 'string' ) {
-			var result = [ 0, 0, 0, 0 ];
-			
-			if ( color[0] === '#' )	{
+	function strToColorArr(color) {
+		if (typeof color === 'string') {
+			var result = [0, 0, 0, 0];
+
+			if (color[0] === '#') {
 				// convert #RGB and #RGBA to #RRGGBB and #RRGGBBAA
-				if ( color.length < 7 ) {
+				if (color.length < 7) {
 					color = "#" + (color[1]) + (color[1]) + (color[2]) + (color[2]) + (color[3]) + (color[3]) + (color.length > 4 ? color[4] + color[4] : '');
 				}
 
 				result = [
-					parseInt(color.substr( 1, 2 ), 16),
-					parseInt(color.substr( 3, 2 ), 16),
-					parseInt(color.substr( 5, 2 ), 16),
-					color.length > 7 ? parseInt( color.substr( 7, 2 ), 16 ) / 255 : 1
-				];
+					parseInt(color.substr(1, 2), 16),
+					parseInt(color.substr(3, 2), 16),
+					parseInt(color.substr(5, 2), 16),
+					color.length > 7 ? parseInt(color.substr(7, 2), 16) / 255 : 1 ];
 			}
 
-			if ( color.indexOf('rgb') === 0 ) {
+			if (color.indexOf('rgb') === 0) {
 				// convert 'rgb(R,G,B)' to 'rgb(R,G,B)A' which looks awful but will pass the regxep below
-				if ( ! color.includes( 'rgba' ) ) {
+				if (!color.includes('rgba')) {
 					color += ',1';
 				}
 
-				result = color
-					.match( /[\.\d]+/g )
-					.map( function (a) { return +a; } );
+				result = color.match(/[\.\d]+/g).map(function (a) { return +a; });
 			}
-			
+
 			return result;
 		} else {
 			return;
 		}
-
 	}
 
-	function strToColor ( str ) {
-		var color = strToColorArr( str );
+	function strToColor(str) {
+		var color = strToColorArr(str);
 
-		if ( color ) {
+		if (color) {
 			var r = color[0];
 			var g = color[1];
 			var b = color[2];
@@ -1529,14 +1598,14 @@
 		}
 	}
 
-	function addColorToPolygons ( polygons, colorData, params ) {
+	function addColorToPolygons (polygons, colorData, params) {
 		var fill = params.fill;
 		var stroke = params.stroke;
 		var strokeWidth = params.strokeWidth;
 		var lineJoin = params.lineJoin;
 		var transparentColor = params.transparentColor;
-		var fillColor = fill ? strToColor( fill ) : false;
-		var strokeColor = stroke ? strToColor( stroke ) : false;
+		var fillColor = fill ? strToColor(fill) : false;
+		var strokeColor = stroke ? strToColor(stroke) : false;
 
 		/**
 		 * Color override logic
@@ -1544,117 +1613,131 @@
 		 * @param  {String} override Override color (fillColor/strokeColor)
 		 * @return {String}          CSS formatted color (rgba,..)
 		 */
-		var getColor = function ( color, override ) {
-			var t = ( isTransparent( color ) && transparentColor );	// Color is transparent, and transparentColor override is defined
+		var getColor = function (color, override) {
+			var t = isTransparent(color) && transparentColor; // Color is transparent, and transparentColor override is defined
 			var c = t ? transparentColor : color;
-			return ( override && !t ) ? override : c;		// Priority: transparentColor -> override -> supplied color
+			return override && !t ? override : c; // Priority: transparentColor -> override -> supplied color
 		};
 
-		polygons.forEach( function (polygon) {
-			var color = getColorByPos( polygonCenter( polygon ), colorData );
+		polygons.forEach(function (polygon) {
+			var color = getColorByPos(polygonCenter(polygon), colorData);
 
-			if ( fill ) {
-				polygon.fill = getColor( color, fillColor );
+			if (fill) {
+				polygon.fill = getColor(color, fillColor);
 			}
 
-			if ( stroke ) {
+			if (stroke) {
 				polygon.strokeColor = getColor(color, strokeColor);
 				polygon.strokeWidth = strokeWidth;
 				polygon.lineJoin = lineJoin;
 			}
-		} );
+		});
 
 		return polygons;
 	}
 
 	//  http://stackoverflow.com/a/9733420/229189
 	function luminance (color) {
-		var a = [ color.r, color.g, color.b ].map( function (v) {
+		var a = [color.r, color.g, color.b].map(function (v) {
 			v /= 255;
-			return ( v <= 0.03928 ) ? v / 12.92 : Math.pow( ( ( v + 0.055 ) / 1.055 ), 2.4 );
-		} );
+			return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+		});
 
 		return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 	}
 
-	function distance ( a, b ) {
+	function distance (a, b) {
 		var dx = b.x - a.x;
 		var dy = b.y - a.y;
 
-		return Math.sqrt( ( dx * dx ) + ( dy * dy ) );
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
-	function addGradientsToPolygons ( polygons, colorData, params ) {
-		polygons.forEach( function (polygon) {
-			var data = { };
+	function addGradientsToPolygons (polygons, colorData, params) {
+		polygons.forEach(function (polygon) {
+			var data = {};
 
-			'abc'.split( '' ).forEach( function (key) {
-				var color = getColorByPos( polygon[key], colorData, params.transparentColor );
-				
+			'abc'.split('').forEach(function (key) {
+				var color = getColorByPos(
+					polygon[key],
+					colorData,
+					params.transparentColor
+				);
+
 				data[key] = {
 					key: key,
 					color: color,
 					x: polygon[key].x,
-					y: polygon[key].y
+					y: polygon[key].y,
 				};
 
-				data[key].luminance = luminance( data[key].color );
+				data[key].luminance = luminance(data[key].color);
 
-				var otherKeys = 'abc'.replace( key, '' ).split( '' );
+				var otherKeys = 'abc'.replace(key, '').split('');
 
 				data[key].median = {
-					x: ( polygon[otherKeys[0]].x + polygon[otherKeys[1]].x ) / 2,
-					y: ( polygon[otherKeys[0]].y + polygon[otherKeys[1]].y ) / 2
+					x: (polygon[otherKeys[0]].x + polygon[otherKeys[1]].x) / 2,
+					y: (polygon[otherKeys[0]].y + polygon[otherKeys[1]].y) / 2,
 				};
 
-				data[key].medianColor = getColorByPos( data[key].median, colorData, params.transparentColor );
-				data[key].medianLuminance = luminance( data[key].medianColor );
-			} );
+				data[key].medianColor = getColorByPos(
+					data[key].median,
+					colorData,
+					params.transparentColor
+				);
+				data[key].medianLuminance = luminance(data[key].medianColor);
+			});
 
 			// sort by axis of most difference in luminance
-			var pointsByDeltaInLuminance = [ data.a, data.b, data.c ].sort( function ( u, v ) {
-				return Math.abs( u.luminance - u.medianLuminance ) - Math.abs( v.luminance - v.medianLuminance );
-			} );
+			var pointsByDeltaInLuminance = [data.a, data.b, data.c].sort(
+				function (u, v) {
+					return (
+						Math.abs(u.luminance - u.medianLuminance) -
+						Math.abs(v.luminance - v.medianLuminance)
+					);
+				}
+			);
 
 			var pointWithMostDeltaInLuminance = pointsByDeltaInLuminance[0];
 			var startPoint = pointsByDeltaInLuminance[0];
 			var endPoint = pointWithMostDeltaInLuminance.median;
 
-			var gradienStopPositions = [ startPoint ];
+			var gradienStopPositions = [startPoint];
 
-			var startToEndDistance = distance( startPoint, endPoint );
+			var startToEndDistance = distance(startPoint, endPoint);
 
-			for ( var i = 1, len = params.gradientStops - 2; i < len; i++ ) {
-				var pointDistance = i * ( startToEndDistance / params.gradientStops );
+			for (var i = 1, len = params.gradientStops - 2; i < len; i++) {
+				var pointDistance =
+					i * (startToEndDistance / params.gradientStops);
 				var pointPercent = pointDistance / startToEndDistance;
-				
+
 				var point = {
-					x: startPoint.x + pointPercent * ( endPoint.x - startPoint.x ), 
-					y: startPoint.y + pointPercent * ( endPoint.y - startPoint.y )
+					x: startPoint.x + pointPercent * (endPoint.x - startPoint.x),
+					y: startPoint.y + pointPercent * (endPoint.y - startPoint.y),
 				};
 
-				gradienStopPositions.push( point );
+				gradienStopPositions.push(point);
 			}
 
-			gradienStopPositions.push( endPoint );
+			gradienStopPositions.push(endPoint);
 
 			polygon.gradient = {
 				x1: pointWithMostDeltaInLuminance.x,
 				y1: pointWithMostDeltaInLuminance.y,
 				x2: pointWithMostDeltaInLuminance.median.x,
 				y2: pointWithMostDeltaInLuminance.median.y,
-				colors: gradienStopPositions.map( function (pos) {
-					return getColorByPos( pos, colorData, params.transparentColor );
-				} )
+				colors: gradienStopPositions.map(function (pos) {
+					return getColorByPos(pos, colorData, params.transparentColor);
+				}),
 			};
 
-			if ( params.stroke ) {
+			if (params.stroke) {
 				polygon.strokeWidth = params.strokeWidth;
 				polygon.lineJoin = params.lineJoin;
 			}
 
 			data = null;
-		} );
+		});
 
 		return polygons;
 	}
@@ -1665,65 +1748,80 @@
 	 * @param  {Object} colorData  Color data
 	 * @return {Array}             Filtered polygons array
 	 */
-	function filterTransparentPolygons ( polygons, colorData ) {
-		return polygons.filter( function (polygon) {
-			var color = getColorByPos( polygonCenter( polygon ), colorData );
-			return ! isTransparent( color );
+	function filterTransparentPolygons (polygons, colorData) {
+		return polygons.filter(function (polygon) {
+			var color = getColorByPos(polygonCenter(polygon), colorData);
+			return !isTransparent(color);
 		});
 	}
 
-	function imageDataToPolygons ( imageData, params ) {
-		if ( isImageData( imageData ) ) {
+	function imageDataToPolygons (imageData, params) {
+		if (isImageData(imageData)) {
 			var imageSize = { width: imageData.width, height: imageData.height };
-			var tmpImageData = copyImageData( imageData );
-			var colorImageData = copyImageData( imageData );
-			var blurredImageData = stackblur( tmpImageData, 0, 0, imageSize.width, imageSize.height, params.blur );
-			var greyscaleImageData = greyscale( blurredImageData );
-			var edgesImageData = Sobel( greyscaleImageData ).toImageData();
-			var edgePoints = getEdgePoints( edgesImageData, params.threshold );
-			var edgeVertices = getVerticesFromPoints( edgePoints, params.vertexCount, params.accuracy, imageSize.width, imageSize.height );
-			var polygons = delaunay.exports.triangulate( edgeVertices );
-			
-			polygons = addBoundingBoxesToPolygons( polygons );
-			
-			if ( ! params.transparentColor ) {
-				polygons = filterTransparentPolygons( polygons, colorImageData );
+			var tmpImageData = copyImageData(imageData);
+			var colorImageData = copyImageData(imageData);
+			var blurredImageData = stackblur(
+				tmpImageData,
+				0,
+				0,
+				imageSize.width,
+				imageSize.height,
+				params.blur
+			);
+			var greyscaleImageData = greyscale(blurredImageData);
+			var edgesImageData = Sobel(greyscaleImageData).toImageData();
+			var edgePoints = getEdgePoints(edgesImageData, params.threshold);
+			var edgeVertices = getVerticesFromPoints(
+				edgePoints,
+				params.vertexCount,
+				params.accuracy,
+				imageSize.width,
+				imageSize.height
+			);
+			var polygons = delaunay.exports.triangulate(edgeVertices);
+
+			polygons = addBoundingBoxesToPolygons(polygons);
+
+			if (!params.transparentColor) {
+				polygons = filterTransparentPolygons(polygons, colorImageData);
 			}
-			
-			if ( params.fill === true && params.gradients === true ) {
-				polygons = addGradientsToPolygons( polygons, colorImageData, params );
+
+			if (params.fill === true && params.gradients === true) {
+				polygons = addGradientsToPolygons(polygons, colorImageData, params);
 			} else {
-				polygons = addColorToPolygons( polygons, colorImageData, params );
+				polygons = addColorToPolygons(polygons, colorImageData, params);
 			}
 
 			return polygons;
 		} else {
-			throw new Error( "Can't work with the imageData provided. It seems to be corrupt." );
+			throw new Error(
+				"Can't work with the imageData provided. It seems to be corrupt."
+			);
 		}
 	}
 
 	// constructing an object that allows for a chained interface.
 	// for example stuff like:
-	// 
+	//
 	// triangulate( params )
 	//     .fromBuffer( buffer )
 	//     .toImageData()
-	// 
+	//
 	// etc...
 
-	function index ( params ) {
-		params = sanitizeInput( params );
+	function index (params) {
+		params = sanitizeInput(params);
 
 		var isInputSync = false;
 		var isOutputSync = false;
 
 		var inputFn;
 		var outputFn;
-		
+
 		var api = {
 			getParams: getParams,
 			getInput: getInput,
-			getOutput: getOutput
+			getOutput: getOutput,
 		};
 
 		var inputMethods = {
@@ -1731,7 +1829,7 @@
 			fromBufferSync: fromBufferSync,
 			fromImageData: fromImageData,
 			fromImageDataSync: fromImageDataSync,
-			fromStream: fromStream
+			fromStream: fromStream,
 		};
 
 		var outputMethods = {
@@ -1748,178 +1846,230 @@
 			toSVGStream: toSVGStream,
 			toPNGStream: toPNGStream,
 			toJPGStream: toJPGStream,
-			toJPEGStream: toJPEGStream
+			toJPEGStream: toJPEGStream,
 		};
 
-		function getParams () {
+		function getParams() {
 			return params;
 		}
 
-		function getInput () {
-			var result = objectAssign( { }, api );
+		function getInput() {
+			var result = objectAssign({}, api);
 
-			if ( ! inputFn ) {
-				objectAssign( result, inputMethods );
+			if (!inputFn) {
+				objectAssign(result, inputMethods);
 			}
 
 			return result;
 		}
 
-		function getOutput () {
-			var result = objectAssign( { }, api );
+		function getOutput() {
+			var result = objectAssign({}, api);
 
-			if ( ! outputFn ) {
-				objectAssign( result, outputMethods );
+			if (!outputFn) {
+				objectAssign(result, outputMethods);
 			}
 
 			return result;
 		}
 
-		function fromBuffer ( inputParams ) { return setInput( fromBufferToImageData, inputParams ); }
-		function fromStream ( inputParams ) { return setInput( fromStreamToImageData, inputParams, false, true ); }
-		function fromBufferSync ( inputParams ) { return setInput( fromBufferToImageData, inputParams, true ); }
-		function fromImageData ( inputParams ) { return setInput( function ( id ) { return id; }, inputParams ); }
-		function fromImageDataSync ( inputParams ) { return setInput( function ( id ) { return id; }, inputParams, true ); }
+		function fromBuffer(inputParams) {
+			return setInput(fromBufferToImageData, inputParams);
+		}
+		function fromStream(inputParams) {
+			return setInput(fromStreamToImageData, inputParams, false, true);
+		}
+		function fromBufferSync(inputParams) {
+			return setInput(fromBufferToImageData, inputParams, true);
+		}
+		function fromImageData(inputParams) {
+			return setInput(function (id) {
+				return id;
+			}, inputParams);
+		}
+		function fromImageDataSync(inputParams) {
+			return setInput(
+				function (id) {
+					return id;
+				},
+				inputParams,
+				true
+			);
+		}
 
-		function toBuffer ( outputParams ) { return setOutput( polygonsToBuffer, outputParams ); }
-		function toBufferSync ( outputParams ) { return setOutput( polygonsToBuffer, outputParams, true ); }
-		function toData ( outputParams ) { return setOutput( function ( p ) { return p; }, outputParams ); }
-		function toDataSync ( outputParams ) { return setOutput( function ( p ) { return p; }, outputParams, true ); }
-		function toDataURL ( outputParams ) { return setOutput( polygonsToDataURL, outputParams ); }
-		function toDataURLSync ( outputParams ) { return setOutput( polygonsToDataURL, outputParams, true ); }
-		function toImageData ( outputParams ) { return setOutput( polygonsToImageData, outputParams ); }
-		function toImageDataSync ( outputParams ) { return setOutput( polygonsToImageData, outputParams, true ); }
-		function toSVG ( outputParams ) { return setOutput( polygonsToSVG, outputParams ); }
-		function toSVGSync ( outputParams ) { return setOutput( polygonsToSVG, outputParams, true ); }
-		function toSVGStream ( outputParams ) { return setOutput( polygonsToSVGStream, outputParams, true ); }
-		function toPNGStream ( outputParams ) { return setOutput( polygonsToPNGStream, outputParams, true ); }
-		function toJPGStream ( outputParams ) { return setOutput( polygonsToJPGStream, outputParams, true ); }
-		function toJPEGStream ( outputParams ) { return setOutput( polygonsToJPGStream, outputParams, true ); }
+		function toBuffer(outputParams) {
+			return setOutput(polygonsToBuffer, outputParams);
+		}
+		function toBufferSync(outputParams) {
+			return setOutput(polygonsToBuffer, outputParams, true);
+		}
+		function toData(outputParams) {
+			return setOutput(function (p) {
+				return p;
+			}, outputParams);
+		}
+		function toDataSync(outputParams) {
+			return setOutput(
+				function (p) {
+					return p;
+				},
+				outputParams,
+				true
+			);
+		}
+		function toDataURL(outputParams) {
+			return setOutput(polygonsToDataURL, outputParams);
+		}
+		function toDataURLSync(outputParams) {
+			return setOutput(polygonsToDataURL, outputParams, true);
+		}
+		function toImageData(outputParams) {
+			return setOutput(polygonsToImageData, outputParams);
+		}
+		function toImageDataSync(outputParams) {
+			return setOutput(polygonsToImageData, outputParams, true);
+		}
+		function toSVG(outputParams) {
+			return setOutput(polygonsToSVG, outputParams);
+		}
+		function toSVGSync(outputParams) {
+			return setOutput(polygonsToSVG, outputParams, true);
+		}
+		function toSVGStream(outputParams) {
+			return setOutput(polygonsToSVGStream, outputParams, true);
+		}
+		function toPNGStream(outputParams) {
+			return setOutput(polygonsToPNGStream, outputParams, true);
+		}
+		function toJPGStream(outputParams) {
+			return setOutput(polygonsToJPGStream, outputParams, true);
+		}
+		function toJPEGStream(outputParams) {
+			return setOutput(polygonsToJPGStream, outputParams, true);
+		}
 
-		function setInput ( fn, inputParams, isSync, canResolve ) {
-			isInputSync = !! isSync;
-			
+		function setInput(fn, inputParams, isSync, canResolve) {
+			isInputSync = !!isSync;
+
 			inputFn = function () {
-				if ( isInputSync ) {
-					return fn( inputParams );
+				if (isInputSync) {
+					return fn(inputParams);
 				} else {
-					return new Promise( function ( resolve, reject ) {
-						if ( canResolve ) {
-							fn( inputParams, resolve, reject );
+					return new Promise(function (resolve, reject) {
+						if (canResolve) {
+							fn(inputParams, resolve, reject);
 						} else {
 							try {
-								var imageData = fn( inputParams );
-								resolve( imageData );
-							} catch ( err ) {
-								reject( err );
+								var imageData = fn(inputParams);
+								resolve(imageData);
+							} catch (err) {
+								reject(err);
 							}
 						}
-					} );
+					});
 				}
 			};
 
-			if ( isReady() ) {
+			if (isReady()) {
 				return getResult();
 			} else {
 				return getOutput();
 			}
 		}
 
-		function setOutput ( fn, outputParams, isSync ) {
-			isOutputSync = !! isSync;
+		function setOutput(fn, outputParams, isSync) {
+			isOutputSync = !!isSync;
 
-			outputFn = function ( polygons, size ) {
-				if ( isOutputSync ) {
-					return fn( polygons, size, outputParams );
+			outputFn = function (polygons, size) {
+				if (isOutputSync) {
+					return fn(polygons, size, outputParams);
 				} else {
-					return new Promise( function ( resolve, reject ) {
+					return new Promise(function (resolve, reject) {
 						try {
-							var outputData = fn( polygons, size, outputParams );
-							resolve( outputData );
-						} catch ( err ) {
-							reject( err );
+							var outputData = fn(polygons, size, outputParams);
+							resolve(outputData);
+						} catch (err) {
+							reject(err);
 						}
-					} );
+					});
 				}
 			};
 
-			if ( isReady() ) {
+			if (isReady()) {
 				return getResult();
 			} else {
 				return getInput();
 			}
 		}
 
-		function isReady () {
+		function isReady() {
 			return inputFn && outputFn;
 		}
 
-		function getResult () {
-			if ( isInputSync && isOutputSync ) {
-				var imageData = inputFn( params );
-				var polygonData = imageDataToPolygons( imageData, params );
-				var outputData = outputFn( polygonData, imageData );
+		function getResult() {
+			if (isInputSync && isOutputSync) {
+				var imageData = inputFn(params);
+				var polygonData = imageDataToPolygons(imageData, params);
+				var outputData = outputFn(polygonData, imageData);
 
 				return outputData;
 			} else {
-				return new Promise( function ( resolve, reject ) {
+				return new Promise(function (resolve, reject) {
 					var imageData;
 					makeInput()
-						.then( function (imgData) {
+						.then(function (imgData) {
 							imageData = imgData;
-							return makePolygons( imageData, params );
-						}, reject )
-						.then( function (polygonData) {
-							return makeOutput( polygonData, imageData );
-						}, reject )
-						.then( resolve, reject );
-				} );
+							return makePolygons(imageData, params);
+						}, reject)
+						.then(function (polygonData) {
+							return makeOutput(polygonData, imageData);
+						}, reject)
+						.then(resolve, reject);
+				});
 			}
 		}
 
-		function makeInput ( inputParams ) {
-			return new Promise( function ( resolve, reject ) {
-				if ( isInputSync ) {
+		function makeInput(inputParams) {
+			return new Promise(function (resolve, reject) {
+				if (isInputSync) {
 					try {
-						var imageData = inputFn( inputParams );
-						resolve( imageData );
-					} catch ( err ) {
-						reject( err );
+						var imageData = inputFn(inputParams);
+						resolve(imageData);
+					} catch (err) {
+						reject(err);
 					}
 				} else {
-					inputFn( inputParams )
-						.then( resolve, reject );
+					inputFn(inputParams).then(resolve, reject);
 				}
-			} );
+			});
 		}
 
-		function makePolygons ( imageData, params ) {
-			return new Promise( function ( resolve, reject ) {
+		function makePolygons(imageData, params) {
+			return new Promise(function (resolve, reject) {
 				try {
-					var polygons = imageDataToPolygons( imageData, params );
-					resolve( polygons );
-				} catch( err ) {
-					reject( err );
+					var polygons = imageDataToPolygons(imageData, params);
+					resolve(polygons);
+				} catch (err) {
+					reject(err);
 				}
-			} );
+			});
 		}
 
-		function makeOutput ( polygonData, imageData ) {
-			return new Promise( function ( resolve, reject ) {
-				if ( isOutputSync ) {
+		function makeOutput(polygonData, imageData) {
+			return new Promise(function (resolve, reject) {
+				if (isOutputSync) {
 					try {
-						var outputData = outputFn( polygonData, imageData );
-						resolve( outputData );
-					} catch ( err ) {
-						reject( err );
+						var outputData = outputFn(polygonData, imageData);
+						resolve(outputData);
+					} catch (err) {
+						reject(err);
 					}
 				} else {
-					outputFn( polygonData, imageData )
-						.then( function (outputData) {
-							resolve( outputData );
-						}, reject );
+					outputFn(polygonData, imageData).then(function (outputData) {
+						resolve(outputData);
+					}, reject);
 				}
-			} );
+			});
 		}
 
 		return getInput();
